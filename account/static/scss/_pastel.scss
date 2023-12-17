@@ -1,0 +1,35 @@
+
+// Pastel Theme Styles
+
+$body-bg-color: #FAF3E0;
+$body-text-color: #5B5B5B;
+$primary-color: #FFC3A0;
+$secondary-color: #FFAFBD;
+$link-color: #FFC3A0;
+$link-hover-color: #FFAFBD;
+
+body {
+    background-color: $body-bg-color;
+    color: $body-text-color;
+}
+
+a {
+    color: $link-color;
+    &:hover {
+        color: $link-hover-color;
+    }
+}
+
+.button-primary {
+    background-color: $primary-color;
+    &:hover {
+        background-color: darken($primary-color, 10%);
+    }
+}
+
+.button-secondary {
+    background-color: $secondary-color;
+    &:hover {
+        background-color: darken($secondary-color, 10%);
+    }
+}

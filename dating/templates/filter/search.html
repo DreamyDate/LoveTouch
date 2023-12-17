@@ -1,0 +1,411 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+<!-- Main Contents -->
+<div class="main_content">
+    <div class="mcontainer">
+        <div class=" lg:space-x-10">
+            <div class="relative">
+                
+                <div class="lg:mt-8 mt-4">
+
+                    <div class="grid sm:grid-cols-1 gap-6"
+                        uk-scrollspy="target: > div; cls: uk-animation-scale-up; delay: 100; repeat: true">
+                        <form method="GET" action="{% url 'filter_results' %}">
+                            {% csrf_token %}
+                            <div class="filter-section">
+                                <h2>{% trans 'People nearby' %}</h2>
+                                <div class="grid sm:grid-cols-2 gap-3"
+                                    uk-scrollspy="target: > div; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+                                    <div class="card flex space-x-5 p-5">
+                                        <div class="card-body flex-1 p-0">
+                                            <h4 class="card-title"> {% trans 'Relationship Goals' %} </h4>
+                                            {% for choice in form.search_goals.field.choices %}
+                                            <div class="radio">
+                                                <input type="radio" name="search_goals" value="{{ choice.0 }}"
+                                                    id="goal_{{ choice.0 }}" {% if forloop.first %} checked="checked" 
+                                                    {% endif %}>
+                                                <label for="goal_{{ choice.0 }}"><span class="radio-label"></span> {{ choice.1 }}</label>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                            <div class="card flex space-x-5 p-5 relative opacity-50">
+                                            <div class="card-body flex-1 p-0 ">
+                                                <h4 class="card-title "> {% trans 'Gender' %} </h4>
+                                                {% for choice in form.search_gender.field.choices %}
+                                                <div class="checkbox ">
+                                                    <input type="checkbox" name="search_gender" value="{{ choice.0 }}" id="gender_{{ choice.0 }}" >
+                                                    <label for="gender_{{ choice.0 }}" >
+                                                        <span class="checkbox-icon "></span>
+                                                        {{ choice.1 }}
+                                                    </label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                       
+                                        </div>
+                               
+                                    <div class="card flex space-x-5 p-5">
+                                        <div class="card-body flex-1 p-0">
+                                            <h4 class="card-title"> {% trans 'Age' %} </h4>
+                                            <br>
+                                            <div id="slider-age"></div>
+                                            <br>
+                                            <p>
+                                                {% trans 'Age range:' %} <span id="age-range"></span>
+                                                <input type="hidden" name="search_age_from" id="search_age_from_input">
+                                                <input type="hidden" name="search_age_to" id="search_age_to_input">
+                                            </p>
+                                        </div>
+                                    </div>
+<div class="card flex space-x-5 p-5 {% if not filter_settings.enable_height %}pointer-events-none{% endif %}">
+    <div class="card-body flex-1 p-0 ">
+        <h4 class="card-title"> {% trans 'Height' %} </h4>
+        <input type="number" name="search_min_height" class="m-2" step="0.01" placeholder="Min Height">
+        <input type="number" name="search_max_height" class="m-2" step="0.01" placeholder="Max Height">
+    </div>
+    <div class="absolute top-0 right-0 p-2">
+        <ion-icon name="{% if filter_settings.enable_height %}lock-open-outline{% else %}lock-closed-outline{% endif %}"
+            uk-tooltip="title: {% trans 'Only premium' %} ; pos: bottom-left" class="text-gray-500"></ion-icon>
+    </div>
+</div>
+
+<div class="card flex space-x-5 p-5 {% if not filter_settings.enable_weight %}pointer-events-none{% endif %}">
+    <div class="card-body flex-1 p-0">
+        <h4 class="card-title"> {% trans 'Weight' %} </h4>
+        <input type="number" name="search_min_weight" class="m-2" step="0.01" placeholder="Min Weight">
+        <input type="number" name="search_max_weight" class="m-2" step="0.01" placeholder="Max Weight">
+    </div>
+    <div class="absolute top-0 right-0 p-2">
+        <ion-icon name="{% if filter_settings.enable_weight %}lock-open-outline{% else %}lock-closed-outline{% endif %}"
+            uk-tooltip="title: {% trans 'Only premium' %} ; pos: bottom-left" class="text-gray-500"></ion-icon>
+    </div>
+</div>
+                                        <div class="card flex space-x-5 p-5 relative opacity-50">
+                                            <div class="card-body flex-1 p-0 {% if not filter_settings.enable_smoking %}pointer-events-none{% endif %}">
+                                                <h4 class="card-title {% if not filter_settings.enable_smoking %}pointer-events-none{% endif %}"> {% trans 'Smoking' %} </h4>
+                                                {% for choice in form.search_smoking.field.choices %}
+                                                <div class="checkbox {% if not filter_settings.enable_smoking %}pointer-events-none{% endif %}">
+                                                    <input type="checkbox" name="search_smoking" value="{{ choice.0 }}" id="smoking_{{ choice.0 }}" {% if not filter_settings.enable_smoking %}disabled{% endif %}>
+                                                    <label for="smoking_{{ choice.0 }}" class="{% if not filter_settings.enable_smoking %}pointer-events-none{% endif %}">
+                                                        <span class="checkbox-icon {% if not filter_settings.enable_smoking %}pointer-events-none{% endif %}"></span>
+                                                        {{ choice.1 }}
+                                                    </label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            <!-- Иконка закрытого замка в верхнем правом углу -->
+                                            <div class="absolute top-0 right-0 p-2">
+                                                <ion-icon name="{% if filter_settings.enable_smoking %}lock-open-outline{% else %}lock-closed-outline{% endif %}"
+                                                    uk-tooltip="title: {% trans 'Only premium' %} ; pos: bottom-left" class="text-gray-500"></ion-icon>
+                                            </div>
+                                        </div>
+                                        <div class="card flex space-x-5 p-5 relative opacity-50">
+                                            <div class="card-body flex-1 p-0 {% if not filter_settings.enable_physique %}pointer-events-none{% endif %}">
+                                                <h4 class="card-title {% if not filter_settings.enable_physique %}pointer-events-none{% endif %}"> {% trans 'Physique' %} </h4>
+                                                {% for choice in form.search_physique.field.choices %}
+                                                <div class="checkbox {% if not filter_settings.enable_physique %}pointer-events-none{% endif %}">
+                                                    <input type="checkbox" name="search_physique" value="{{ choice.0 }}" id="physique_{{ choice.0 }}" {% if not filter_settings.enable_physique %}disabled{% endif %}>
+                                                    <label for="physique_{{ choice.0 }}" class="{% if not filter_settings.enable_physique %}pointer-events-none{% endif %}">
+                                                        <span class="checkbox-icon {% if not filter_settings.enable_physique %}pointer-events-none{% endif %}"></span>
+                                                        {{ choice.1 }}
+                                                    </label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            <!-- Иконка закрытого замка в верхнем правом углу -->
+                                            <div class="absolute top-0 right-0 p-2">
+                                                <ion-icon name="{% if filter_settings.enable_physique %}lock-open-outline{% else %}lock-closed-outline{% endif %}"
+                                                    uk-tooltip="title: {% trans 'Only premium' %} ; pos: bottom-left" class="text-gray-500"></ion-icon>
+                                            </div>
+                                        </div>
+<div class="card flex space-x-5 p-5 relative opacity-50">
+                                            <div class="card-body flex-1 p-0 {% if not filter_settings.enable_alcohol %}pointer-events-none{% endif %}">
+                                                <h4 class="card-title {% if not filter_settings.enable_alcohol %}pointer-events-none{% endif %}"> {% trans 'Alcohol' %} </h4>
+                                                {% for choice in form.search_alcohol.field.choices %}
+                                                <div class="checkbox {% if not filter_settings.enable_alcohol %}pointer-events-none{% endif %}">
+                                                    <input type="checkbox" name="search_alcohol" value="{{ choice.0 }}" id="alcohol_{{ choice.0 }}" {% if not filter_settings.enable_alcohol %}disabled{% endif %}>
+                                                    <label for="alcohol_{{ choice.0 }}" class="{% if not filter_settings.enable_alcohol %}pointer-events-none{% endif %}">
+                                                        <span class="checkbox-icon {% if not filter_settings.enable_alcohol %}pointer-events-none{% endif %}"></span>
+                                                        {{ choice.1 }}
+                                                    </label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            <!-- Иконка закрытого замка в верхнем правом углу -->
+                                            <div class="absolute top-0 right-0 p-2">
+                                                <ion-icon name="{% if filter_settings.enable_alcohol %}lock-open-outline{% else %}lock-closed-outline{% endif %}"
+                                                    uk-tooltip="title: {% trans 'Only premium' %} ; pos: bottom-left" class="text-gray-500"></ion-icon>
+                                            </div>
+                                        </div>
+                                        <div class="card flex space-x-5 p-5 relative opacity-50">
+                                            <div class="card-body flex-1 p-0 {% if not filter_settings.enable_tatu %}pointer-events-none{% endif %}">
+                                                <h4 class="card-title {% if not filter_settings.enable_tatu %}pointer-events-none{% endif %}"> {% trans 'Tatu' %} </h4>
+                                                {% for choice in form.search_tatu.field.choices %}
+                                                <div class="checkbox {% if not filter_settings.enable_tatu %}pointer-events-none{% endif %}">
+                                                    <input type="checkbox" name="search_tatu" value="{{ choice.0 }}" id="tatu_{{ choice.0 }}" {% if not filter_settings.enable_tatu %}disabled{% endif %}>
+                                                    <label for="tatu_{{ choice.0 }}" class="{% if not filter_settings.enable_tatu %}pointer-events-none{% endif %}">
+                                                        <span class="checkbox-icon {% if not filter_settings.enable_tatu %}pointer-events-none{% endif %}"></span>
+                                                        {{ choice.1 }}
+                                                    </label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            <!-- Иконка закрытого замка в верхнем правом углу -->
+                                            <div class="absolute top-0 right-0 p-2">
+                                                <ion-icon name="{% if filter_settings.enable_tatu %}lock-open-outline{% else %}lock-closed-outline{% endif %}"
+                                                    uk-tooltip="title: {% trans 'Only premium' %} ; pos: bottom-left" class="text-gray-500"></ion-icon>
+                                            </div>
+                                        </div>
+                                        <div class="card flex space-x-5 p-5 relative opacity-50">
+                                            <div class="card-body flex-1 p-0 {% if not filter_settings.enable_piercing %}pointer-events-none{% endif %}">
+                                                <h4 class="card-title {% if not filter_settings.enable_piercing %}pointer-events-none{% endif %}"> {% trans 'Piercing' %} </h4>
+                                                {% for choice in form.search_piercing.field.choices %}
+                                                <div class="checkbox {% if not filter_settings.enable_piercing %}pointer-events-none{% endif %}">
+                                                    <input type="checkbox" name="search_piercing" value="{{ choice.0 }}" id="piercing_{{ choice.0 }}" {% if not filter_settings.enable_piercing %}disabled{% endif %}>
+                                                    <label for="piercing_{{ choice.0 }}" class="{% if not filter_settings.enable_piercing %}pointer-events-none{% endif %}">
+                                                        <span class="checkbox-icon {% if not filter_settings.enable_piercing %}pointer-events-none{% endif %}"></span>
+                                                        {{ choice.1 }}
+                                                    </label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            <!-- Иконка закрытого замка в верхнем правом углу -->
+                                            <div class="absolute top-0 right-0 p-2">
+                                                <ion-icon name="{% if filter_settings.enable_piercing %}lock-open-outline{% else %}lock-closed-outline{% endif %}"
+                                                    uk-tooltip="title: {% trans 'Only premium' %} ; pos: bottom-left" class="text-gray-500"></ion-icon>
+                                            </div>
+                                        </div>
+                                        <div class="card flex space-x-5 p-5 relative opacity-50">
+                                            <div class="card-body flex-1 p-0 {% if not filter_settings.enable_scars %}pointer-events-none{% endif %}">
+                                                <h4 class="card-title {% if not filter_settings.enable_scars %}pointer-events-none{% endif %}"> {% trans 'Scars' %} </h4>
+                                                {% for choice in form.search_scars.field.choices %}
+                                                <div class="checkbox {% if not filter_settings.enable_scars %}pointer-events-none{% endif %}">
+                                                    <input type="checkbox" name="search_scars" value="{{ choice.0 }}" id="scars_{{ choice.0 }}" {% if not filter_settings.enable_scars %}disabled{% endif %}>
+                                                    <label for="scars_{{ choice.0 }}" class="{% if not filter_settings.enable_scars %}pointer-events-none{% endif %}">
+                                                        <span class="checkbox-icon {% if not filter_settings.enable_scars %}pointer-events-none{% endif %}"></span>
+                                                        {{ choice.1 }}
+                                                    </label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            <!-- Иконка закрытого замка в верхнем правом углу -->
+                                            <div class="absolute top-0 right-0 p-2">
+                                                <ion-icon name="{% if filter_settings.enable_scars %}lock-open-outline{% else %}lock-closed-outline{% endif %}"
+                                                    uk-tooltip="title: {% trans 'Only premium' %} ; pos: bottom-left" class="text-gray-500"></ion-icon>
+                                            </div>
+                                        </div>
+
+                                                                            <div class="card flex space-x-5 p-5 relative opacity-50">
+                                            <div class="card-body flex-1 p-0 {% if not filter_settings.enable_personality_type %}pointer-events-none{% endif %}">
+                                                <h4 class="card-title {% if not filter_settings.enable_personality_type %}pointer-events-none{% endif %}"> {% trans 'Personality type' %} </h4>
+                                                {% for choice in form.search_personality_type.field.choices %}
+                                                <div class="checkbox {% if not filter_settings.enable_personality_type %}pointer-events-none{% endif %}">
+                                                    <input type="checkbox" name="search_personality_type" value="{{ choice.0 }}" id="personality_type_{{ choice.0 }}" {% if not filter_settings.enable_personality_type %}disabled{% endif %}>
+                                                    <label for="personality_type_{{ choice.0 }}" class="{% if not filter_settings.enable_personality_type %}pointer-events-none{% endif %}">
+                                                        <span class="checkbox-icon {% if not filter_settings.enable_personality_type %}pointer-events-none{% endif %}"></span>
+                                                        {{ choice.1 }}
+                                                    </label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            <!-- Иконка закрытого замка в верхнем правом углу -->
+                                            <div class="absolute top-0 right-0 p-2">
+                                                <ion-icon name="{% if filter_settings.enable_personality_type %}lock-open-outline{% else %}lock-closed-outline{% endif %}"
+                                                    uk-tooltip="title: {% trans 'Only premium' %} ; pos: bottom-left" class="text-gray-500"></ion-icon>
+                                            </div>
+                                        </div>
+                                                                                <div class="card flex space-x-5 p-5 relative opacity-50">
+                                            <div class="card-body flex-1 p-0 {% if not filter_settings.enable_relationship_status %}pointer-events-none{% endif %}">
+                                                <h4 class="card-title {% if not filter_settings.enable_relationship_status %}pointer-events-none{% endif %}"> {% trans 'Relationship status' %} </h4>
+                                                {% for choice in form.search_relationship_status.field.choices %}
+                                                <div class="checkbox {% if not filter_settings.enable_relationship_status %}pointer-events-none{% endif %}">
+                                                    <input type="checkbox" name="search_relationship_status" value="{{ choice.0 }}" id="relationship_status_{{ choice.0 }}" {% if not filter_settings.enable_relationship_status %}disabled{% endif %}>
+                                                    <label for="relationship_status_{{ choice.0 }}" class="{% if not filter_settings.enable_relationship_status %}pointer-events-none{% endif %}">
+                                                        <span class="checkbox-icon {% if not filter_settings.enable_relationship_status %}pointer-events-none{% endif %}"></span>
+                                                        {{ choice.1 }}
+                                                    </label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            <!-- Иконка закрытого замка в верхнем правом углу -->
+                                            <div class="absolute top-0 right-0 p-2">
+                                                <ion-icon name="{% if filter_settings.enable_relationship_status %}lock-open-outline{% else %}lock-closed-outline{% endif %}"
+                                                    uk-tooltip="title: {% trans 'Only premium' %} ; pos: bottom-left" class="text-gray-500"></ion-icon>
+                                            </div>
+                                        </div>
+                                                                            <div class="card flex space-x-5 p-5 relative opacity-50">
+                                            <div class="card-body flex-1 p-0 {% if not filter_settings.enable_sexual_orientation %}pointer-events-none{% endif %}">
+                                                <h4 class="card-title {% if not filter_settings.enable_sexual_orientation %}pointer-events-none{% endif %}"> {% trans 'Sexual orientation' %} </h4>
+                                                {% for choice in form.search_sexual_orientation.field.choices %}
+                                                <div class="checkbox {% if not filter_settings.enable_sexual_orientation %}pointer-events-none{% endif %}">
+                                                    <input type="checkbox" name="search_sexual_orientation" value="{{ choice.0 }}" id="sexual_orientation_{{ choice.0 }}" {% if not filter_settings.enable_sexual_orientation %}disabled{% endif %}>
+                                                    <label for="sexual_orientation_{{ choice.0 }}" class="{% if not filter_settings.enable_sexual_orientation %}pointer-events-none{% endif %}">
+                                                        <span class="checkbox-icon {% if not filter_settings.enable_sexual_orientation %}pointer-events-none{% endif %}"></span>
+                                                        {{ choice.1 }}
+                                                    </label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            <!-- Иконка закрытого замка в верхнем правом углу -->
+                                            <div class="absolute top-0 right-0 p-2">
+                                                <ion-icon name="{% if filter_settings.enable_sexual_orientation %}lock-open-outline{% else %}lock-closed-outline{% endif %}"
+                                                    uk-tooltip="title: {% trans 'Only premium' %} ; pos: bottom-left" class="text-gray-500"></ion-icon>
+                                            </div>
+                                        </div>
+                                        <div class="card flex space-x-5 p-5 relative opacity-50">
+                                            <div class="card-body flex-1 p-0 {% if not filter_settings.enable_children %}pointer-events-none{% endif %}">
+                                                <h4 class="card-title {% if not filter_settings.enable_children %}pointer-events-none{% endif %}"> {% trans 'Children' %} </h4>
+                                                {% for choice in form.search_children.field.choices %}
+                                                <div class="checkbox {% if not filter_settings.enable_children %}pointer-events-none{% endif %}">
+                                                    <input type="checkbox" name="search_children" value="{{ choice.0 }}" id="children_{{ choice.0 }}" {% if not filter_settings.enable_children %}disabled{% endif %}>
+                                                    <label for="children_{{ choice.0 }}" class="{% if not filter_settings.enable_children %}pointer-events-none{% endif %}">
+                                                        <span class="checkbox-icon {% if not filter_settings.enable_children %}pointer-events-none{% endif %}"></span>
+                                                        {{ choice.1 }}
+                                                    </label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            <!-- Иконка закрытого замка в верхнем правом углу -->
+                                            <div class="absolute top-0 right-0 p-2">
+                                                <ion-icon name="{% if filter_settings.enable_children %}lock-open-outline{% else %}lock-closed-outline{% endif %}"
+                                                    uk-tooltip="title: {% trans 'Only premium' %} ; pos: bottom-left" class="text-gray-500"></ion-icon>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="card flex space-x-5 p-5 relative opacity-50">
+                                            <div class="card-body flex-1 p-0 {% if not filter_settings.enable_zodiac_sign %}pointer-events-none{% endif %}">
+                                                <h4 class="card-title {% if not filter_settings.enable_zodiac_sign %}pointer-events-none{% endif %}"> {% trans 'Zodiac_sign' %} </h4>
+                                                {% for choice in form.search_zodiac_sign.field.choices %}
+                                                <div class="checkbox {% if not filter_settings.enable_zodiac_sign %}pointer-events-none{% endif %}">
+                                                    <input type="checkbox" name="search_zodiac_sign" value="{{ choice.0 }}" id="zodiac_sign_{{ choice.0 }}" {% if not filter_settings.enable_zodiac_sign %}disabled{% endif %}>
+                                                    <label for="zodiac_sign_{{ choice.0 }}" class="{% if not filter_settings.enable_zodiac_sign %}pointer-events-none{% endif %}">
+                                                        <span class="checkbox-icon {% if not filter_settings.enable_zodiac_sign %}pointer-events-none{% endif %}"></span>
+                                                        {{ choice.1 }}
+                                                    </label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            <!-- Иконка закрытого замка в верхнем правом углу -->
+                                            <div class="absolute top-0 right-0 p-2">
+                                                <ion-icon name="{% if filter_settings.enable_zodiac_sign %}lock-open-outline{% else %}lock-closed-outline{% endif %}"
+                                                    uk-tooltip="title: {% trans 'Only premium' %} ; pos: bottom-left" class="text-gray-500"></ion-icon>
+                                            </div>
+                                        </div>
+                                        <div class="card flex space-x-5 p-5 relative opacity-50">
+                                            <div class="card-body flex-1 p-0 {% if not filter_settings.enable_animals %}pointer-events-none{% endif %}">
+                                                <h4 class="card-title {% if not filter_settings.enable_animals %}pointer-events-none{% endif %}"> {% trans 'Animals' %} </h4>
+                                                {% for choice in form.search_animals.field.choices %}
+                                                <div class="checkbox {% if not filter_settings.enable_animals %}pointer-events-none{% endif %}">
+                                                    <input type="checkbox" name="search_animals" value="{{ choice.0 }}" id="animals_{{ choice.0 }}" {% if not filter_settings.enable_animals %}disabled{% endif %}>
+                                                    <label for="animals_{{ choice.0 }}" class="{% if not filter_settings.enable_animals %}pointer-events-none{% endif %}">
+                                                        <span class="checkbox-icon {% if not filter_settings.enable_animals %}pointer-events-none{% endif %}"></span>
+                                                        {{ choice.1 }}
+                                                    </label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            <!-- Иконка закрытого замка в верхнем правом углу -->
+                                            <div class="absolute top-0 right-0 p-2">
+                                                <ion-icon name="{% if filter_settings.enable_animals %}lock-open-outline{% else %}lock-closed-outline{% endif %}"
+                                                    uk-tooltip="title: {% trans 'Only premium' %} ; pos: bottom-left" class="text-gray-500"></ion-icon>
+                                            </div>
+                                        </div>
+                                        <div class="card flex space-x-5 p-5 relative opacity-50">
+                                            <div class="card-body flex-1 p-0 {% if not filter_settings.enable_religion %}pointer-events-none{% endif %}">
+                                                <h4 class="card-title {% if not filter_settings.enable_religion %}pointer-events-none{% endif %}"> {% trans 'Religion' %} </h4>
+                                                {% for choice in form.search_religion.field.choices %}
+                                                <div class="checkbox {% if not filter_settings.enable_religion %}pointer-events-none{% endif %}">
+                                                    <input type="checkbox" name="search_religion" value="{{ choice.0 }}" id="religion_{{ choice.0 }}" {% if not filter_settings.enable_religion %}disabled{% endif %}>
+                                                    <label for="religion_{{ choice.0 }}" class="{% if not filter_settings.enable_religion %}pointer-events-none{% endif %}">
+                                                        <span class="checkbox-icon {% if not filter_settings.enable_religion %}pointer-events-none{% endif %}"></span>
+                                                        {{ choice.1 }}
+                                                    </label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            <!-- Иконка закрытого замка в верхнем правом углу -->
+                                            <div class="absolute top-0 right-0 p-2">
+                                                <ion-icon name="{% if filter_settings.enable_religion %}lock-open-outline{% else %}lock-closed-outline{% endif %}"
+                                                    uk-tooltip="title: {% trans 'Only premium' %} ; pos: bottom-left" class="text-gray-500"></ion-icon>
+                                            </div>
+                                        </div>
+                                        <div class="card flex space-x-5 p-5 relative opacity-50">
+                                            <div class="card-body flex-1 p-0 {% if not filter_settings.enable_languages %}pointer-events-none{% endif %}">
+                                                <h4 class="card-title {% if not filter_settings.enable_languages %}pointer-events-none{% endif %}"> {% trans 'Languages' %} </h4>
+                                                {% for choice in form.search_languages.field.choices %}
+                                                <div class="checkbox {% if not filter_settings.enable_languages %}pointer-events-none{% endif %}">
+                                                    <input type="checkbox" name="search_languages" value="{{ choice.0 }}" id="languages_{{ choice.0 }}" {% if not filter_settings.enable_languages %}disabled{% endif %}>
+                                                    <label for="languages_{{ choice.0 }}" class="{% if not filter_settings.enable_languages %}pointer-events-none{% endif %}">
+                                                        <span class="checkbox-icon {% if not filter_settings.enable_languages %}pointer-events-none{% endif %}"></span>
+                                                        {{ choice.1 }}
+                                                    </label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            <!-- Иконка закрытого замка в верхнем правом углу -->
+                                            <div class="absolute top-0 right-0 p-2">
+                                                <ion-icon name="{% if filter_settings.enable_languages %}lock-open-outline{% else %}lock-closed-outline{% endif %}"
+                                                    uk-tooltip="title: {% trans 'Only premium' %} ; pos: bottom-left" class="text-gray-500"></ion-icon>
+                                            </div>
+                                        </div>
+
+                                        <div class="card flex space-x-5 p-5 relative opacity-50">
+                                            <div class="card-body flex-1 p-0 {% if not filter_settings.enable_education_level %}pointer-events-none{% endif %}">
+                                                <h4 class="card-title {% if not filter_settings.enable_education_level %}pointer-events-none{% endif %}"> {% trans 'Education level' %} </h4>
+                                                {% for choice in form.search_education_level.field.choices %}
+                                                <div class="checkbox {% if not filter_settings.enable_education_level %}pointer-events-none{% endif %}">
+                                                    <input type="checkbox" name="search_education_level" value="{{ choice.0 }}" id="education_level_{{ choice.0 }}" {% if not filter_settings.enable_education_level %}disabled{% endif %}>
+                                                    <label for="education_level_{{ choice.0 }}" class="{% if not filter_settings.enable_education_level %}pointer-events-none{% endif %}">
+                                                        <span class="checkbox-icon {% if not filter_settings.enable_education_level %}pointer-events-none{% endif %}"></span>
+                                                        {{ choice.1 }}
+                                                    </label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            <!-- Иконка закрытого замка в верхнем правом углу -->
+                                            <div class="absolute top-0 right-0 p-2">
+                                                <ion-icon name="{% if filter_settings.enable_education_level %}lock-open-outline{% else %}lock-closed-outline{% endif %}"
+                                                    uk-tooltip="title: {% trans 'Only premium' %} ; pos: bottom-left" class="text-gray-500"></ion-icon>
+                                            </div>
+                                        </div>
+                                        <div class="card flex space-x-5 p-5 relative opacity-50">
+                                            <div class="card-body flex-1 p-0 {% if not filter_settings.enable_work_and_education %}pointer-events-none{% endif %}">
+                                                <h4 class="card-title {% if not filter_settings.enable_work_and_education %}pointer-events-none{% endif %}"> {% trans 'Work and education' %} </h4>
+                                                {% for choice in form.search_work_and_education.field.choices %}
+                                                <div class="checkbox {% if not filter_settings.enable_work_and_education %}pointer-events-none{% endif %}">
+                                                    <input type="checkbox" name="search_work_and_education" value="{{ choice.0 }}" id="work_and_education_{{ choice.0 }}" {% if not filter_settings.enable_work_and_education %}disabled{% endif %}>
+                                                    <label for="work_and_education_{{ choice.0 }}" class="{% if not filter_settings.enable_work_and_education %}pointer-events-none{% endif %}">
+                                                        <span class="checkbox-icon {% if not filter_settings.enable_work_and_education %}pointer-events-none{% endif %}"></span>
+                                                        {{ choice.1 }}
+                                                    </label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            <!-- Иконка закрытого замка в верхнем правом углу -->
+                                            <div class="absolute top-0 right-0 p-2">
+                                                <ion-icon name="{% if filter_settings.enable_work_and_education %}lock-open-outline{% else %}lock-closed-outline{% endif %}"
+                                                    uk-tooltip="title: {% trans 'Only premium' %} ; pos: bottom-left" class="text-gray-500"></ion-icon>
+                                            </div>
+                                        </div>
+                                        
+                                    <!-- <div class="card flex space-x-5 p-5">
+                                        <div class="card-body flex-1 p-0">
+                                            <h4 class="card-title"> Range </h4>
+                                            <div id="slider-range"></div>
+                                        </div>
+                                    </div> -->
+                                </div>
+                                <button type="submit" class="button bg-primary text-white w-full m-5">{% trans 'Show results' %}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

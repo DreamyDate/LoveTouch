@@ -1,0 +1,15 @@
+<!-- search icon for mobile -->
+<!-- ваш HTML-шаблон с блоком поиска -->
+{% load i18n %}
+<div class="header-search-icon" uk-toggle="target: #wrapper ; cls: show-searchbox"></div>
+<div class="header_search">
+    <i class="uil-search-alt"></i>
+    <input id="search-input" value="" type="text" class="form-control"
+        placeholder="{% trans 'Search for Friends, Videos and more..' %}" autocomplete="off" />
+    <div uk-drop="mode: click" class="header_search_dropdown" id="search-results-dropdown">
+        <ul id="search-results-list">
+            <!-- Результаты поиска будут отображаться здесь -->
+        </ul>
+    </div>
+</div>
+

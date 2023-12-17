@@ -1,0 +1,132 @@
+{% extends "base_login_logout.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans 'Create an account' %}{% endblock %}
+
+{% block content %}
+
+        <!-- title -->
+        <div>
+          <h2 class="text-2xl font-semibold mb-1.5"> {% trans 'Sign up to get started ' %}</h2>
+          <p class="text-sm text-gray-700 font-normal">{% trans 'If you already have an account,' %} <a href="{% url 'login' %}"
+              class="text-blue-700">{% trans 'Login here!' %}</a></p>
+        </div>
+        
+        
+        <!-- form -->
+        <form method="post" class="space-y-7 text-sm text-black font-medium dark:text-white"
+          uk-scrollspy="target: > *; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+        {% csrf_token %}
+          <div class="grid grid-cols-2 gap-4 gap-y-7">
+        
+            <!-- first name -->
+            <div>
+              <label for="email" class="">{% trans 'Username' %}</label>
+              <div class="mt-2.5">
+                <input id="email" name="{{ user_form.username.name }}"
+          type="text" autofocus="" placeholder="Username" required="" value="{{ user_form.username.value|default:'' }}"
+                  class="!w-full !rounded-lg !bg-transparent !shadow-sm !border-slate-200 dark:!border-slate-800 dark:!bg-white/5">
+              </div>
+            </div>
+        
+            <!-- Last name -->
+            <div>
+              <label for="email" class="">{% trans 'First name' %}</label>
+              <div class="mt-2.5">
+                <input id="email" name="{{ user_form.first_name.name }}"
+          type="text" autofocus="" placeholder="First name" required=""
+          value="{{ user_form.first_name.value|default:'' }}"
+                  class="!w-full !rounded-lg !bg-transparent !shadow-sm !border-slate-200 dark:!border-slate-800 dark:!bg-white/5">
+              </div>
+            </div>
+        
+            <!-- email -->
+            <div class="col-span-2">
+              <label for="email" class="">{% trans 'Email address' %}</label>
+              <div class="mt-2.5">
+                <input id="email"
+          name="{{ user_form.email.name }}" type="email" autofocus="" required=""
+          value="{{ user_form.email.value|default:'' }}" placeholder="Info@example.com"
+                  class="!w-full !rounded-lg !bg-transparent !shadow-sm !border-slate-200 dark:!border-slate-800 dark:!bg-white/5">
+              </div>
+            </div>
+        
+            <!-- password -->
+            <div>
+              <label for="email" class="">{% trans 'Password' %}</label>
+              <div class="mt-2.5">
+                <input id="email" name="{{ user_form.password.name }}" type="text" autofocus="" placeholder="Password"
+          required="" value="{{ user_form.password.value|default:'' }}"
+                  class="!w-full !rounded-lg !bg-transparent !shadow-sm !border-slate-200 dark:!border-slate-800 dark:!bg-white/5">
+              </div>
+            </div>
+        
+            <!-- Confirm Password -->
+            <div>
+              <label for="email" class="">{% trans 'Confirm Password' %}</label>
+              <div class="mt-2.5">
+                <input id="email" name="{{ user_form.password2.name }}" type="text" autofocus="" placeholder="Repeat password"
+          required="" value="{{ user_form.password2.value|default:'' }}"
+                  class="!w-full !rounded-lg !bg-transparent !shadow-sm !border-slate-200 dark:!border-slate-800 dark:!bg-white/5">
+              </div>
+            </div>
+
+            <div>
+              <label for="email" class="">{% trans 'Date of Birth' %}</label>
+              <div class="mt-2.5">
+                <input type="date" name="{{ user_form.date_of_birth.name }}" value="{{ user_form.date_of_birth.value|default:'' }}"
+                  class="!w-full !rounded-lg !bg-transparent !shadow-sm !border-slate-200 dark:!border-slate-800 dark:!bg-white/5">
+              </div>
+            </div>
+
+            <div>
+              <label class="mb-0"> {% trans 'Gender' %} </label>
+              <select class="selectpicker mt-2" name="{{ user_form.gender.name }}">
+                <option value="M">{% trans 'Male' %}</option>
+                <option value="F">{% trans 'Female' %}</option>
+                <option value="O">{% trans 'Other' %}</option>
+              </select>
+            
+            </div>
+
+            <div>
+              <label class="mb-0">{% trans 'Relationship Goals' %}</label>
+              <select class="selectpicker mt-2" name="{{ user_form.relationship_goals.name }}">
+                <option value="F">{% trans 'Friendship' %}</option>
+                <option value="D">{% trans 'Dating' %}</option>
+                <option value="R">{% trans 'Relationship' %}</option>
+                <option value="N">{% trans 'Networking' %}</option>
+              </select>
+            </div>
+        
+               
+        
+            <!-- submit button -->
+            <div class="col-span-2">
+              <button type="submit" class="button bg-primary text-white w-full">{% trans 'Get Started' %}</button>
+            </div>
+        
+          </div>
+        
+          <div class="text-center flex items-center gap-6">
+            <hr class="flex-1 border-slate-200 dark:border-slate-800">
+            {% trans 'Or continue with' %}
+            <hr class="flex-1 border-slate-200 dark:border-slate-800">
+          </div>
+        
+          <!-- social login -->
+          <div class="flex gap-2" uk-scrollspy="target: > *; cls: uk-animation-scale-up; delay: 400 ;repeat: true">
+            <!-- <a href="#" class="button flex-1 flex items-center gap-2 bg-primary text-white text-sm"> <ion-icon
+                name="logo-facebook" class="text-lg"></ion-icon> Facebook </a> -->
+            <a href="{% url 'social:begin' 'google-oauth2' %}"
+              class="button flex-1 flex items-center gap-2 bg-sky-600 text-white text-sm"> <ion-icon
+                name="logo-twitter"></ion-icon> Google </a>
+            <!-- <a href="#" class="button flex-1 flex items-center gap-2 bg-black text-white text-sm"> <ion-icon
+                name="logo-github"></ion-icon> Github </a> -->
+          </div>
+        
+        </form>
+
+
+
+{% endblock %}

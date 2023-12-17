@@ -1,0 +1,604 @@
+{% extends "base.html" %}
+{% load custom_tags %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+<!-- Main Contents -->
+<div class="main_content">
+    <div class="mcontainer">
+
+        <!-- Profile cover -->
+        <div class="profile user-profile">
+            <div class="profiles_banner">
+                {% if selected_user.profile.photo_cover %}
+                <img id="cover" src="{{selected_user.profile.photo_cover.url }}" alt="Profile Picture">
+
+                {% endif %}
+
+                {% if is_current_user_profile %}
+                <div class="profile_action absolute bottom-0 right-0 space-x-1.5 p-3 text-sm z-50 hidden lg:flex">
+                    <a href="#"
+                        class="flex items-center justify-center h-8 px-3 rounded-md bg-gray-700 bg-opacity-70 text-white space-x-1.5">
+                        <ion-icon name="crop-outline" class="text-xl"></ion-icon>
+                        <input type="file" id="uploadImage" style="display: none;">
+                        <button id="selectBtn">{% trans 'Select Image' %}</button>
+
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="profiles_content">
+
+                <div class="profile_avatar">
+                    <div class="profile_avatar_holder">
+                        {% if selected_profile.photo %}
+    <img src="{{ selected_profile.photo.url }}" alt="">
+{% else %}
+    <img src="{% static 'images/affect.jpg' %}" alt="">
+{% endif %}
+
+                    </div>
+                    {% if not is_current_user_profile %}
+                    <div class="user_status status_online"></div>
+                    {% else %}
+                    <div class="icon_change_photo" >
+                        <ion-icon name="camera" class="text-xl"></ion-icon>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="profile_info">
+                    <h1> {{ selected_user.get_full_name }} </h1>
+                    <p> {{ selected_profile.interests }}</p>
+                </div>
+
+            </div>
+
+            <div class="flex justify-between lg:border-t border-gray-100 flex-col-reverse lg:flex-row pt-2">
+                <nav class="responsive-nav pl-3">
+                    <ul uk-switcher="connect: #timeline-tab; animation: uk-animation-fade">
+                        <li><a href="#">{% trans 'Information' %}</a></li>
+                        <li><a href="#">{% trans 'Friend' %} <span>{{ selected_profile.friends.count }} </span> </a></li>
+                        <li><a href="#">{% trans 'Photoes' %} <span>{{ photos_count|add:favorite_photos_count }}
+                        </span></a></li>
+                        <li><a href="#">{% trans 'Gift' %}</a></li>
+
+                    </ul>
+                </nav>
+
+                <!-- button actions -->
+                <div class="flex items-center space-x-1.5 flex-shrink-0 pr-4 mb-2 justify-center order-1 relative">
+
+
+
+                    {% if is_current_user_profile %}
+                    <!-- more icon -->
+                    {% else %}
+                    <a href="#" class="flex items-center justify-center h-10 w-10 rounded-md bg-gray-100">
+                        <ion-icon name="ellipsis-horizontal" class="text-xl"></ion-icon>
+                    </a>
+
+
+
+                    <!-- more drowpdown -->
+                    <div class="bg-white w-56 shadow-md mx-auto p-2 mt-12 rounded-md text-gray-500 hidden border border-gray-100 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700"
+                        uk-drop="mode: click;pos: bottom-right;animation: uk-animation-slide-bottom-small; offset:5">
+                        <ul class="space-y-1">
+                            <!-- <li> 
+                              <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-100 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
+                                 <ion-icon name="arrow-redo-outline" class="pr-2 text-xl"></ion-icon> Share Profile
+                              </a> 
+                          </li> -->
+                            <!-- <li> 
+                              <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-100 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
+                                <ion-icon name="create-outline" class="pr-2 text-xl"></ion-icon>  Account setting 
+                              </a> 
+                          </li> -->
+                            <!-- <li> 
+                              <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-100 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
+                                <ion-icon name="notifications-off-outline" class="pr-2 text-lg"></ion-icon>   Disable notifications
+                              </a> 
+                          </li>  -->
+                            <!-- Add Friend -->
+                            {% if not is_friend %}
+                            <li>
+                                <a href="{% url 'add_friend' selected_user.id %}"
+                                    class="flex items-center px-3 py-2 hover:bg-gray-100 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
+                                    <i class="icon-material-outline-face pr-2 text-xl"></i> {% trans 'Add friend' %}
+                                </a>
+                            </li>
+                            {% endif %}
+
+                            <!-- Delete Friend -->
+                            {% if is_friend %}
+                            <li>
+                                <a href="{% url 'remove_friend' selected_user.id %}"
+                                    class="flex items-center px-3 py-2 text-red-500 hover:bg-red-50 hover:text-red-500 rounded-md dark:hover:bg-red-600">
+                                    <ion-icon name="trash-outline" class="pr-2 text-xl"></ion-icon> {% trans 'Delete friend' %}
+                                </a>
+                            </li>
+                            {% endif %}
+                            
+                            <!-- Following -->
+                            {% if is_following %}
+                            <li>
+                                <a href="#"
+                                    class="flex items-center px-3 py-2 hover:bg-gray-100 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
+                                    <i class="icon-material-outline-favorite-border pr-2 text-xl"></i> {% trans 'Following' %}
+                                </a>
+                            </li>
+                            {% endif %}
+
+                            
+
+                            <!-- Block User -->
+                            <!-- <li>
+                                <a href="#"
+                                    class="flex items-center px-3 py-2 text-red-500 hover:bg-red-50 hover:text-red-500 rounded-md dark:hover:bg-red-600">
+                                    <ion-icon name="stop-circle-outline" class="pr-2 text-xl"></ion-icon> {% trans 'Block' %}
+                                </a>
+                            </li> -->
+
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div class="uk-switcher lg:mt-8 mt-4" id="timeline-tab">
+
+            <!-- Timeline -->
+            <div class="md:flex md:space-x-6 lg:mx-16">
+               
+                <div class="space-y-5 flex-shrink-0 md:w-7/12">
+{% for status in user_statuses %}
+
+                    <div class="card lg:mx-0 uk-animation-slide-bottom-small">
+
+                      
+                        <div class="flex justify-between items-center lg:p-4 p-2.5">
+                            <div class="flex flex-1 items-center space-x-4">
+                               
+{% if status.user.profile.photo %}
+<img src="{{ status.user.profile.photo.url }}" alt="" class="bg-gray-200 border border-white rounded-full w-10 h-10">
+{% else %}
+<img src="{% static 'images/affect.jpg' %}" alt="" class="bg-gray-200 border border-white rounded-full w-10 h-10">
+{% endif %}
+
+
+                                    
+                              
+                                <div class="flex-1 font-semibold capitalize">
+                                     {{status.user.get_full_name}} 
+                                    <div class="text-gray-700 flex items-center space-x-2">{{ status.creation_date }}
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <a href="#"> <i
+                                        class="icon-feather-more-horizontal text-2xl hover:bg-gray-200 rounded-full p-2 transition -mr-1 dark:hover:bg-gray-700"></i>
+                                </a>
+                                <div class="bg-white w-56 shadow-md mx-auto p-2 mt-12 rounded-md text-gray-500 hidden text-base border border-gray-100 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700"
+                                    uk-drop="mode: click;pos: bottom-right;animation: uk-animation-slide-bottom-small">
+
+                                    <ul class="space-y-1">
+                                       
+                                        <li>
+                                            <a href="#" data-status-id="{{ status.id }}" data-username="{{ status.user.username }}"
+                                                class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800 favorite-button">
+                                                <i class="mdi mdi-star-outline mr-1"></i>
+                                                <span class="button-text">{% trans 'Add to favorites' %}</span>
+                                            </a>
+                                        </li>
+
+                                       
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    {% if status.photo %}
+                    <div uk-lightbox="">
+                        <a href="{{ status.photo.url }}">
+                            <img src="{{ status.photo.url }}" alt="" class="max-h-96 w-full object-cover">
+                        </a>
+                    </div>
+                    {% endif %}
+                    <div class="p-5 pt-0 border-b dark:border-gray-700">
+                    
+                        {% if status.content %}{{ status.content }} {% endif %}
+                    
+                    </div>
+
+
+                        <div class="p-4 space-y-3">
+
+        <div class="flex space-x-4 lg:font-bold">
+            <div class="flex items-center gap-2.5">
+                {% if status.liked_by_current_user %}
+        
+                <button type="button" class="button__ico bg-slate-200/70 dark:bg-slate-700 like-button"
+                    data-status-id="{{ status.id }}">
+                    <i class="icon-material-outline-favorite" data-status-id="{{ status.id }}"></i>
+        
+                </button>
+                {% else %}
+                <button type="button" class="button__ico button__ico bg-slate-200/70 dark:bg-slate-700 like-button"
+                    data-status-id="{{ status.id }}">
+                    <i class="icon-material-outline-favorite-border" data-status-id="{{ status.id }}"></i>
+        
+                </button>
+                {% endif %}
+        
+                <p data-status-id="{{ status.id }}">{{ status.likes_count }}</p>
+        
+            </div>
+        
+            <div class="flex items-center gap-3">
+                <button type="button" class="button__ico bg-slate-200/70 dark:bg-slate-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="22" height="22"
+                        class="dark:text-gray-100">
+                        <path fill-rule="evenodd"
+                            d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z"
+                            clip-rule="evenodd" />
+                    </svg></button>
+                <span class="comment-counter" data-status-id="{{ status.id }}">{{ status.comments_count }}</span>
+        
+            </div>
+        
+        </div>
+                                        <div class="flex items-center space-x-3 pt-2">
+                                            <div class="flex items-center">
+                                                {% for like in status.likes.all|slice:"0:3" %}
+                                                {% if like.user.profile.photo %}
+                                                <img src="{{ like.user.profile.photo.url }}" alt=""
+                                                    class="w-6 h-6 rounded-full border-2 border-white dark:border-gray-900">
+                                                {% else %}
+                                                <img src="{% static 'images/affect.jpg' %}" alt=""
+                                                    class="w-6 h-6 rounded-full border-2 border-white dark:border-gray-900">
+                                                {% endif %}
+                                        
+                                                {% endfor %}
+                                            </div>
+                                            <div class="dark:text-gray-100">
+                                                {% if request.user.is_authenticated %}
+                                                {% if status.liked_by_current_user %}
+                                            {% trans 'You and another' %} {{ status.likes.count|subtract:1 }} {% trans 'person(s) liked this' %}
+                                            {% else %}
+                                            {% trans 'People liked' %} {{ status.likes.count }}
+                                            {% endif %}
+                                            {% else %}
+                                            {% trans 'People liked' %} {{ status.likes.count }}
+                                            {% endif %}
+                                            </div>
+                                        </div>
+
+{% if status.comments_enabled %}
+<div class="border-t py-4 space-y-4 dark:border-gray-600">
+    <div class="comments-section" data-status-id="{{ status.id }}">
+        {% with comments=comments_dict|get_item:status.id %}
+        {% for comment in comments %}
+        <div class="flex">
+    
+            <div class="w-10 h-10 rounded-full relative flex-shrink-0">
+                {% if comment.user.profile.photo %}
+                <img src="{{ comment.user.profile.photo.url }}" alt="" class="absolute h-full rounded-full w-full">
+                {% else %}
+                <img src="{% static 'images/affect.jpg' %}" alt="" class="absolute h-full rounded-full w-full">
+                {% endif %}
+    
+            </div>
+            <div>
+                <div
+                    class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12  dark:bg-gray-800 dark:text-gray-100">
+                    <p class="leading-6">{{ comment.text }} </p>
+                    <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800">
+                    </div>
+                </div>
+                <div class="text-sm flex items-center space-x-3 mt-2 ml-5">
+                    <!-- <a href="#" class="text-red-600"> <i class="uil-heart"></i> Love </a>
+                    <a href="#"> {% trans 'Replay' %} </a> -->
+                    <span>{{ comment.created_date }}</span>
+                </div>
+            </div>
+    
+    
+    
+    
+        </div>
+        {% endfor %}
+        {% endwith %}
+    </div>
+    
+    {% if status.has_more_than_five_comments %}
+    <a href="#" class="view-more-comments hover:text-blue-600 hover:underline" data-status-id="{{ status.id }}"
+        data-load-all="false"> {% trans 'View more Comments' %} </a>
+    
+    {% endif %}
+
+</div>
+{% include 'account/status/comment_form.html' with status=status %}
+{% endif %}
+
+
+
+                        </div>
+
+                    </div>
+{% endfor %}
+
+                     <!-- <div class="flex justify-center mt-6">
+                        <a href="#"
+                            class="bg-white font-semibold my-3 px-6 py-2 rounded-full shadow-md dark:bg-gray-800 dark:text-white">
+                            {% trans 'Load more ..' %}</a>
+                    </div>  -->
+
+
+                </div>
+
+                <!-- Sidebar -->
+                <div class="w-full space-y-6">
+
+                    <div class="widget card p-5">
+                        <h4 class="text-lg font-semibold"> {% trans 'About' %} </h4>
+                        <ul class="text-gray-600 space-y-3 mt-3">
+
+                            <li class="flex items-center space-x-2">
+                                <ion-icon name="calendar-outline"
+                                    class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
+                                {% trans 'Date of Birth' %} <strong> {{ profile.date_of_birth }}</strong>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <ion-icon name="happy-outline"
+                                    class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
+                                {% trans 'Age' %} <strong> {{ profile.age }} year</strong>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <ion-icon name="person-outline"
+                                    class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
+                                {% trans 'Gender' %} <strong> {{ profile.get_gender_display }}</strong>
+                            </li>
+                            
+                            <li class="flex items-center space-x-2">
+                                <ion-icon name="home-sharp"
+                                    class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
+                                {% trans 'Live In' %} <strong> {{ profile.city }} , {{ profile.country }} </strong>
+                            </li>
+
+                            <li class="flex items-center space-x-2">
+                                <ion-icon name="heart-sharp"
+                                    class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
+                                {% trans 'From' %} <strong> {{ profile.get_relationship_goals_display }} </strong>
+                            </li>
+                            
+                        </ul>
+
+                    </div>
+
+                    {% if online_friends %}
+                    <div class="widget card p-5 border-t">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h4 class="text-lg font-semibold"> {% trans 'Friends Online' %}</h4>
+                                <!-- <p class="text-sm">{{ selected_profile.friends.count }} Friends</p> -->
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-3 text-gray-600 font-semibold">
+                            {% for friend in online_friends %}
+                            <a href="{% url 'user_detail' username=friend.user.username %}">
+                                <div class="avatar relative rounded-md overflow-hidden w-full h-24 mb-2">
+                                    <img src="{% if friend.photo %}{{ friend.photo.url }}{% else %}{% static 'images/affect.jpg' %}{% endif %}" alt="{{ friend.user.get_full_name }}" class="w-full h-full object-cover absolute">
+
+                                </div>
+                                <div class="text-sm truncate">{{ friend.user.get_full_name }}</div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                        <!-- <a href="#" class="button gray mt-3 w-full"> {% trans 'See all' %} </a> -->
+                    </div>
+                    {% endif %}
+
+
+
+                </div>
+            </div>
+
+            <!-- Friends  -->
+            <div class="card md:p-6 p-2 max-w-3xl mx-auto">
+
+                <h2 class="text-xl font-bold"> {% trans 'Friends' %}</h2>
+
+                <!-- <nav class="responsive-nav border-b">
+                    <ul>
+                        <li class="active"><a href="#" class="lg:px-2"> All Friends <span> {{ profile.friends.count }} </span> </a></li>
+                        <li><a href="#" class="lg:px-2"> {% trans 'Recently added' %} </a></li>
+                        <li><a href="#" class="lg:px-2"> {% trans 'Family' %} </a></li>
+                        <li><a href="#" class="lg:px-2"> {% trans 'University' %} </a></li>
+                    </ul>
+                </nav> -->
+
+                <div class="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-x-2 gap-y-4 mt-3">
+                    {% for friend in selected_user_friends %}
+                    <div class="card p-2">
+                        <a href="{% url 'user_detail' username=friend.user.username %}">
+                            <img src="{% if friend.photo %}{{ friend.photo.url }}{% else %}{% static 'images/affect.jpg' %}{% endif %}" class="h-36 object-cover rounded-md shadow-sm w-full">
+
+                        </a>
+                        <div class="pt-3 px-1">
+                            <a href="{% url 'user_detail' username=friend.user.username %}"
+                                class="text-base font-semibold mb-0.5">{{ friend.user.get_full_name }} </a>
+                            <p class="font-medium text-sm">{{ friend.follower_count }} {% trans 'Followers' %}</p>
+
+
+                            {% if not friend.is_current_user %}
+
+                            {% if friend.is_current_user_following %}
+                            <form method="post" action="{% url 'unfollow' friend.user.id %}">
+                                {% csrf_token %}
+                                <button
+                                    class="button bg-primary text-white w-full">{% trans 'Unsubscribe' %}</button>
+                            </form>
+                            
+                            {% else %}
+                            <form method="post" action="{% url 'follow' friend.user.id %}">
+                                {% csrf_token %}
+                                <button
+                                    class="button bg-primary text-white w-full">{% trans 'Subscribe' %}</button>
+                            </form>
+                            {% endif %}
+<br>
+                            {% if friend.is_current_user_friend %}
+                            <form method="post" action="{% url 'remove_friend' friend.user.id %}">
+                                {% csrf_token %}
+                                <button data-userid="{{ friend.id }}"
+                                    class="add-friend button bg-primary text-white w-full p-5">{% trans 'Remove from friends' %}</button>
+                            </form>
+                            {% else %}
+                            <form method="post" action="{% url 'add_friend' friend.user.id %}">
+                                {% csrf_token %}
+                                <button data-userid="{{ friend.id }}"
+                                    class="add-friend button bg-primary text-white w-full">{% trans 'Add as Friend' %}</button>
+                            </form>
+                            {% endif %}
+
+
+                            {% endif %}
+
+
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- <div class="flex justify-center mt-6">
+                    <a href="#"
+                        class="bg-white font-semibold my-3 px-6 py-2 rounded-full shadow-md dark:bg-gray-800 dark:text-white">
+                        {% trans 'Load more ..' %}</a>
+                </div> -->
+
+            </div>
+
+            <!-- Photos  -->
+            <div class="card md:p-6 p-2 max-w-3xl mx-auto">
+
+                <div class="flex justify-between items-start relative md:mb-4 mb-3">
+                    <div class="flex-1">
+                        <h2 class="text-xl font-bold"> {% trans 'Photos' %} </h2>
+                        <nav class="responsive-nav pl-3">
+                            <ul uk-switcher="connect: #photo-tab; animation: uk-animation-fade">
+                                <li ><a href="#"> {% trans 'Photos' %} <span>{{ photos_count }}</span> </a></li>
+                                <li><a href="#"> {% trans 'Favorite photos' %}<span>{{ favorite_photos_count }}</span></a></li>
+        
+                            </ul>
+                        </nav>
+                       
+                    </div>
+
+                </div>
+
+                <div class="uk-switcher lg:mt-8 mt-4" id="photo-tab">
+                    <div class="card md:p-6 p-2 max-w-3xl mx-auto"> 
+                <div class="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-3 mt-5">
+                    {% for photo in photos %}
+                    <div>
+                        <a href="{% url 'photo_detail' pk=photo.pk %}">
+                        <div
+                            class="bg-green-400 max-w-full lg:h-44 h-36 rounded-lg relative overflow-hidden shadow uk-transition-toggle">
+                            <img src="{{ photo.image.url }}" class="w-full h-full absolute object-cover inset-0">
+                            <!-- overly-->
+                            <div
+                                class="-bottom-12 absolute bg-gradient-to-b from-transparent h-1/2 to-gray-800 uk-transition-slide-bottom-small w-full">
+                            </div>
+                            <div class="absolute bottom-0 w-full p-3 text-white uk-transition-slide-bottom-small">
+                                <div class="text-base">  {{photo.description }}</div>
+                                <!-- Добавьте здесь другие элементы, если хотите -->
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            
+            </div>
+                <div class="card md:p-6 p-2 max-w-3xl mx-auto">
+                <div class="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-3 mt-5">
+                    {% for photo in favorite_photos %}
+                    <div>
+                        <a href="{% url 'photo_detail' pk=photo.pk %}">
+                        <div
+                            class="bg-green-400 max-w-full lg:h-44 h-36 rounded-lg relative overflow-hidden shadow uk-transition-toggle">
+                            <img src="{{ photo.image.url }}" class="w-full h-full absolute object-cover inset-0">
+                            <!-- overly-->
+                            <div
+                                class="-bottom-12 absolute bg-gradient-to-b from-transparent h-1/2 to-gray-800 uk-transition-slide-bottom-small w-full">
+                            </div>
+                            <div class="absolute bottom-0 w-full p-3 text-white uk-transition-slide-bottom-small">
+                                <div class="text-base">  {{photo.description }}</div>
+                                <!-- Добавьте здесь другие элементы, если хотите -->
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+                <!-- <div class="flex justify-center mt-6">
+                    <a href="#"
+                        class="bg-white dark:bg-gray-900 font-semibold my-3 px-6 py-2 rounded-full shadow-md dark:bg-gray-800 dark:text-white">
+                        {% trans 'Load more ..' %}</a>
+                </div> -->
+
+            </div>
+<!-- Gift  -->
+{% if received_gifts %}
+<div class="card md:p-6 p-2 max-w-3xl mx-auto">
+
+    
+
+        <h2 class="text-xl font-bold"> {% trans 'Gift' %}</h2>
+
+        
+
+        <div class="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-x-2 gap-y-4 mt-3">
+            {% for received_gifts in received_gifts %}
+            <div class="card p-2">
+                <a href="{% url 'user_detail' username=received_gifts.buyer.username %}">
+                    <img src="{{ received_gifts.gift_item.image.url }}" alt="{{ received_gifts.gift_item.name }}" class="h-36 object-cover rounded-md shadow-sm w-full">
+
+                </a>
+                <div class="pt-3 px-1">
+                    <a href="{% url 'user_detail' username=received_gifts.buyer.username %}" class="text-base font-semibold mb-0.5">
+                        <p class="font-medium text-sm">{{ received_gifts.buyer.get_full_name }}</p></a>
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+     <!-- <div class="flex justify-center mt-6">
+        <a href="#"
+            class="bg-white dark:bg-gray-900 font-semibold my-3 px-6 py-2 rounded-full shadow-md dark:bg-gray-800 dark:text-white">
+            {% trans 'Load more ..' %}</a>
+    </div> -->
+
+</div>
+{% endif %}
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+{% endblock %}

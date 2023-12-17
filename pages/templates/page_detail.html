@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- Main Contents -->
+    <div class="main_content">
+        {% if page.show_header %}
+            <div class="w-full lg:h-80 h-52 pb-10 bg-cover flex justify-center items-center relative" 
+                 style="{% if not page.header_image %}background-color: {{ page.header_color }};{% endif %}" 
+                 {% if page.header_image %}data-src="{{ page.header_image.url }}"{% endif %} uk-img>
+
+                <div class="text-center max-w-xl mx-auto z-10 relative">
+                    <div class="lg:text-4xl text-2xl text text-white font-semibold mb-3">{{ page.title }}</div>
+                    
+                    {% if page.subtitle %}
+                        <div class="text-white text-lg font-medium text-opacity-90">{{ page.subtitle }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="absolute w-full h-full inset-0 bg-gray-600 bg-opacity-20"> </div>
+
+            </div>
+        {% endif %}
+        <div class="mcontainer">
+
+            <div class="-mt-16 bg-white max-w-3xl mx-auto p-10 relative rounded-md shadow">
+
+                <div class="md:space-y-6 space-y-5 text-gray-400 md:text-base">
+                    
+                    {{ page.content|safe }}                    
+                </div>
+                
+            </div>
+    
+        </div>
+    </div>
+{% endblock %}
+

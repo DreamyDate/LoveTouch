@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+
+<div class="main_content uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+    <div class="uk-container uk-width-1-2@s">
+
+        <div class="uk-grid uk-child-width-1-2@s" uk-grid>
+            <h1 class="uk-width-1-1">{% trans 'Replenishment of loans' %}</h1>
+
+            <form action="{% url 'purchase_credits' %}" method="post" id="payment-form" class="uk-form-stacked uk-width-1-1">
+                {% csrf_token %}
+
+                <div class="uk-margin">
+                    <label for="amount" class="uk-form-label">{% trans 'Amount of credits:' %}</label>
+                    <div class="uk-form-controls">
+                        <input type="number" name="amount" id="amount" required class="uk-input">
+                    </div>
+                </div>
+
+                <div class="uk-margin">
+                    <label for="card-element" class="uk-form-label">{% trans 'Credit card details:' %}</label>
+                    <div class="uk-form-controls">
+                        <div id="card-element" class="uk-input uk-card uk-card-default uk-padding-small">
+                            <!-- Stripe виджет для ввода данных карты будет размещен здесь -->
+                        </div>
+                        <div id="card-errors" role="alert" class="uk-text-danger uk-margin-top"></div>
+                    </div>
+                </div>
+<br>
+                <button type="submit" class="uk-button uk-button-primary">{% trans 'Top up' %}</button>
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    var stripe = Stripe('pk_test_51NrCynFPFVM9gK5WD8vDObiJCxfp2v3alI3KEFKoLuUgIHHwAOzk0cm7NRm1dLSSwGwNZqoaeBhyTcZsakmKzteq00aTIxcsxM');
+    var elements = stripe.elements();
+
+    var style = {
+        base: {
+            color: '#32325d',
+            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            fontSmoothing: 'antialiased',
+            fontSize: '16px',
+            '::placeholder': {
+                color: '#aab7c4'
+            }
+        },
+        invalid: {
+            color: '#fa755a',
+            iconColor: '#fa755a'
+        }
+    };
+
+    var card = elements.create('card', { style: style });
+    card.mount('#card-element');
+
+    card.addEventListener('change', function (event) {
+        var displayError = document.getElementById('card-errors');
+        if (event.error) {
+            displayError.textContent = event.error.message;
+        } else {
+            displayError.textContent = '';
+        }
+    });
+
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        stripe.createToken(card).then(function (result) {
+            if (result.error) {
+                var errorElement = document.getElementById('card-errors');
+                errorElement.textContent = result.error.message;
+            } else {
+                stripeTokenHandler(result.token);
+            }
+        });
+    });
+
+    function stripeTokenHandler(token) {
+        var form = document.getElementById('payment-form');
+        var hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'stripeToken');
+        hiddenInput.setAttribute('value', token.id);
+        form.appendChild(hiddenInput);
+        form.submit();
+    }
+</script>
+{% endblock %}

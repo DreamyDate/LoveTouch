@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+
+ <!-- Main Contents -->
+ <div class="main_content">
+    <div class="mcontainer">
+
+         <!--  Feeds  -->
+         <div class="lg:flex lg:space-x-10">
+            <div class="lg:w-3/4 lg:px-20 space-y-7">
+        
+              
+        
+                <div class="card lg:mx-0 uk-animation-slide-bottom-small">
+        <br>
+               
+        
+                    <div uk-lightbox>
+                        <a href="{{ gift.image.url }}">  
+                            
+                            <img src="{{ gift.image.url }}" alt="{{ gift.name }}" class="max-h-96 w-full object-cover">
+                        </a>
+                    </div>
+                    
+        
+                    <div class="p-4 space-y-3 relative"> 
+                        <div class="text-2xl font-semibold pt-2"> {{ gift.name }}</div>
+                        <p> {{ gift.description }}</p>
+
+                        <div class="top-3 absolute bg-gray-100 font-semibold px-3 py-1 right-3 rounded-full text text-sm">
+                            Price:{{ gift.price }}
+                        </div>
+
+                        <div class="flex space-x-3 items-center text-sm md:pt-3">
+                           
+                            <div class="flex"> {% trans 'Categories:' %}  <span class="font-semibold text-yellow-500 mr-2">{{ gift.category }} </span> </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="grid grid-cols-2 gap-4 mb-5">
+                            <form method="post">
+                                {% csrf_token %}
+                                <label for="recipient">{% trans 'Choose recipient:' %}</label>
+                                <select name="recipient" required>
+                                    {% for friend in friends %}
+                                    
+                                    <option value="{{ friend.id }}">{{ friend.user.get_full_name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <br>
+                                <button type="submit" class="bg-blue-600 flex flex-1 font-semibold h-10 items-center justify-center px-4 rounded-md text-white">{% trans 'Confirm Purchase' %}</button>
+                            </form>
+                            
+                                                     
+                        </div>
+
+
+        
+                    </div>
+        
+                </div>
+                 
+        
+            </div>
+        
+          </div>
+
+    </div>
+</div>
+
+
+{% endblock %}

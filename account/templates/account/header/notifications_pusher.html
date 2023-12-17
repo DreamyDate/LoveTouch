@@ -1,0 +1,72 @@
+{% load static %}
+{% load i18n %}
+<a href="#" class="is_icon" uk-tooltip="title: {% trans 'Notifications' %}">
+    <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path></svg>
+    <span id="notificationCount">{{ unread_count|default:"0" }}</span>
+
+</a>
+<div uk-drop="mode: click" class="header_dropdown" id="notifications">
+     <div  class="dropdown_scrollbar" data-simplebar>
+         <div class="drop_headline">
+             <h4>{% trans 'Notifications' %}</h4>
+             <div class="btn_action">
+                <!-- Переключатель для звука -->
+ 
+                <div class="btn_action">
+                    
+                        <div class="flex items-center" id="notificationSettings" style="display: none;">
+                            <div class="checkbox">
+                                <input type="checkbox" id="soundToggle" checked>
+                                <label for="soundToggle"><span class="checkbox-icon"></span> <ion-icon name="musical-note-outline" data-tippy-placement="left" title="{% trans 'Disable/Enable notification sound' %}"></ion-icon></label>
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="notificationToggle" checked>
+                                <label for="notificationToggle"><span class="checkbox-icon"></span>  <i class="icon-material-outline-notifications-off" data-tippy-placement="left" title="{% trans 'Disable/Enable notifications' %}"></i></label>
+                            </div>
+                        </div>
+                    
+                    <a href="#" data-tippy-placement="left" id="showSettings">
+                        <ion-icon name="settings-outline" uk-tooltip="title: {% trans 'Message settings' %} ; pos: bottom-left"></ion-icon>
+                    </a>
+                    <a href="#" id="markAllReadLink" uk-tooltip="title: {% trans 'Mark as read all' %} ; pos: bottom-left">
+                        <ion-icon name="checkbox-outline"></ion-icon>
+                    </a>
+                    
+                </div>
+
+            </div>
+         </div>
+         <ul id="notificationsList">
+            {% for notification in notifications %}
+                <li class="{% if not notification.is_read %}not-read{% endif %}">
+                    
+                    <a href="#" data-notification-id="{{ notification.id }}" class="notification_container">
+                        <div class="drop_avatar">
+                            <!-- Предположим, что у вас есть URL для аватара у отправителя -->
+                            {% if notification.sender.profile.photo %}
+                            <img src="{{ notification.sender.profile.photo.url }}" alt="">
+                        {% else %}
+                        <img src="{% static 'images/affect.jpg' %}" alt="">
+                        {% endif %}
+                        
+                        </div>
+                        <div class="drop_text">
+                            <p>
+                                <strong>{{ notification.sender.get_full_name }}</strong> 
+                                </p><p>
+                                {{ notification.message }}
+                            </p>
+                            <!-- Тут вы можете добавить вашу логику для отображения времени в нужном формате -->
+                            <time> {{ notification.timestamp }} </time>
+                        </div>
+                    </a>
+                    
+                </li>
+                
+               
+            {% endfor %}
+        </ul>
+        
+     </div>
+</div> 
+

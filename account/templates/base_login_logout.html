@@ -1,0 +1,121 @@
+{% load static %}
+{% load thumbnail %}
+{% load i18n %}
+{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="en" class="night-mode hydrated">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token }}">
+
+  <!-- Favicon -->
+  <link href="{% static 'images/favicon.png' %}" rel="icon" type="image/png">
+
+  <!-- Basic Page Needs
+        ================================================== -->
+  <title>{% block title %}{% endblock %}</title>
+
+  <meta name="description" content="LoveTouch">
+
+  <!-- icons
+    ================================================== -->
+  <link rel="stylesheet" href="{% static 'css/icons.css' %}">
+
+  <!-- CSS 
+    ================================================== -->
+  <link rel="stylesheet" href="{% static 'css/uikit.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <script src="{% static 'js/uikit.js' %}"></script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+
+</head>
+
+<body>
+
+
+<div class="sm:flex">
+
+  <div
+    class="relative lg:w-[580px] md:w-96 w-full p-10 min-h-screen bg-white shadow-xl flex items-center pt-10 dark:bg-slate-900 z-10">
+
+    <div class="w-full lg:max-w-sm mx-auto space-y-10"
+      uk-scrollspy="target: > *; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+
+      <!-- logo image-->
+      <a href="#"> <img src="{% static 'images/logo_name.png' %}" class="w-28 absolute top-10 left-10 dark:hidden" alt=""></a>
+      <a href="#"> <img src="{% static 'images/logo_name.png' %}" class="w-28 absolute top-10 left-10 hidden dark:!block"
+          alt=""></a>
+
+      <!-- logo icon optional -->
+      <div class="hidden">
+        <img class="w-12" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&amp;shade=600"
+          alt="Socialite html template">
+      </div>
+
+      
+{% block content %}
+{% endblock %}
+
+
+
+
+    </div>
+
+  </div>
+
+  <!-- image slider -->
+  <div class="flex-1 relative bg-primary max-md:hidden">
+
+
+    <div class="relative w-full h-full" tabindex="-1" uk-slideshow="animation: slide; autoplay: true">
+
+      <ul class="uk-slideshow-items w-full h-full">
+        <li class="w-full">
+          <img src="{% static 'images/Login.jpg' %}" alt=""
+            class="w-full h-full object-cover uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
+          <div class="absolute bottom-0 w-full uk-tr ansition-slide-bottom-small z-10">
+            <div class="max-w-xl w-full mx-auto pb-32 px-5 z-30 relative"
+              uk-scrollspy="target: > *; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+              <!-- <img class="w-24" src="{% static 'images/logo_name.png' %}" alt=""> -->
+              <h4 class="!text-white text-2xl font-semibold mt-7" uk-slideshow-parallax="y: 600,0,0"> {% trans 'Search, find, love - with us.' %}</h4>
+              <p class="!text-white text-lg mt-7 leading-8" uk-slideshow-parallax="y: 800,0,0;"> {% trans 'Love is not a random event. Start now!' %}</p>
+            </div>
+          </div>
+          <div class="w-full h-96 bg-gradient-to-t from-black absolute bottom-0 left-0"></div>
+        </li>
+        <li class="w-full">
+          <img src="{% static 'images/Login2.jpg' %}" alt=""
+            class="w-full h-full object-cover uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
+          <div class="absolute bottom-0 w-full uk-tr ansition-slide-bottom-small z-10">
+            <div class="max-w-xl w-full mx-auto pb-32 px-5 z-30 relative"
+              uk-scrollspy="target: > *; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+              <!-- <img class="w-24" src="{% static 'images/logo_name.png' %}" alt=""> -->
+              <h4 class="!text-white text-2xl font-semibold mt-7" uk-slideshow-parallax="y: 800,0,0"> {% trans 'A site where every click is a step towards a special love story.' %}</h4>
+              <p class="!text-white text-lg mt-7 leading-8" uk-slideshow-parallax="y: 800,0,0;"> {% trans 'Your love is waiting for you - start your adventure with us!' %}</p>
+            </div>
+          </div>
+          <div class="w-full h-96 bg-gradient-to-t from-black absolute bottom-0 left-0"></div>
+        </li>
+      </ul>
+
+      <!-- slide nav -->
+      <div class="flex justify-center">
+        <ul class="inline-flex flex-wrap justify-center  absolute bottom-8 gap-1.5 uk-dotnav uk-slideshow-nav"> </ul>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+</div>
+</html>

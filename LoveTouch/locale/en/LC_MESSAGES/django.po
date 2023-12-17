@@ -1,0 +1,184 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-13 00:26+0200\n"
+"PO-Revision-Date: 2023-12-10 09:49+0200\n"
+"Last-Translator: Юлия Підлісна <juleannadafna22@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Translated-Using: django-rosetta 0.9.9\n"
+
+#: .\LoveTouch\settings.py:184
+msgid "EN"
+msgstr "EN"
+
+#: .\LoveTouch\settings.py:185
+msgid "RU"
+msgstr "RU"
+
+#: .\LoveTouch\settings.py:186
+msgid "UA"
+msgstr "UA"
+
+#~ msgid "Англиский"
+#~ msgstr "English"
+
+#~ msgid "Русский"
+#~ msgstr "Russian"
+
+#~ msgid "Украинский"
+#~ msgstr "Ukrainian"
+
+#~ msgid "Сайт знакомств"
+#~ msgstr "Dating site"
+
+#~ msgid "ЛІЦЕНЗІЙНА УГОДА"
+#~ msgstr "LICENSE PERMISSION"
+
+#~ msgid "О нас"
+#~ msgstr "About Us"
+
+#~ msgid "Пользовательское соглашение"
+#~ msgstr "Terms of use"
+
+#~ msgid "Политика конфиденциальности"
+#~ msgstr "Privacy Policy"
+
+#~ msgid "Контакты"
+#~ msgstr "Contacts"
+
+#~ msgid "Поиск..."
+#~ msgstr "Search..."
+
+#~ msgid "Уже зарегистрированы?"
+#~ msgstr "Already registered?"
+
+#~ msgid "Войти"
+#~ msgstr "Sign in"
+
+#~ msgid "Вход на сайт"
+#~ msgstr "Sign in"
+
+#~ msgid "Логин:"
+#~ msgstr "Login:"
+
+#~ msgid "Пароль:"
+#~ msgstr "Password:"
+
+#~ msgid "Забыли пароль?"
+#~ msgstr "Forgot your password?"
+
+#~ msgid "или"
+#~ msgstr "or"
+
+#~ msgid "Создание акаунта"
+#~ msgstr "Create an account"
+
+#~ msgid "E-mail:"
+#~ msgstr "E-mail:"
+
+#~ msgid "Имя:"
+#~ msgstr "Name:"
+
+#~ msgid "Повторить пароль:"
+#~ msgstr "Repeat password:"
+
+#~ msgid "Подтвердить"
+#~ msgstr "OK"
+
+#~ msgid "Здесь начинаются"
+#~ msgstr "This is where the"
+
+#~ msgid "истории любви!"
+#~ msgstr "love stories!"
+
+#~ msgid "Будьте открытыми и честными"
+#~ msgstr "Be open and honest"
+
+#, fuzzy
+#~ msgid ""
+#~ "Важно быть открытым и искренним в своих профилях и общении.Поделитесь "
+#~ "своими интересами, ценностями и ожиданиями, чтобы привлечь людей, которые "
+#~ "их разделяют."
+#~ msgstr ""
+#~ "It is important to be open and sincere in your profiles and "
+#~ "communication. Share your interests, values, and expectations to reach "
+#~ "people who share them."
+
+#~ msgid "Активно общайтесь"
+#~ msgstr "Communicate actively"
+
+#~ msgid ""
+#~ "Не бойтесь начинать разговор и устанавливать контакт с людьми, которые "
+#~ "вам интересны. Показывайте инициативу и проявляйте заинтересованность в "
+#~ "их жизни и истории."
+#~ msgstr ""
+#~ "Don't be afraid to start a conversation and connect with people you're "
+#~ "interested in. Show initiative and show interest in their life and "
+#~ "history."
+
+#~ msgid "Будьте осторожны с личной информацией"
+#~ msgstr "Be careful with personal information"
+
+#~ msgid ""
+#~ "Помните о безопасности в онлайн знакомствах. Будьте осторожны при "
+#~ "раскрытии личной информации и не делитесь слишком много подробностей о "
+#~ "себе до достаточного уровня доверия."
+#~ msgstr ""
+#~ "Remember about safety in online dating. Be careful when disclosing "
+#~ "personal information and do not share too many details about yourself to "
+#~ "a sufficient level of trust."
+
+#~ msgid "Андрей Фролов"
+#~ msgstr "Andrey Frolov"
+
+#~ msgid ""
+#~ "Этот сайт знакомств изменил мою жизнь. Я не только нашел любовь, но и "
+#~ "научился больше верить в себя и свои возможности."
+#~ msgstr ""
+#~ "This dating site has changed my life. Not only did I find love, but I "
+#~ "also learned to believe in myself and my abilities more."
+
+#~ msgid "Анна Кроловец"
+#~ msgstr "Anna Krolovets"
+
+#~ msgid ""
+#~ "Я встретила замечательного партнера, с которым мы нашли общие интересы и "
+#~ "ценности. Это  действительно работает!"
+#~ msgstr ""
+#~ "I met a wonderful partner with whom we found common interests and values. "
+#~ "It really works!"
+
+#~ msgid "Инна Алексеева"
+#~ msgstr "Inna Alekseeva"
+
+#~ msgid ""
+#~ "Сайт знакомств - это место, где мечты сбываются. Я встретила самого "
+#~ "замечательного человека, с которым мы строим свою жизнь."
+#~ msgstr ""
+#~ "A dating site is a place where dreams come true. I met the most wonderful "
+#~ "person with whom we build our lives."
+
+#~ msgid "Михаил Пролетов"
+#~ msgstr "Mikhail Proletov"
+
+#~ msgid ""
+#~ "Никогда не думал, что смогу найти кого-то, кто так полностью "
+#~ "соответствует моим представлениям. Спасибо этому сайту!"
+#~ msgstr ""
+#~ "I never thought that I could find someone who fits my vision so "
+#~ "completely. Thanks to this site!"
+
+#~ msgid "Подробней..."
+#~ msgstr "More..."

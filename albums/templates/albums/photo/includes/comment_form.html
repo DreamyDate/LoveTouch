@@ -1,0 +1,28 @@
+
+{% load i18n %}
+{% for photo in photos %}
+<form action="{% url 'comment_create' photo.pk %}" method="post">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <p><input type="submit" value="{% trans 'Add comment' %}"></p>
+</form>
+
+
+<div class="bg-white p-3 text-sm font-medium flex items-center gap-2">
+                            
+    <img src="assets/images/avatars/avatar-2.jpg" alt="" class="w-6 h-6 rounded-full">
+    
+    <div class="flex-1 relative overflow-hidden ">
+        <textarea placeholder="{% trans 'Add Comment....' %}" rows="1" class="w-full resize-  px-4 py-2 focus:!border-transparent focus:!ring-transparent resize-y"></textarea>
+
+        <div class="flex items-center gap-2 absolute bottom-0.5 right-0 m-3">
+            <ion-icon class="text-xl flex text-blue-700" name="image"></ion-icon> 
+            <ion-icon class="text-xl flex text-yellow-500" name="happy"></ion-icon> 
+        </div>
+
+    </div>
+
+    <button type="submit" class="hidden text-sm rounded-full py-1.5 px-4 font-semibold bg-secondery">{% trans 'Replay' %}</button>
+
+</div>
+{% endfor %}

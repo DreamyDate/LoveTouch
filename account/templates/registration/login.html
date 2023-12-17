@@ -1,0 +1,76 @@
+{% extends "base_login_logout.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans 'Log-in' %}{% endblock %}
+{% block content %}
+<!-- title -->
+<div>
+  <h2 class="text-2xl font-semibold mb-1.5"> {% trans 'Sign in to your account' %} </h2>
+  <p class="text-sm text-gray-700 font-normal">{% trans 'If you haven’t signed up yet.' %} <a href="{% url 'register' %}"
+      class="text-blue-700">{% trans 'Register here!' %}</a></p>
+</div>
+
+    {% if form.errors %}
+    <p>
+      {% trans "Your username and password didn't match.Please try again." %}
+    </p>
+    {% else %}
+    <p>
+      {% trans "Please, use the following form to log-in.If you don't have an account" %} <a href="{% url 'register' %}">{% trans 'register here' %}</a>.
+    </p>
+    {% endif %}
+
+         <!-- form -->
+          <form method="post" action="{% url 'login' %}" class="space-y-7 text-sm text-black font-medium dark:text-white"
+            uk-scrollspy="target: > *; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+            {% csrf_token %}
+          
+            <!-- email -->
+            <div>
+              <label for="email" class="">{% trans 'Email address' %}</label>
+              <div class="mt-2.5">
+                <input autofocus="" placeholder="Email" required="" id="email" name="{{ form.username.name }}" type="text" autofocus="" required=""
+          value="{{ form.username.value|default:'' }}" class="!w-full !rounded-lg !bg-transparent !shadow-sm !border-slate-200 dark:!border-slate-800 dark:!bg-white/5">
+              </div>
+            </div>
+            <!-- password -->
+            <div>
+              <label for="email" class="">{% trans 'Password' %}</label>
+              <div class="mt-2.5">
+                <input id="email"
+          name="{{ form.password.name }}" type="password" autofocus="" required="" value="{{ form.password.value|default:'' }}" placeholder="***"
+                  class="!w-full !rounded-lg !bg-transparent !shadow-sm !border-slate-200 dark:!border-slate-800 dark:!bg-white/5">
+              </div>
+            </div>
+          
+            <div class="flex items-center justify-between">
+          
+             
+              <a href="{% url 'password_reset' %}" class="text-blue-700">{% trans 'Forgot password' %} </a>
+            </div>
+          
+            <!-- submit button -->
+            <div>
+              <button type="submit" class="button bg-primary text-white w-full">{% trans 'Sign in' %}</button>
+            </div>
+          
+            <div class="text-center flex items-center gap-6">
+              <hr class="flex-1 border-slate-200 dark:border-slate-800">
+              {% trans 'Or continue with' %}
+              <hr class="flex-1 border-slate-200 dark:border-slate-800">
+            </div>
+          
+            <!-- social login -->
+            <div class="flex gap-2" uk-scrollspy="target: > *; cls: uk-animation-scale-up; delay: 400 ;repeat: true">
+              <a href="{% url 'social:begin' 'facebook' %}" class="button flex-1 flex items-center gap-2 bg-primary text-white text-sm"> <ion-icon
+                  name="logo-facebook" class="text-lg"></ion-icon> Facebook </a>
+              <a href="{% url 'social:begin' 'google-oauth2' %}" class="button flex-1 flex items-center gap-2 bg-sky-600 text-white text-sm"> <ion-icon
+                  name="logo-twitter"></ion-icon> Google </a>
+              <a href="#" class="button flex-1 flex items-center gap-2 bg-black text-white text-sm"> <ion-icon
+                  name="logo-instagram"></ion-icon> Instagram </a>
+            </div>
+          
+          </form>
+
+
+{% endblock %}

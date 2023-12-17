@@ -1,0 +1,43 @@
+{% load i18n %}
+{% for album in albums %}
+                           
+{% for photo in photos %}
+    {% if photo.album == album %}
+    
+<div id="{{ photo.id }}"  data-filter="{{ album.id }}">
+    
+    <div class="bg-green-400 max-w-full lg:h-56 h-48 rounded-lg relative overflow-hidden shadow uk-transition-toggle">
+        <a href="{% url 'photo_detail' pk=photo.pk %}" >
+        <img src="{{ photo.image.url }}" alt="{{ photo.title }}" class="w-full h-full absolute object-cover inset-0">
+    </a>
+        <!-- overly-->
+        <div class="-bottom-12 absolute bg-gradient-to-b from-transparent h-1/2 to-gray-800 uk-transition-slide-bottom-small w-full"></div>
+        <div class="absolute bottom-0 w-full p-3 text-white uk-transition-slide-bottom-small flex items-center">
+            <div class="flex-1"> 
+                <div class="text-lg"> {{ photo.description }} </div>
+                <div class="flex space-x-3 lg:flex-initial text-sm">
+                   
+                                     
+                </div>
+            </div>
+            <button class="edit-photo-btn" 
+        data-title="{{ photo.title }}"
+        data-description="{{ photo.description }}"
+        data-image-id="{{ photo.id }}"
+        data-album-id="{{ photo.album.id }}"
+        data-edit-url="{% url 'photo_update' photo.id %}">
+    {% trans 'Edit Photo' %}
+</button>
+
+
+            <i class="icon-material-outline-delete delete-photo-btn" data-photo-id="{{ photo.id }}" uk-tooltip="title: Delete; pos: top-left"></i>
+
+
+        </div>
+    </div>
+
+</div>
+
+{% endif %}
+{% endfor %}
+{% endfor %}

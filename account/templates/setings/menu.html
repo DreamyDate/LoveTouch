@@ -1,0 +1,48 @@
+<!-- nav -->
+<div class="sidebar">
+
+  <div class="sidebar_inner" data-simplebar="init">
+    <div class="simplebar-wrapper" style="margin: 0px -12px;">
+      <div class="simplebar-height-auto-observer-wrapper">
+        <div class="simplebar-height-auto-observer"></div>
+      </div>
+      <div class="simplebar-mask">
+        <div class="simplebar-offset" style="right: -15px; bottom: 0px;">
+          <div class="simplebar-content" style="padding: 0px 12px; height: 100%; overflow: hidden scroll;">
+
+            <ul>
+              {% for item in menu_items %}
+              <li><a href="{% url item.url %}">
+                  {% if item.icon_name %} <!-- проверка, задано ли имя иконки -->
+                  <i class="{{ item.icon_name }}" style="color: {{ item.icon_color }}"></i> <!-- отображение иконки -->
+                  {% endif %}
+                  <span> {{ item.title }} </span> </a>
+              </li>
+              {% endfor %}
+            </ul>
+            <div class="footer-links">
+              {% for page in footer_pages %}
+                  <a href="{% url 'pages:page_detail' page.slug %}">{{ page.title }}</a>
+              {% endfor %}
+          </div>
+          
+          
+
+          </div>
+        </div>
+      </div>
+      <div class="simplebar-placeholder" style="width: 79px; height: 839px;"></div>
+    </div>
+    <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+      <div class="simplebar-scrollbar" style="transform: translate3d(0px, 0px, 0px); visibility: hidden; width: 114px;">
+      </div>
+    </div>
+    <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+      <div class="simplebar-scrollbar"
+        style="height: 528px; transform: translate3d(0px, 0px, 0px); visibility: visible;"></div>
+    </div>
+  </div>
+
+  <!-- sidebar overly for mobile -->
+  <div class="side_overly" uk-toggle="target: #wrapper ; cls: is-collapse is-active"></div>
+</div>

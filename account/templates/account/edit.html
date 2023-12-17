@@ -1,0 +1,576 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+{% load i18n %}
+{% block title %}{% trans 'Edit your account' %}{% endblock %}
+{% block content %}
+<!-- Main Contents -->
+<div class="main_content">
+  <div class="mcontainer">
+
+    <div class="bg-white lg:divide-x lg:flex lg:shadow-md rounded-md shadow lg:rounded-xl overflow-hidden lg:m-0 -mx-4">
+      <div class="lg:w-1/3">
+
+        <nav class="responsive-nav setting-nav setting-menu"
+          uk-sticky="connect: #form-type; top:30 ; offset:80 ; media:@m ;bottom:true; animation: uk-animation-slide-top">
+          <h4 class="mb-0 p-3 uk-visible@m hidden"> {% trans 'Setting Navigation' %} </h4>
+          <ul uk-switcher="connect: #form-type; animation: uk-animation-fade">
+            <li class="uk-active"><a href="#"> <i class="uil-cog"></i> {% trans 'General' %} </a></li>
+            <li><a href="#"> <i class="uil-user"></i> {% trans 'Profile' %} </a></li>
+            <li><a href="#"> <i class="uil-smile"></i> {% trans 'Personal Condition' %} </a></li>
+            <li><a href="#"> <i class="uil-user-plus"></i> {% trans 'Habits and Appearance' %} </a></li>
+            <li><a href="#"> <i class="uil-science"></i> {% trans 'Education and Work' %} </a></li>
+
+            <li><a href="#"> <i class="uil-unlock-alt"></i> {% trans 'Password' %} </a></li>
+            <li><a href="#"> <i class="uil-share-alt"></i> {% trans 'Social Links' %} </a></li>
+
+
+
+          </ul>
+        </nav>
+
+      </div>
+
+      <div class="uk-switcher lg:w-2/3 " id="form-type">
+
+        <div class="lg:flex lg:flex-col justify-between lg:h-full">
+
+          <!-- form header -->
+          <div class="lg:px-10 lg:py-8 p-6">
+            <h3 class="font-bold mb-2 text-xl">{% trans 'General' %}</h3>
+            <p class=""> {% trans 'This information will be dispalyed publicly so be carful what you share.' %} </p>
+          </div>
+          <form method="post" action="{% url 'edit' %}">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="user_info">
+            <!-- form body -->
+            <div class="lg:py-8 lg:px-20 flex-1 space-y-4 p-6">
+
+              <div class="line">
+                <input type="text" class="line__input" autofocus="" name="{{ user_form.last_name.name }}"
+                  value="{{ user_form.last_name.value|default_if_none:'' }}" />
+
+                <span for="username" class="line__placeholder"> {{ user_form.last_name.label_tag }} </span>
+              </div>
+              <div class="line">
+                <input type="text" class="line__input" name="{{ user_form.first_name.name }}"
+                  value="{{ user_form.first_name.value|default_if_none:'' }}" />
+
+                <span for="username" class="line__placeholder"> {{ user_form.first_name.label_tag }} </span>
+              </div>
+              <div class="line">
+                <input type="text" name="{{ user_form.email.name }}"
+                  value="{{ user_form.email.value|default_if_none:'' }}" class="line__input">
+                <span for="username" class="line__placeholder">{{ user_form.email.label_tag }}</span>
+              </div>
+
+
+            </div>
+
+            <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
+
+              <button type="submit" class="button bg-primary text-white w-full"> {% trans 'Save' %} </button>
+            </div>
+          </form>
+
+        </div>
+
+        <div class="lg:flex lg:flex-col justify-between lg:h-full">
+
+          <!-- form header -->
+          <div class="lg:px-10 lg:py-8 p-6">
+            <h3 class="font-bold mb-2 text-xl">{% trans 'Profile' %}</h3>
+            <p class=""> {% trans 'This information will be dispalyed publicly so be carful what you share.' %} </p>
+          </div>
+          <form method="post" action="{% url 'edit' %}">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="user_info_all">
+            <!-- form body -->
+            <div class="lg:py-8 lg:px-20 flex-1 space-y-4 p-6">
+
+              <div class="line">
+                <input class="line__input" type="text" autofocus="" name="{{ profile_form.nickname.name }}"
+                  value="{{ profile_form.nickname.value|default_if_none:'' }}" />
+                <span for="username" class="line__placeholder"> {{ profile_form.nickname.label_tag }} </span>
+              </div>
+              <div class="line">
+                <input class="line__input" type="date" name="{{ profile_form.date_of_birth.name }}"
+                  value="{{ profile_form.date_of_birth.value|date:'Y-m-d'|default_if_none:'' }}">
+                <span for="username" class="line__placeholder">{{ profile_form.date_of_birth.label_tag }}</span>
+              </div>
+
+              <div class="line">
+                <input class="line__input" type="number" name="{{ profile_form.age.name }}"
+                  value="{{ profile_form.age.value|default_if_none:'' }}" min="0" max="150">
+                <span for="username" class="line__placeholder">{{ profile_form.age.label_tag }}</span>
+              </div>
+
+              <div>
+                <label for=""> {{ profile_form.gender.label_tag }} </label>
+                <select id="gender" name="{{ profile_form.gender.name }}" class="shadow-none selectpicker with-border ">
+                  {% for gender_value, gender_name in profile_form.gender.field.choices %}
+                  <option value="{{ gender_value }}" {% if profile_form.gender.value == gender_value %}selected{% endif %}>
+                    {{ gender_name }}</option>
+                  {% endfor %}
+
+                </select>
+              </div>
+
+              <div>
+                <label for="">{{ profile_form.country.label_tag }}</label>
+                <select id="country" name="{{ profile_form.country.name }}"
+                  class="shadow-none selectpicker with-border">
+                  {% for country_value, country_name in profile_form.country.field.choices %}
+                  <option value="{{ country_value }}" {% if profile_form.country.value == country_value %}selected{% endif %}>
+                    {{ country_name }}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div>
+                <label for="">{{ profile_form.city.label_tag }}</label>
+                <select id="city" name="{{ profile_form.city.name }}" data-selected="{{ selected_city_name }}"
+                  class="shadow-none selectpicker with-border">
+                  <!-- Значения для городов будут добавляться с помощью JavaScript -->
+                </select>
+              </div>
+
+
+              <div>
+                <label for=""> {{ profile_form.personality_type.label_tag }} </label>
+                <select id="personality_type" name="{{ profile_form.personality_type.name }}"
+                  class="shadow-none selectpicker with-border ">
+                  {% for personality_type_value, personality_type_name in profile_form.personality_type.field.choices %}
+                  <option value="{{ personality_type_value }}" 
+                  {% if profile_form.personality_type.value == personality_type_value %}selected{% endif %}>
+                    {{ personality_type_name }}</option>
+                  {% endfor %}
+
+                </select>
+              </div>
+
+              <div class="line">
+                <input class="line__input" type="number" name="{{ profile_form.height.name }}"
+                  value="{{ profile_form.height_with_dot }}" min="0" max="500" step="0.1">
+                <span for="username" class="line__placeholder">{{ profile_form.height.label_tag }}</span>
+              </div>
+
+              <div class="line">
+                <input class="line__input" type="number" name="{{ profile_form.weight.name }}"
+                  value="{{ profile_form.weight_with_dot }}" min="0" max="500" step="0.1">
+                <span for="username" class="line__placeholder">{{ profile_form.weight.label_tag }}</span>
+              </div>
+
+
+              <div class="line">
+                <input class="line__input" type="text" name="{{ profile_form.hair_color.name }}"
+                  value="{{ profile_form.hair_color.value|default_if_none:'' }}" />
+                <span for="username" class="line__placeholder">{{ profile_form.hair_color.label_tag }}</span>
+              </div>
+              <div class="line">
+                <input class="line__input" type="text" name="{{ profile_form.eye_color.name }}"
+                  value="{{ profile_form.eye_color.value|default_if_none:'' }}" />
+                <span for="username" class="line__placeholder">{{ profile_form.eye_color.label_tag }}</span>
+              </div>
+
+            </div>
+
+            <div class="bg-gray-10 p-6 py-32 pt-0 flex justify-end space-x-3">
+
+              <button type="submit" class="button bg-primary text-white w-full"> {% trans 'Save' %} </button>
+            </div>
+          </form>
+
+        </div>
+
+        <div class="lg:flex lg:flex-col justify-between lg:h-full">
+
+          <!-- form header -->
+          <div class="lg:px-10 lg:py-8 p-6">
+            <h3 class="font-bold mb-2 text-xl">{% trans 'Personal condition' %}</h3>
+            <p class=""> {% trans 'This information will be dispalyed publicly so be carful what you share.' %} </p>
+          </div>
+          <form method="post" action="{% url 'edit' %}" class="uk-margin-bottom-20">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="user_info_relationship">
+            <!-- form body -->
+            <div class="lg:py-8 lg:px-20 flex-1 space-y-4 p-6">
+
+
+              <div>
+                <label for=""> {{ profile_form_relationship.relationship_goals.label_tag }} </label>
+                <select id="relationship_goals" name="{{ profile_form_relationship.relationship_goals.name }}"
+                  class="shadow-none selectpicker with-border ">
+                  {% for relationship_goals_value, relationship_goals_name in profile_form_relationship.relationship_goals.field.choices %}
+                  <option value="{{ relationship_goals_value }}" 
+                  {% if profile_form_relationship.relationship_goals.value == relationship_goals_value %}selected{% endif %}>
+                    {{ relationship_goals_name }}</option>
+                  {% endfor %}
+
+                </select>
+              </div>
+
+              <div>
+                <label for=""> {{ profile_form_relationship.relationship_status.label_tag }} </label>
+                <select id="relationship_status" name="{{ profile_form_relationship.relationship_status.name }}"
+                  class="shadow-none selectpicker with-border ">
+                  {% for relationship_status_value, relationship_status_name in profile_form_relationship.relationship_status.field.choices %}
+                  <option value="{{ relationship_status_value }}" 
+                  {% if profile_form_relationship.relationship_status.value == relationship_status_value %}selected{% endif %}>
+                    {{ relationship_status_name }}</option>
+                  {% endfor %}
+
+                </select>
+              </div>
+
+              <div>
+                <label for=""> {{ profile_form_relationship.sexual_orientation.label_tag }} </label>
+                <select id="sexual_orientation" name="{{ profile_form_relationship.sexual_orientation.name }}"
+                  class="shadow-none selectpicker with-border ">
+                  {% for sexual_orientation_value, sexual_orientation_name in profile_form_relationship.sexual_orientation.field.choices %}
+                  <option value="{{ sexual_orientation_value }}" 
+                  {% if profile_form_relationship.sexual_orientation.value == sexual_orientation_value %}selected{% endif %}>
+                    {{ sexual_orientation_name }}</option>
+                  {% endfor %}
+
+                </select>
+              </div>
+
+              <div>
+                <label for=""> {{ profile_form_relationship.children.label_tag }} </label>
+                <select id="children" name="{{ profile_form_relationship.children.name }}"
+                  class="shadow-none selectpicker with-border ">
+                  {% for children_value, children_name in profile_form_relationship.children.field.choices %}
+                  <option value="{{ children_value }}" {% if profile_form_relationship.children.value == children_value %}selected{% endif %}>
+                    {{ children_name }}</option>
+                  {% endfor %}
+
+                </select>
+              </div>
+
+            </div>
+
+            <div class="bg-gray-10 p-6 py-40 pt-0 flex justify-end space-x-3">
+
+              <button type="submit" class="button bg-primary text-white w-full uk-margin-bottom-large"> {% trans 'Save' %} </button>
+            </div>
+          </form>
+
+
+        </div>
+
+        <div class="lg:flex lg:flex-col justify-between lg:h-full">
+
+          <!-- form header -->
+          <div class="lg:px-10 lg:py-8 p-6">
+            <h3 class="font-bold mb-2 text-xl">{% trans 'Habits and Appearance' %}</h3>
+            <p class=""> {% trans 'This information will be dispalyed publicly so be carful what you share.' %} </p>
+          </div>
+          <form method="post" action="{% url 'edit' %}" class="uk-margin-bottom-20">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="user_info_appearance">
+            <!-- form body -->
+            <div class="lg:py-8 lg:px-20 flex-1 space-y-4 p-6">
+              <div class="col-span-2">
+                <label for="about">About me</label>
+                <textarea class="shadow-none with-border" rows="5" autofocus=""
+                  name="{{ profile_form_appearance.interests.name }}">{{ profile_form_appearance.interests.value|default_if_none:'' }}</textarea>
+              </div>
+
+              <div>
+                <label for=""> {{ profile_form_appearance.zodiac_sign.label_tag }} </label>
+                <select id="zodiac_sign" name="{{ profile_form_appearance.zodiac_sign.name }}"
+                  class="shadow-none selectpicker with-border ">
+                  {% for zodiac_sign_value, zodiac_sign_name in profile_form_appearance.zodiac_sign.field.choices %}
+                  <option value="{{ zodiac_sign_value }}" 
+                  {% if profile_form_appearance.zodiac_sign.value == zodiac_sign_value %}selected{% endif %}>
+                    {{ zodiac_sign_name }}</option>
+                  {% endfor %}
+
+                </select>
+              </div>
+
+              <div>
+                <label for=""> {{ profile_form_appearance.animals.label_tag }} </label>
+                <select id="animals" name="{{ profile_form_appearance.animals.name }}"
+                  class="shadow-none selectpicker with-border ">
+                  {% for animals_value, animals_name in profile_form_appearance.animals.field.choices %}
+                  <option value="{{ animals_value }}" {% if profile_form_appearance.animals.value == animals_value %}selected{% endif %}>
+                    {{ animals_name }}</option>
+                  {% endfor %}
+
+                </select>
+              </div>
+
+              <div>
+                <label for=""> {{ profile_form_appearance.religion.label_tag }} </label>
+                <select id="religion" name="{{ profile_form_appearance.religion.name }}"
+                  class="shadow-none selectpicker with-border ">
+                  {% for religion_value, religion_name in profile_form_appearance.religion.field.choices %}
+                  <option value="{{ religion_value }}" {% if profile_form_appearance.religion.value == religion_value %}selected{% endif %}>
+                    {{ religion_name }}</option>
+                  {% endfor %}
+
+                </select>
+              </div>
+
+              <!-- <div>
+  <label for="languages"> {{ profile_form_appearance.languages.label_tag }} </label>
+  <div class="uk-checkbox-list">
+    {% for language in profile_form_appearance.languages.field.queryset %}
+    <label class="uk-checkbox">
+      <input type="checkbox" id="language_{{ language.pk }}" name="{{ profile_form_appearance.languages.name }}"
+        value="{{ language.pk }}" {% if language in profile_form_appearance.languages.value.all %}checked{% endif %}>
+      {{ language.name }}
+    </label>
+    {% endfor %}
+  </div>
+</div> -->
+
+
+
+              <div>
+                <label for=""> {{ profile_form_appearance.smoking.label_tag }} </label>
+                <select id="smoking" name="{{ profile_form_appearance.smoking.name }}"
+                  class="shadow-none selectpicker with-border ">
+                  {% for smoking_value, smoking_name in profile_form_appearance.smoking.field.choices %}
+                  <option value="{{ smoking_value }}" {% if profile_form_appearance.smoking.value == smoking_value %}selected{% endif %}>
+                    {{ smoking_name }}</option>
+                  {% endfor %}
+
+                </select>
+              </div>
+              <div>
+                <label for=""> {{ profile_form_appearance.alcohol.label_tag }} </label>
+                <select id="alcohol" name="{{ profile_form_appearance.alcohol.name }}"
+                  class="shadow-none selectpicker with-border ">
+                  {% for alcohol_value, alcohol_name in profile_form_appearance.alcohol.field.choices %}
+                  <option value="{{ alcohol_value }}" {% if profile_form_appearance.alcohol.value == alcohol_value %}selected{% endif %}>
+                    {{ alcohol_name }}</option>
+                  {% endfor %}
+
+                </select>
+              </div>
+              <div>
+                <label for=""> {{ profile_form_appearance.physique.label_tag }} </label>
+                <select id="physique" name="{{ profile_form_appearance.physique.name }}"
+                  class="shadow-none selectpicker with-border ">
+                  {% for physique_value, physique_name in profile_form_appearance.physique.field.choices %}
+                  <option value="{{ physique_value }}" {% if profile_form_appearance.physique.value == physique_value %}selected{% endif %}>
+                    {{ physique_name }}</option>
+                  {% endfor %}
+
+                </select>
+              </div>
+              <div>
+                <label for=""> {{ profile_form_appearance.tatu.label_tag }} </label>
+                <select id="tatu" name="{{ profile_form_appearance.tatu.name }}"
+                  class="shadow-none selectpicker with-border ">
+                  {% for tatu_value, tatu_name in profile_form_appearance.tatu.field.choices %}
+                  <option value="{{ tatu_value }}" {% if profile_form_appearance.tatu.value == tatu_value %}selected{% endif %}>
+                    {{ tatu_name }}</option>
+                  {% endfor %}
+
+                </select>
+              </div>
+              <div>
+                <label for=""> {{ profile_form_appearance.piercing.label_tag }} </label>
+                <select id="piercing" name="{{ profile_form_appearance.piercing.name }}"
+                  class="shadow-none selectpicker with-border ">
+                  {% for piercing_value, piercing_name in profile_form_appearance.piercing.field.choices %}
+                  <option value="{{ piercing_value }}" {% if profile_form_appearance.piercing.value == piercing_value %}selected{% endif %}>
+                    {{ piercing_name }}</option>
+                  {% endfor %}
+
+                </select>
+              </div>
+              <div>
+                <label for=""> {{ profile_form_appearance.scars.label_tag }} </label>
+                <select id="scars" name="{{ profile_form_appearance.scars.name }}"
+                  class="shadow-none selectpicker with-border ">
+                  {% for scars_value, scars_name in profile_form_appearance.scars.field.choices %}
+                  <option value="{{ scars_value }}" {% if profile_form_appearance.scars.value == scars_value %}selected{% endif %}>
+                    {{ scars_name }}</option>
+                  {% endfor %}
+
+                </select>
+              </div>
+
+
+            </div>
+
+            <div class="bg-gray-10 p-6 py-32 pt-0 flex justify-end space-x-3">
+
+              <button type="submit" class="button bg-primary text-white w-full uk-margin-bottom-large"> {% trans 'Save' %} </button>
+            </div>
+          </form>
+
+        </div>
+
+        <div class="lg:flex lg:flex-col justify-between lg:h-full">
+
+          <!-- form header -->
+          <div class="lg:px-10 lg:py-8 p-6">
+            <h3 class="font-bold mb-2 text-xl">{% trans 'Education and Work' %}</h3>
+            <p class=""> {% trans 'This information will be dispalyed publicly so be carful what you share.' %} </p>
+          </div>
+          <form method="post" action="{% url 'edit' %}" class="uk-margin-bottom-20">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="user_info_education">
+            <!-- form body -->
+            <div class="lg:py-8 lg:px-20 flex-1 space-y-4 p-6">
+              <div class="line">
+                <label for=""> {{ profile_form_education.school.label_tag }} </label>
+                <input type="text" class="line__input" autofocus="" name="{{ profile_form_education.school.name }}"
+                  value="{{ profile_form_education.school.value|default_if_none:'' }}" />
+
+                <span for="school" class="line__placeholder"> {{ profile_form_education.school.label_tag }} </span>
+              </div>
+
+              <div>
+                <label for=""> {{ profile_form_education.education_level.label_tag }} </label>
+                <select id="education_level" name="{{ profile_form_education.education_level.name }}"
+                  class="shadow-none selectpicker with-border ">
+                  {% for education_level_value, education_level_name in profile_form_education.education_level.field.choices %}
+                  <option value="{{ education_level_value }}" 
+                  {% if  profile_form_education.education_level.value == education_level_value %}selected{% endif %}>
+                    {{ education_level_name }}</option>
+                  {% endfor %}
+
+                </select>
+              </div>
+
+              <div>
+                <label for=""> {{ profile_form_education.work_and_education.label_tag }} </label>
+                <select id="work_and_education" name="{{ profile_form_education.work_and_education.name }}"
+                  class="shadow-none selectpicker with-border ">
+                  {% for work_and_education_value, work_and_education_name in profile_form_education.work_and_education.field.choices %}
+                  <option value="{{ work_and_education_value }}" 
+                  {% if profile_form_education.work_and_education.value == work_and_education_value %}selected{% endif %}>
+                    {{ work_and_education_name }}</option>
+                  {% endfor %}
+
+                </select>
+              </div>
+
+            </div>
+
+            <div class="bg-gray-10 p-6 py-32 pt-0 flex justify-end space-x-3">
+
+              <button type="submit" class="button bg-primary text-white w-full uk-margin-bottom-large"> {% trans 'Save' %} </button>
+            </div>
+          </form>
+
+        </div>
+
+        <div class="lg:flex lg:flex-col justify-between lg:h-full">
+
+          <!-- form header -->
+          <div class="lg:px-10 lg:py-8 p-6">
+            <h3 class="font-bold mb-2 text-xl">{% trans 'Password' %}</h3>
+            <p class=""> </p>
+          </div>
+
+          <form method="post" action="{% url 'edit' %}">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="password_change">
+            {% if password_form.old_password.errors %}
+            <div class="errors">{{ password_form.old_password.errors }}</div>
+            {% endif %}
+            {% if password_form.new_password1.errors %}
+            <div class="errors">{{ password_form.new_password1.errors }}</div>
+            {% endif %}
+            {% if password_form.new_password2.errors %}
+            <div class="errors">{{ password_form.new_password2.errors }}</div>
+            {% endif %}
+            <!-- form body -->
+            <div class="lg:py-8 lg:px-20 flex-1 space-y-4 p-6">
+
+              <div class="line">
+
+                <input class="line__input" id="email" autocomplete="off" type="text"
+                  name="{{ password_form.old_password.name }}" autofocus="" placeholder="Old password" required=""
+                  value="{{ password_form.old_password.value|default:'' }}">
+
+              </div>
+              <div class="line">
+
+                <input class="line__input" autocomplete="off" id="email" name="{{ password_form.new_password1.name }}"
+                  type="text" autofocus="" placeholder="New password" required=""
+                  value="{{ password_form.new_password1.value|default:'' }}">
+
+              </div>
+              <div class="line">
+                <input class="line__input" autocomplete="off" id="email" name="{{ password_form.new_password2.name }}"
+                  type="text" autofocus="" placeholder="New password repeat" required=""
+                  value="{{ password_form.new_password2.value|default:'' }}">
+
+              </div>
+
+
+            </div>
+
+            <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
+
+              <button type="submit" class="button bg-primary text-white w-full"> {% trans 'Save' %} </button>
+            </div>
+          </form>
+
+        </div>
+        <div class="lg:flex lg:flex-col justify-between lg:h-full">
+
+          <!-- form header -->
+          <div class="lg:px-10 lg:py-8 p-6">
+            <h3 class="font-bold mb-2 text-xl">{% trans 'Social Links' %}</h3>
+            <p class=""> </p>
+          </div>
+          <form method="post" action="{% url 'edit' %}">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="social_link">
+            <!-- form body -->
+            <div class="lg:py-8 lg:px-20 flex-1 space-y-4 p-6">
+
+              <div class="line">
+                <input type="text" class="line__input" autofocus="" placeholder="http://www.facebook.com/myname"
+                  name="{{ social_link_form.facebook.name }}"
+                  value="{{ social_link_form.facebook.value|default_if_none:'http://www.facebook.com/myname' }}" />
+
+                <span for="username" class="line__placeholder"> {% trans 'Facebook' %} </span>
+              </div>
+              <div class="line">
+
+                <input type="text" class="line__input" placeholder="http://www.instagram.com/myname"
+                  name="{{ social_link_form.instagram.name }}"
+                  value="{{ social_link_form.instagram.value|default_if_none:'http://www.instagram.com/myname' }}">
+                <span for="username" class="line__placeholder">{% trans 'Instagram' %}</span>
+              </div>
+              <div class="line">
+                <input type="text" class="line__input" placeholder="http://www.twitter.com/myname"
+                  name="{{ social_link_form.twitter.name }}"
+                  value="{{ social_link_form.twitter.value|default_if_none:'http://www.twitter.com/myname' }}">
+                <span for="username" class="line__placeholder">{% trans 'Twitter' %}</span>
+              </div>
+
+            </div>
+
+            <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
+
+              <button type="submit" class="button bg-primary text-white w-full"> {% trans 'Save' %} </button>
+            </div>
+          </form>
+
+        </div>
+
+
+
+      </div>
+
+    </div>
+
+
+
+
+  </div>
+</div>
+{% endblock %}

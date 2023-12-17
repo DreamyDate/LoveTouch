@@ -1,0 +1,62 @@
+{% load i18n %}
+{% block content %}
+<!-- Create new album -->
+<div id="offcanvas-create-photo" uk-offcanvas="flip: true; overlay: true" class="uk-offcanvas" style>
+    <div
+        class="uk-offcanvas-bar lg:w-4/12 w-full dark:bg-gray-700 dark:text-gray-300 p-0 bg-white flex flex-col justify-center shadow-2xl">
+
+        <button class="uk-offcanvas-close absolute uk-icon uk-close" type="button" uk-close=""></button>
+
+        <!-- Notification header -->
+        <div class="-mb-1 border-b font-semibold px-5 py-5 text-lg">
+            <h4> {% trans 'New Photo' %} </h4>
+        </div>
+
+        <form id="photo-create-form" method="POST" enctype="multipart/form-data" action="{% url 'album_list' %}">
+            {% csrf_token %}
+
+            <div class="p-6 space-y-3 flex-1">
+                <div>
+                    <label> {% trans 'Photo Name' %} </label>
+                    {{ photo_form.title }}
+                </div>
+                <div>
+                    <label> {% trans 'Photo Description' %} </label>
+                    {{ photo_form.description }}
+                </div>
+                <div>
+                    <label> {% trans 'Photo Image' %} </label>
+                    {{ photo_form.image }}
+
+
+                    
+                </div>
+                <div>
+                    <label> {% trans 'Photo Album' %} </label>
+                    {{ photo_form.album }}
+                </div>
+                <!-- Uncomment this section if you decide to add 'visibility' later
+                <div>
+                    <label> Visibility </label>
+                    ...
+                </div>
+                -->
+
+                <!-- <div uk-form-custom="" class="w-full py-3 uk-form-custom">
+                    <div class="bg-gray-100 border-2 border-dashed flex flex-col h-32 items-center justify-center relative w-full rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                        
+                    </div>
+                    {{ photo_form.cover_photo }}
+                </div> -->
+            </div>
+
+            <div class="p-5">
+                <button type="submit" name="add_photo" class="button bg-primary text-white w-full">
+                    {% trans 'Create Now' %}
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+{% endblock %}

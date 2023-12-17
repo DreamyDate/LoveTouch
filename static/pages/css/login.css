@@ -1,0 +1,211 @@
+.login_rega {
+	background-color: rgb(255, 255, 255);
+	width: 831px;
+	border-top-left-radius: 20px;
+	border-top-right-radius: 20px;
+	border-bottom-left-radius: 20px;
+	border-bottom-right-radius: 20px;
+	border: 2px solid rgba(168, 86, 92, 1);
+}
+
+.sign_in {
+	margin: 20px 0px 20px 0px;
+}
+
+.register{
+	margin: 20px 0px 20px 0px;
+}
+
+/* .icon_278_178 { 
+	width:402.30572509765625px;
+	height:620.9904174804688px;
+	
+	left:-92px;
+	top:-49px;
+}
+ */
+
+.input-group {
+	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+	margin: 0px 0px 24px 0px;
+}
+
+.input-group-text {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 1px 12px;
+	gap: 10px;
+	height: 24px;
+	background: #D9D9D9;
+	border: 1px solid #A8565C;
+	border-radius: 20px 0px 0px 20px;
+	flex: none;
+	order: 0;
+	flex-grow: 0;
+}
+
+.form-control {
+	box-sizing: border-box;
+	width: 200px;
+	height: 24px;
+	background: #D9D9D9;
+	border: 1px solid #A8565C;
+	border-radius: 0px 20px 20px 0px;
+	flex: none;
+	order: 1;
+	flex-grow: 0;
+}
+
+.button_sign {
+	margin: 0px 0px 24px 0px;
+}
+
+.custom_button_sign {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 8px 24px;
+	gap: 10px;
+	height: 40px;
+	background: #D9D9D9;
+	border: 1px solid #A8565C;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 30px;
+	font-family: 'Comfortaa';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 24px;
+	line-height: 130%;
+	color: #1F1F1F;
+	flex: none;
+	order: 0;
+	flex-grow: 0;
+}
+
+.foregin_key {
+	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+	height: 34px;
+	margin: 0px 0px 24px 0px;
+}
+
+.foregin_key:hover .romance_ico {
+	background-image: url(images/Romance_hover.png);
+}
+
+.romance {
+	width: 66px;
+	height: 34px;
+	background: linear-gradient(90.78deg, #B36162 12.65%, #F18778 331.99%);
+	border-radius: 20px 20px 0px 20px;
+}
+
+.romance_ico {
+	height: 24px;
+	background-image: url(images/Romance.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	margin: 5px 0px 0px 0px;
+}
+
+.foregin_key_text {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 8px 34px;
+	gap: 10px;
+	width: 188px;
+	height: 34px;
+	background: linear-gradient(90deg, #B36162 0%, #F18778 100%);
+	border-radius: 20px 20px 20px 0px;
+	flex: none;
+	order: 1;
+	flex-grow: 0;
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 130%;
+	color: #1F1F1F;
+}
+
+.sign_in_social {
+	box-sizing: border-box;
+	flex-direction: row;
+	align-items: flex-start;
+	gap: 10px;
+	height: 60px;
+	background: #D9D9D9;
+	border: 1px solid #A8565C;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 30px;
+}
+
+.google {
+	height: 36px;
+	background-image: url(images/Google_sign_2.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	margin: 12px 0px 0px 0px;
+}
+
+.facebook {
+	height: 36px;
+	background-image: url(images/Facebook_sign_2.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	margin: 12px 0px 0px 0px;
+}
+
+.instagram {
+	height: 36px;
+	background-image: url(images/Instagram_sign_2.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	margin: 12px 0px 0px 0px;
+}
+
+.google:hover {
+	background-image: url(images/Google_sign_1.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.facebook:hover {
+	background-image: url(images/Facebook_sign_1.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.instagram:hover {
+	background-image: url(images/Instagram_sign_1.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.input-group .form-control:focus {
+	border-color: #A8565C;
+	box-shadow: 0 0 0 0.25rem rgb(168, 86, 92, .25)
+}
+
+.sign_text {
+	color: rgba(31.000000052154064, 31.000000052154064, 31.000000052154064, 1);
+	font-family: Comfortaa;
+	font-size: 32px;
+	letter-spacing: 0;
+}
+
+.or {
+	color: rgba(31.000000052154064, 31.000000052154064, 31.000000052154064, 1);
+	width: 47px;
+	height: 31px;
+	font-family: Comfortaa;
+	text-align: left;
+	font-size: 24px;
+	letter-spacing: 0;
+}

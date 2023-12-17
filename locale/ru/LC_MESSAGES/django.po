@@ -1,0 +1,1226 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-13 00:27+0200\n"
+"PO-Revision-Date: 2023-12-10 13:00+0200\n"
+"Last-Translator: Юлия Підлісна <juleannadafna22@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+"X-Translated-Using: django-rosetta 0.9.9\n"
+
+#: .\account\models.py:543
+msgid "Title"
+msgstr ""
+
+#: .\account\models.py:544
+msgid "URL"
+msgstr ""
+
+#: .\account\models.py:545
+msgid "Order"
+msgstr ""
+
+#: .\account\models.py:547
+#, fuzzy
+#| msgid "Photo Name"
+msgid "Icon Name"
+msgstr "Название фотографии"
+
+#: .\account\models.py:549
+msgid "Icon Color"
+msgstr ""
+
+#: .\account\models.py:550
+msgid "Enabled"
+msgstr ""
+
+#: .\account\templates\account\birthdays.html:5
+msgid "Friends happy birthday today"
+msgstr "Друзья, с днем ​​рождения сегодня"
+
+#: .\account\templates\account\birthdays.html:17
+#: .\account\templates\account\birthdays_modal.html:11
+msgid "Today's birthdays"
+msgstr "Сегодняшние дни рождения"
+
+#: .\account\templates\account\birthdays.html:37
+#: .\account\templates\account\birthdays.html:69
+#: .\account\templates\account\birthdays_modal.html:29
+#: .\account\templates\account\birthdays_modal.html:62
+msgid "years old"
+msgstr "лет"
+
+#: .\account\templates\account\birthdays.html:52
+#: .\account\templates\account\birthdays_modal.html:41
+msgid "Your friends don't have a birthday today."
+msgstr "У твоих друзей сегодня нет дня рождения."
+
+#: .\account\templates\account\birthdays.html:58
+#: .\account\templates\account\birthdays_modal.html:47
+msgid "Upcoming birthdays"
+msgstr "Ближайшие дни рождения"
+
+#: .\account\templates\account\edit.html:5
+msgid "Edit your account"
+msgstr "Редактировать свою учетную запись"
+
+#: .\account\templates\account\edit.html:16
+msgid "Setting Navigation"
+msgstr "Настройка навигации"
+
+#: .\account\templates\account\edit.html:18
+#: .\account\templates\account\edit.html:40
+msgid "General"
+msgstr "Общий"
+
+#: .\account\templates\account\edit.html:19
+#: .\account\templates\account\edit.html:82
+msgid "Profile"
+msgstr "Профиль"
+
+#: .\account\templates\account\edit.html:20
+msgid "Personal Condition"
+msgstr "Личное состояние"
+
+#: .\account\templates\account\edit.html:21
+#: .\account\templates\account\edit.html:267
+msgid "Habits and Appearance"
+msgstr "Повадки и внешний вид"
+
+#: .\account\templates\account\edit.html:22
+#: .\account\templates\account\edit.html:415
+msgid "Education and Work"
+msgstr "Образование и работа"
+
+#: .\account\templates\account\edit.html:24
+#: .\account\templates\account\edit.html:471
+#: .\account\templates\registration\login.html:38
+#: .\account\templates\registration\register.html:56
+msgid "Password"
+msgstr "Пароль"
+
+#: .\account\templates\account\edit.html:25
+#: .\account\templates\account\edit.html:525
+msgid "Social Links"
+msgstr "Социальные ссылки"
+
+#: .\account\templates\account\edit.html:41
+#: .\account\templates\account\edit.html:83
+#: .\account\templates\account\edit.html:192
+#: .\account\templates\account\edit.html:268
+#: .\account\templates\account\edit.html:416
+msgid ""
+"This information will be dispalyed publicly so be carful what you share."
+msgstr ""
+"Эта информация будет опубликована публично, поэтому будьте осторожны с тем, "
+"чем делитесь."
+
+#: .\account\templates\account\edit.html:72
+#: .\account\templates\account\edit.html:181
+#: .\account\templates\account\edit.html:256
+#: .\account\templates\account\edit.html:405
+#: .\account\templates\account\edit.html:461
+#: .\account\templates\account\edit.html:516
+#: .\account\templates\account\edit.html:559
+#: .\account\templates\account\status\edit_status.html:17
+msgid "Save"
+msgstr "Сохранить"
+
+#: .\account\templates\account\edit.html:191
+msgid "Personal condition"
+msgstr "Личное состояние"
+
+#: .\account\templates\account\edit.html:539
+msgid "Facebook"
+msgstr ""
+
+#: .\account\templates\account\edit.html:546
+msgid "Instagram"
+msgstr ""
+
+#: .\account\templates\account\edit.html:552
+msgid "Twitter"
+msgstr ""
+
+#: .\account\templates\account\header.html:31
+msgid "Premium"
+msgstr "Премиум"
+
+#: .\account\templates\account\header.html:33
+msgid "Upgrade"
+msgstr "Обновление"
+
+#: .\account\templates\account\header\messages_pusher.html:4
+#: .\account\templates\setings\messages.html:7
+msgid "Message"
+msgstr "Сообщения"
+
+#: .\account\templates\account\header\messages_pusher.html:17
+#: .\chat_app\templates\chat_app\chat_list.html:10
+#: .\chat_app\templates\chat_app\chat_list.html:19
+msgid "Messages"
+msgstr "Сообщения"
+
+#: .\account\templates\account\header\messages_pusher.html:54
+msgid "See all in Messages"
+msgstr "Посмотреть все в сообщениях"
+
+#: .\account\templates\account\header\notifications_pusher.html:3
+#: .\account\templates\account\header\notifications_pusher.html:11
+msgid "Notifications"
+msgstr "Уведомления"
+
+#: .\account\templates\account\header\notifications_pusher.html:20
+msgid "Disable/Enable notification sound"
+msgstr "Отключить/включить звук уведомлений"
+
+#: .\account\templates\account\header\notifications_pusher.html:24
+msgid "Disable/Enable notifications"
+msgstr "Отключить/включить уведомления"
+
+#: .\account\templates\account\header\notifications_pusher.html:29
+msgid "Message settings"
+msgstr "Настройки сообщений"
+
+#: .\account\templates\account\header\notifications_pusher.html:31
+msgid "Mark as read all"
+msgstr "Отметить как прочитанное все"
+
+#: .\account\templates\account\header\profile_menu.html:42
+msgid "Your Premium account"
+msgstr "Ваш Премиум-аккаунт"
+
+#: .\account\templates\account\header\profile_menu.html:51
+msgid "Upgrade To Premium"
+msgstr "Обновить до Премиум"
+
+#: .\account\templates\account\header\profile_menu.html:64
+msgid "My Account"
+msgstr "Мои настройки"
+
+#: .\account\templates\account\header\profile_menu.html:72
+msgid "Night mode"
+msgstr "Ночной режим"
+
+#: .\account\templates\account\header\profile_menu.html:82
+msgid "Log Out"
+msgstr "Выйти"
+
+#: .\account\templates\account\header\search.html:8
+msgid "Search for Friends, Videos and more.."
+msgstr "Поиск друзей, видео и многого другого.."
+
+#: .\account\templates\account\home.html:6
+#: .\account\templates\account\upgrade.html:5
+msgid "Home"
+msgstr "Главная"
+
+#: .\account\templates\account\home.html:65
+#: .\albums\templates\albums\photo\photo_detail.html:49
+msgid "Disable comments"
+msgstr "Отключить комментарии"
+
+#: .\account\templates\account\home.html:65
+#: .\albums\templates\albums\photo\photo_detail.html:49
+msgid "Enable comments"
+msgstr "Включить комментарии"
+
+#: .\account\templates\account\home.html:73
+#: .\account\templates\account\user\user_detail.html:196
+msgid "Add to favorites"
+msgstr "Добавить в избранное"
+
+#: .\account\templates\account\home.html:84
+msgid "Are you sure you want to delete this status?"
+msgstr "Вы уверены, что хотите удалить этот статус?"
+
+#: .\account\templates\account\home.html:85
+#: .\albums\templates\albums\album_list.html:45
+#: .\albums\templates\albums\album_list.html:130
+#: .\albums\templates\albums\photo\photo_confirm_delete.html:11
+#: .\albums\templates\albums\photo\photo_detail.html:65
+#: .\albums\templates\albums\photo\photo_detail.html:256
+msgid "Delete"
+msgstr "Удалить"
+
+#: .\account\templates\account\home.html:126
+#: .\account\templates\account\user\user_detail.html:273
+msgid "You and another"
+msgstr "Тебе и еще одному"
+
+#: .\account\templates\account\home.html:126
+#: .\account\templates\account\user\user_detail.html:273
+msgid "person(s) liked this"
+msgstr "человеку(ам) понравилось это"
+
+#: .\account\templates\account\home.html:128
+#: .\account\templates\account\home.html:131
+#: .\account\templates\account\user\user_detail.html:275
+#: .\account\templates\account\user\user_detail.html:278
+msgid "People liked"
+msgstr "Людям понравилось"
+
+#: .\account\templates\account\home.html:162
+msgid "Birthdays"
+msgstr "Дни рождения"
+
+#: .\account\templates\account\home.html:167
+#: .\account\templates\account\home.html:169
+#: .\account\templates\account\home.html:238
+msgid "and"
+msgstr "и"
+
+#: .\account\templates\account\home.html:167
+msgid "others"
+msgstr "другие"
+
+#: .\account\templates\account\home.html:167
+#: .\account\templates\account\home.html:169
+msgid "have birthdays today."
+msgstr "у меня сегодня дни рождения."
+
+#: .\account\templates\account\home.html:171
+msgid "has a birthday today."
+msgstr "у него сегодня день рождения."
+
+#: .\account\templates\account\home.html:173
+msgid "No birthdays today."
+msgstr "Дней рождения сегодня нет."
+
+#: .\account\templates\account\home.html:181
+msgid "Contacts"
+msgstr "Контакты"
+
+#: .\account\templates\account\home.html:187
+#: .\account\templates\account\user\user_detail.html:389
+msgid "Friends Online"
+msgstr "Друзья онлайн"
+
+#: .\account\templates\account\home.html:229
+msgid "People"
+msgstr "Люди"
+
+#: .\account\templates\account\home.html:234
+msgid "Become friends with"
+msgstr "Подружиться с"
+
+#: .\account\templates\account\home.html:238
+msgid "Others"
+msgstr "Другие"
+
+#: .\account\templates\account\home.html:247
+msgid "Send message"
+msgstr "Отправить сообщение"
+
+#: .\account\templates\account\status\add_story_button.html:15
+#: .\account\templates\account\status\status_form.html:31
+msgid "What&#39;s Your Mind ?"
+msgstr "Добавь свою историю!"
+
+#: .\account\templates\account\status\add_story_button.html:20
+msgid "Photo/Video"
+msgstr "Фото/Видео"
+
+#: .\account\templates\account\status\add_story_button.html:24
+msgid "Tag Friend"
+msgstr "Отметить друга"
+
+#: .\account\templates\account\status\add_story_button.html:28
+msgid "Fealing /Activity"
+msgstr "Чувства/Деятельность"
+
+#: .\account\templates\account\status\comment_form.html:10
+#: .\albums\templates\albums\photo\photo_detail.html:204
+msgid "Add your Comment.."
+msgstr "Добавьте свой комментарий.."
+
+#: .\account\templates\account\status\comments_section.html:41
+#: .\account\templates\account\user\user_detail.html:322
+msgid "View more Comments"
+msgstr "Посмотреть больше комментариев"
+
+#: .\account\templates\account\status\edit_status.html:7
+msgid "Edit status"
+msgstr "Изменить статус"
+
+#: .\account\templates\account\status\edit_status.html:16
+#: .\account\templates\account\status\status_form.html:13
+msgid "Close"
+msgstr "Закрыть"
+
+#: .\account\templates\account\status\recent_statuses.html:13
+msgid "User photo"
+msgstr "Фотография пользователя"
+
+#: .\account\templates\account\status\recent_statuses.html:15
+msgid "Default photo"
+msgstr "Фотография по умолчанию"
+
+#: .\account\templates\account\status\status_form.html:11
+msgid "Create Status"
+msgstr "Создать статус"
+
+#: .\account\templates\account\status\status_form.html:41
+msgid "Add to your post"
+msgstr "Добавить в свой пост"
+
+#: .\account\templates\account\status\status_form.html:65
+msgid "Text"
+msgstr "Текст"
+
+#: .\account\templates\account\status\status_form.html:66
+#: .\albums\templates\albums\album_list.html:68
+msgid "Photo"
+msgstr "Фото"
+
+#: .\account\templates\account\status\status_form.html:67
+msgid "Video"
+msgstr "Видео"
+
+#: .\account\templates\account\status\status_form.html:73
+msgid "Create"
+msgstr "Создать"
+
+#: .\account\templates\account\status\status_read.html:8
+msgid "All Story"
+msgstr "Вся история"
+
+#: .\account\templates\account\status\status_read.html:15
+msgid "Story"
+msgstr "История"
+
+#: .\account\templates\account\upgrade.html:12
+msgid "Pro Packages"
+msgstr "Премиум пакеты"
+
+#: .\account\templates\account\upgrade.html:13
+msgid ""
+"Choose the plan that suits you best! More features will be available thanks "
+"to individual plans."
+msgstr ""
+"Выберите план, который подходит вам лучше всего! Дополнительные функции "
+"будут доступны благодаря индивидуальным планам."
+
+#: .\account\templates\account\upgrade.html:21
+msgid "Pick your Plan"
+msgstr "Выберите свой план"
+
+#: .\account\templates\account\upgrade.html:40
+msgid "Buy"
+msgstr "Купить"
+
+#: .\account\templates\account\user\user_detail.html:24
+msgid "Select Image"
+msgstr "Выберите изображение"
+
+#: .\account\templates\account\user\user_detail.html:61
+msgid "Information"
+msgstr "Информация"
+
+#: .\account\templates\account\user\user_detail.html:62
+msgid "Friend"
+msgstr "Друг"
+
+#: .\account\templates\account\user\user_detail.html:63
+msgid "Photoes"
+msgstr "Фото"
+
+#: .\account\templates\account\user\user_detail.html:65
+#: .\account\templates\account\user\user_detail.html:567
+msgid "Gift"
+msgstr "Подарки"
+
+#: .\account\templates\account\user\user_detail.html:108
+#: .\dating\templates\filter\results.html:52
+msgid "Add friend"
+msgstr "Добавить в друзья"
+
+#: .\account\templates\account\user\user_detail.html:118
+#: .\dating\templates\filter\results.html:47
+msgid "Delete friend"
+msgstr "Удалить друга"
+
+#: .\account\templates\account\user\user_detail.html:128
+msgid "Following"
+msgstr "Подписка"
+
+#: .\account\templates\account\user\user_detail.html:139
+#: .\chat_app\templates\chat_app\chat_detail.html:428
+msgid "Block"
+msgstr "Блокировать"
+
+#: .\account\templates\account\user\user_detail.html:307
+#: .\albums\templates\albums\photo\includes\comment_form.html:25
+msgid "Replay"
+msgstr "Отправить"
+
+#: .\account\templates\account\user\user_detail.html:340
+#: .\account\templates\account\user\user_detail.html:483
+#: .\account\templates\account\user\user_detail.html:557
+#: .\account\templates\account\user\user_detail.html:590
+msgid "Load more .."
+msgstr "Загрузи больше .."
+
+#: .\account\templates\account\user\user_detail.html:350
+msgid "About"
+msgstr "Про меня"
+
+#: .\account\templates\account\user\user_detail.html:356
+#: .\account\templates\registration\register.html:75
+msgid "Date of Birth"
+msgstr "Дата рождения"
+
+#: .\account\templates\account\user\user_detail.html:361
+#: .\dating\templates\filter\search.html:53
+msgid "Age"
+msgstr "Возраст"
+
+#: .\account\templates\account\user\user_detail.html:366
+#: .\account\templates\registration\register.html:83
+#: .\dating\templates\filter\search.html:37
+msgid "Gender"
+msgstr "Пол"
+
+#: .\account\templates\account\user\user_detail.html:372
+msgid "Live In"
+msgstr "Город"
+
+#: .\account\templates\account\user\user_detail.html:378
+msgid "From"
+msgstr "Цель"
+
+#: .\account\templates\account\user\user_detail.html:404
+msgid "See all"
+msgstr "Увидеть все"
+
+#: .\account\templates\account\user\user_detail.html:416
+msgid "Friends"
+msgstr "Друзья"
+
+#: .\account\templates\account\user\user_detail.html:421
+msgid "Recently added"
+msgstr "Недавно добавленный"
+
+#: .\account\templates\account\user\user_detail.html:422
+msgid "Family"
+msgstr "Семья"
+
+#: .\account\templates\account\user\user_detail.html:423
+msgid "University"
+msgstr "Университет"
+
+#: .\account\templates\account\user\user_detail.html:437
+msgid "Followers"
+msgstr "Подписчики"
+
+#: .\account\templates\account\user\user_detail.html:446
+msgid "Unsubscribe"
+msgstr "Отписаться"
+
+#: .\account\templates\account\user\user_detail.html:453
+msgid "Subscribe"
+msgstr "Подписаться"
+
+#: .\account\templates\account\user\user_detail.html:461
+msgid "Remove from friends"
+msgstr "Удалить из друзей"
+
+#: .\account\templates\account\user\user_detail.html:467
+msgid "Add as Friend"
+msgstr "Добавить в друзья"
+
+#: .\account\templates\account\user\user_detail.html:493
+#: .\account\templates\account\user\user_detail.html:496
+#: .\albums\templates\albums\album_list.html:27
+msgid "Photos"
+msgstr "Фото"
+
+#: .\account\templates\account\user\user_detail.html:497
+msgid "Favorite photos"
+msgstr "Любимые фотографии"
+
+#: .\account\templates\base_login_logout.html:88
+msgid "Search, find, love - with us."
+msgstr "Ищите, находите, любите – вместе с нами."
+
+#: .\account\templates\base_login_logout.html:89
+msgid "Love is not a random event. Start now!"
+msgstr "Любовь – это не случайное событие. Начать сейчас!"
+
+#: .\account\templates\base_login_logout.html:101
+msgid "A site where every click is a step towards a special love story."
+msgstr "Сайт, где каждый клик – это шаг к особенной истории любви."
+
+#: .\account\templates\base_login_logout.html:102
+msgid "Your love is waiting for you - start your adventure with us!"
+msgstr "Ваша любовь ждет вас – начните свое приключение вместе с нами!"
+
+#: .\account\templates\registration\logged_out.html:4
+msgid "Logged out"
+msgstr "Вышли из"
+
+#: .\account\templates\registration\logged_out.html:15
+msgid "You have been successfully logged out."
+msgstr "Вы успешно вышли из системы."
+
+#: .\account\templates\registration\logged_out.html:19
+msgid "You can "
+msgstr "Ты можешь"
+
+#: .\account\templates\registration\logged_out.html:21
+msgid "log-in again"
+msgstr "войдите снова"
+
+#: .\account\templates\registration\login.html:4
+msgid "Log-in"
+msgstr "войдите снова"
+
+#: .\account\templates\registration\login.html:8
+msgid "Sign in to your account"
+msgstr "Войдите в свой аккаунт"
+
+#: .\account\templates\registration\login.html:9
+msgid "If you haven’t signed up yet."
+msgstr "Если вы еще не зарегистрировались."
+
+#: .\account\templates\registration\login.html:10
+msgid "Register here!"
+msgstr "Зарегистрируйтесь здесь!"
+
+#: .\account\templates\registration\login.html:15
+msgid "Your username and password didn't match.Please try again."
+msgstr "Ваше имя пользователя и пароль не совпадают. Повторите попытку."
+
+#: .\account\templates\registration\login.html:19
+msgid "Please, use the following form to log-in.If you don't have an account"
+msgstr ""
+"Пожалуйста, используйте следующую форму для входа. Если у вас нет учетной "
+"записи"
+
+#: .\account\templates\registration\login.html:19
+msgid "register here"
+msgstr "зарегистрируйтесь здесь"
+
+#: .\account\templates\registration\login.html:30
+#: .\account\templates\registration\register.html:45
+msgid "Email address"
+msgstr "Адрес электронной почты"
+
+#: .\account\templates\registration\login.html:49
+msgid "Forgot password"
+msgstr "Забыли пароль"
+
+#: .\account\templates\registration\login.html:54
+msgid "Sign in"
+msgstr "Войти"
+
+#: .\account\templates\registration\login.html:59
+#: .\account\templates\registration\register.html:113
+msgid "Or continue with"
+msgstr "Или продолжить с"
+
+#: .\account\templates\registration\password_change_done.html:4
+#: .\account\templates\registration\password_reset_complete.html:4
+msgid "Password reset"
+msgstr "Восстановление пароля"
+
+#: .\account\templates\registration\password_change_done.html:15
+msgid "Password changed"
+msgstr "Пароль изменен"
+
+#: .\account\templates\registration\password_change_done.html:16
+msgid "Your password has been successfully changed."
+msgstr "Ваш пароль был успешно изменен."
+
+#: .\account\templates\registration\password_change_form.html:4
+msgid "Edit your password"
+msgstr "Измените свой пароль"
+
+#: .\account\templates\registration\password_change_form.html:12
+msgid "Back"
+msgstr "Назад"
+
+#: .\account\templates\registration\password_change_form.html:19
+msgid "Use the form below to change your password."
+msgstr "Используйте форму ниже, чтобы изменить свой пароль."
+
+#: .\account\templates\registration\password_change_form.html:38
+msgid "Change"
+msgstr "Изменить"
+
+#: .\account\templates\registration\password_reset_complete.html:16
+msgid "Password set"
+msgstr "Пароль установлен"
+
+#: .\account\templates\registration\password_reset_complete.html:17
+msgid "Your password has been set"
+msgstr "Ваш пароль установлен"
+
+#: .\account\templates\registration\password_reset_complete.html:24
+msgid "Log in now"
+msgstr "Войти сейчас"
+
+#: .\account\templates\registration\password_reset_confirm.html:4
+#: .\account\templates\registration\password_reset_done.html:4
+#: .\account\templates\registration\password_reset_form.html:4
+msgid "Reset your password"
+msgstr "Сбросить пароль"
+
+#: .\account\templates\registration\password_reset_confirm.html:16
+msgid "Please enter your new password twice:"
+msgstr "Пожалуйста, введите новый пароль дважды:"
+
+#: .\account\templates\registration\password_reset_confirm.html:26
+msgid "New password"
+msgstr "Новый пароль"
+
+#: .\account\templates\registration\password_reset_confirm.html:41
+msgid "New password repeat"
+msgstr "Повтор нового пароля"
+
+#: .\account\templates\registration\password_reset_confirm.html:52
+msgid "Change my password"
+msgstr "Изменить пароль"
+
+#: .\account\templates\registration\password_reset_confirm.html:57
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used. Please request a new password  reset."
+msgstr ""
+"Ссылка для сброса пароля недействительна, возможно, потому, что она уже "
+"использовалась. Пожалуйста, запросите сброс нового пароля."
+
+#: .\account\templates\registration\password_reset_done.html:16
+msgid "We"
+msgstr "Мы"
+
+#: .\account\templates\registration\password_reset_done.html:17
+msgid "If you don"
+msgstr "Если ты не"
+
+#: .\account\templates\registration\password_reset_done.html:22
+msgid "Login In"
+msgstr "Войти в систему"
+
+#: .\account\templates\registration\password_reset_email.html:2
+msgid "Someone asked for password reset for email"
+msgstr "Кто-то попросил сбросить пароль для электронной почты"
+
+#: .\account\templates\registration\password_reset_email.html:2
+msgid "Follow the link below:"
+msgstr "Перейдите по ссылке ниже:"
+
+#: .\account\templates\registration\password_reset_email.html:4
+msgid "Your username, in case you"
+msgstr "Ваше имя пользователя, на случай, если вы"
+
+#: .\account\templates\registration\password_reset_form.html:23
+msgid "Reset password"
+msgstr "Сброс пароля"
+
+#: .\account\templates\registration\register.html:4
+msgid "Create an account"
+msgstr "Завести аккаунт"
+
+#: .\account\templates\registration\register.html:10
+msgid "Sign up to get started "
+msgstr "Зарегистрируйтесь, чтобы начать"
+
+#: .\account\templates\registration\register.html:11
+msgid "If you already have an account,"
+msgstr "Если у вас уже есть учетная запись,"
+
+#: .\account\templates\registration\register.html:12
+msgid "Login here!"
+msgstr "Войдите здесь!"
+
+#: .\account\templates\registration\register.html:24
+msgid "Username"
+msgstr "Имя пользователя"
+
+#: .\account\templates\registration\register.html:34
+msgid "First name"
+msgstr "Имя"
+
+#: .\account\templates\registration\register.html:66
+msgid "Confirm Password"
+msgstr "Подтвердите пароль"
+
+#: .\account\templates\registration\register.html:85
+msgid "Male"
+msgstr "Мужской"
+
+#: .\account\templates\registration\register.html:86
+msgid "Female"
+msgstr "Женский"
+
+#: .\account\templates\registration\register.html:87
+msgid "Other"
+msgstr "Другой"
+
+#: .\account\templates\registration\register.html:93
+#: .\dating\templates\filter\search.html:23
+msgid "Relationship Goals"
+msgstr "Цели отношений"
+
+#: .\account\templates\registration\register.html:95
+msgid "Friendship"
+msgstr "Дружба"
+
+#: .\account\templates\registration\register.html:96
+msgid "Dating"
+msgstr "Встречаться"
+
+#: .\account\templates\registration\register.html:97
+msgid "Relationship"
+msgstr "Отношение"
+
+#: .\account\templates\registration\register.html:98
+msgid "Networking"
+msgstr "Сеть"
+
+#: .\account\templates\registration\register.html:106
+msgid "Get Started"
+msgstr "Начать"
+
+#: .\account\templates\setings\pay_stripe.html:9
+msgid "Replenishment of loans"
+msgstr "Пополнение кредитов"
+
+#: .\account\templates\setings\pay_stripe.html:15
+msgid "Amount of credits:"
+msgstr "Сумма кредитов:"
+
+#: .\account\templates\setings\pay_stripe.html:22
+msgid "Credit card details:"
+msgstr "Данные кредитной карты:"
+
+#: .\account\templates\setings\pay_stripe.html:31
+msgid "Top up"
+msgstr "Пополнить"
+
+#: .\albums\templates\albums\album_form.html:11
+msgid "Create album"
+msgstr "Создать альбом"
+
+#: .\albums\templates\albums\album_form.html:19
+#: .\albums\templates\albums\album_list.html:150
+msgid "Album Name"
+msgstr "Название альбома"
+
+#: .\albums\templates\albums\album_form.html:23
+#: .\albums\templates\albums\album_list.html:154
+msgid "Album Description"
+msgstr "Описание альбома"
+
+#: .\albums\templates\albums\album_form.html:33
+#: .\albums\templates\albums\album_list.html:158
+msgid "Cover photo"
+msgstr "Фото на обложке"
+
+#: .\albums\templates\albums\album_form.html:46
+#: .\albums\templates\albums\photo_form.html:55
+msgid "Create Now"
+msgstr "Создать сейчас"
+
+#: .\albums\templates\albums\album_list.html:31
+msgid "Photos of you"
+msgstr "Мои фотографии"
+
+#: .\albums\templates\albums\album_list.html:39
+msgid "Edit"
+msgstr "Редактировать"
+
+#: .\albums\templates\albums\album_list.html:55
+msgid "Create New Album"
+msgstr "Создать новый альбом"
+
+#: .\albums\templates\albums\album_list.html:72
+msgid "Add Photo"
+msgstr "Добавить фото"
+
+#: .\albums\templates\albums\album_list.html:127
+msgid "Confirmation"
+msgstr "Подтверждение"
+
+#: .\albums\templates\albums\album_list.html:128
+msgid "Are you sure you want to delete this album?"
+msgstr "Вы уверены, что хотите удалить этот альбом?"
+
+#: .\albums\templates\albums\album_list.html:129
+#: .\albums\templates\albums\photo\photo_confirm_delete.html:10
+#: .\albums\templates\albums\photo\photo_detail.html:255
+msgid "Cancel"
+msgstr "Отмена"
+
+#: .\albums\templates\albums\album_list.html:142
+msgid "Edit album"
+msgstr "Редактировать альбом"
+
+#: .\albums\templates\albums\album_list.html:165
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#: .\albums\templates\albums\list_photos.html:29
+msgid "Edit Photo"
+msgstr "Редактировать фотографию"
+
+#: .\albums\templates\albums\photo\includes\comment_form.html:7
+#: .\news\templates\news\post\includes\comment_form.html:6
+msgid "Add comment"
+msgstr "Добавить комментарий"
+
+#: .\albums\templates\albums\photo\includes\comment_form.html:16
+msgid "Add Comment...."
+msgstr "Добавить комментарий...."
+
+#: .\albums\templates\albums\photo\photo_confirm_delete.html:6
+#: .\albums\templates\albums\photo\photo_detail.html:251
+msgid "Confirm deletion"
+msgstr "Подтвердить удаление"
+
+#: .\albums\templates\albums\photo\photo_confirm_delete.html:7
+#: .\albums\templates\albums\photo\photo_detail.html:252
+msgid "Are you sure you want to delete this photo?"
+msgstr "Вы уверены, что хотите удалить это фото?"
+
+#: .\albums\templates\albums\photo\photo_confirm_delete.html:8
+#: .\albums\templates\albums\photo\photo_detail.html:253
+msgid "The action cannot be undone."
+msgstr "Действие невозможно отменить."
+
+#: .\albums\templates\albums\photo\photo_detail.html:56
+#: .\albums\templates\albums\photo\photo_detail.html:73
+msgid "Add favorites"
+msgstr "Добавить избранное"
+
+#: .\albums\templates\albums\photo\photo_detail.html:99
+msgid "Album:"
+msgstr "Альбом:"
+
+#: .\albums\templates\albums\photo\photo_detail.html:115
+#: .\dating\templates\filter\results.html:76
+#: .\dating\templates\filter\results.html:77 .\dating\templates\matches.html:72
+#: .\dating\templates\matches.html:148
+msgid "Like"
+msgstr "Нравиться"
+
+#: .\albums\templates\albums\photo\photo_detail.html:132
+msgid "Comment"
+msgstr "Комментарий"
+
+#: .\albums\templates\albums\photo\photo_detail.html:134
+msgid "Comments"
+msgstr "Комментарии"
+
+#: .\albums\templates\albums\photo\photo_detail.html:147
+msgid "You and"
+msgstr "Ты и"
+
+#: .\albums\templates\albums\photo\photo_detail.html:147
+msgid "other people liked this"
+msgstr "другим людям это понравилось"
+
+#: .\albums\templates\albums\photo\photo_detail.html:149
+#: .\albums\templates\albums\photo\photo_detail.html:152
+msgid "Liked by"
+msgstr "Понравилось"
+
+#: .\albums\templates\albums\photo\photo_detail.html:149
+#: .\albums\templates\albums\photo\photo_detail.html:152
+msgid "person(s)"
+msgstr "человек(а)"
+
+#: .\albums\templates\albums\photo\photo_detail.html:185
+#: .\chat_app\templates\chat_app\chat_list.html:71
+msgid "ago"
+msgstr "назад"
+
+#: .\albums\templates\albums\photo\photo_detail.html:193
+msgid "View"
+msgstr "Просмотреть"
+
+#: .\albums\templates\albums\photo\photo_detail.html:193
+msgid "more Comments"
+msgstr "еще Комментарии"
+
+#: .\albums\templates\albums\photo\photo_detail.html:197
+msgid "View all comments"
+msgstr "Посмотреть все комментарии"
+
+#: .\albums\templates\albums\photo_form.html:12
+msgid "New Photo"
+msgstr "Новая фотография"
+
+#: .\albums\templates\albums\photo_form.html:20
+msgid "Photo Name"
+msgstr "Название фотографии"
+
+#: .\albums\templates\albums\photo_form.html:24
+msgid "Photo Description"
+msgstr "Описание фото"
+
+#: .\albums\templates\albums\photo_form.html:28
+msgid "Photo Image"
+msgstr "Фотография"
+
+#: .\albums\templates\albums\photo_form.html:35
+msgid "Photo Album"
+msgstr "Фотоальбом"
+
+#: .\chat_app\templates\chat_app\chat_detail.html:24
+msgid "Online"
+msgstr "В сети"
+
+#: .\chat_app\templates\chat_app\chat_detail.html:85
+msgid "Pinned"
+msgstr "Закреплено"
+
+#: .\chat_app\templates\chat_app\chat_detail.html:165
+msgid "Send Imogi"
+msgstr "Отправить смайл"
+
+#: .\chat_app\templates\chat_app\chat_detail.html:400
+msgid "View profile"
+msgstr "Просмотреть профиль"
+
+#: .\chat_app\templates\chat_app\chat_detail.html:421
+msgid "UnBlock"
+msgstr "Разблокировать"
+
+#: .\chat_app\templates\chat_app\chat_detail.html:435
+msgid "Delete Chat"
+msgstr "Удалить чат"
+
+#: .\chat_app\templates\chat_app\chat_list.html:28
+msgid "Mark all as read"
+msgstr "отметить все как прочитанное"
+
+#: .\dating\templates\filter\results.html:34 .\dating\templates\matches.html:46
+#: .\dating\templates\matches.html:122 .\dating\templates\matches.html:193
+msgid "years"
+msgstr "годы"
+
+#: .\dating\templates\filter\results.html:85 .\dating\templates\matches.html:84
+#: .\dating\templates\matches.html:160 .\dating\templates\matches.html:239
+msgid "Start a chat with a user"
+msgstr "Начать чат с пользователем"
+
+#: .\dating\templates\filter\results.html:86
+msgid "Start chat"
+msgstr "Начать Чат"
+
+#: .\dating\templates\filter\search.html:18
+msgid "People nearby"
+msgstr "Люди неподалеку"
+
+#: .\dating\templates\filter\search.html:58
+msgid "Age range:"
+msgstr "Возрастной диапазон:"
+
+#: .\dating\templates\filter\search.html:66
+msgid "Height"
+msgstr "Рост"
+
+#: .\dating\templates\filter\search.html:72
+#: .\dating\templates\filter\search.html:84
+#: .\dating\templates\filter\search.html:103
+#: .\dating\templates\filter\search.html:122
+#: .\dating\templates\filter\search.html:141
+#: .\dating\templates\filter\search.html:160
+#: .\dating\templates\filter\search.html:179
+#: .\dating\templates\filter\search.html:198
+#: .\dating\templates\filter\search.html:218
+#: .\dating\templates\filter\search.html:237
+#: .\dating\templates\filter\search.html:256
+#: .\dating\templates\filter\search.html:275
+#: .\dating\templates\filter\search.html:295
+#: .\dating\templates\filter\search.html:314
+#: .\dating\templates\filter\search.html:333
+#: .\dating\templates\filter\search.html:352
+#: .\dating\templates\filter\search.html:372
+#: .\dating\templates\filter\search.html:391
+msgid "Only premium"
+msgstr "Только премиум"
+
+#: .\dating\templates\filter\search.html:78
+msgid "Weight"
+msgstr "Вес"
+
+#: .\dating\templates\filter\search.html:89
+msgid "Smoking"
+msgstr "Курение"
+
+#: .\dating\templates\filter\search.html:108
+msgid "Physique"
+msgstr "Телосложение"
+
+#: .\dating\templates\filter\search.html:127
+msgid "Alcohol"
+msgstr "Алкоголь"
+
+#: .\dating\templates\filter\search.html:146
+msgid "Tatu"
+msgstr "Тату"
+
+#: .\dating\templates\filter\search.html:165
+msgid "Piercing"
+msgstr "Пирсинг"
+
+#: .\dating\templates\filter\search.html:184
+msgid "Scars"
+msgstr "Шрамы"
+
+#: .\dating\templates\filter\search.html:204
+msgid "Personality type"
+msgstr "Тип личности"
+
+#: .\dating\templates\filter\search.html:223
+msgid "Relationship status"
+msgstr "Семейное положение"
+
+#: .\dating\templates\filter\search.html:242
+msgid "Sexual orientation"
+msgstr "Сексуальная ориентация"
+
+#: .\dating\templates\filter\search.html:261
+msgid "Children"
+msgstr "Дети"
+
+#: .\dating\templates\filter\search.html:281
+msgid "Zodiac_sign"
+msgstr "Знак зодиака"
+
+#: .\dating\templates\filter\search.html:300
+msgid "Animals"
+msgstr "Животные"
+
+#: .\dating\templates\filter\search.html:319
+msgid "Religion"
+msgstr "Религия"
+
+#: .\dating\templates\filter\search.html:338
+msgid "Languages"
+msgstr "Языки"
+
+#: .\dating\templates\filter\search.html:358
+msgid "Education level"
+msgstr "Уровень образования"
+
+#: .\dating\templates\filter\search.html:377
+msgid "Work and education"
+msgstr "Работа и Образование"
+
+#: .\dating\templates\filter\search.html:402
+msgid "Show results"
+msgstr "Показать результаты"
+
+#: .\dating\templates\matches.html:15
+msgid "Acquaintance"
+msgstr "Знакомство"
+
+#: .\dating\templates\matches.html:16
+msgid "Requests"
+msgstr "Запросы"
+
+#: .\dating\templates\matches.html:60
+msgid "Send a request for an acquaintance"
+msgstr "Отправить заявку на знакомство"
+
+#: .\dating\templates\matches.html:135
+msgid "Cancel dating request"
+msgstr "Отменить запрос"
+
+#: .\gift\templates\buy_gift.html:38
+msgid "Categories:"
+msgstr "Категории:"
+
+#: .\gift\templates\buy_gift.html:46
+msgid "Choose recipient:"
+msgstr "Выберите получателя:"
+
+#: .\gift\templates\buy_gift.html:54
+msgid "Confirm Purchase"
+msgstr "Подтвердите покупку"
+
+#: .\gift\templates\gift_shop.html:11
+msgid "Products"
+msgstr "Продукты"
+
+#: .\gift\templates\gift_shop.html:16
+msgid "All"
+msgstr "Все"
+
+#: .\gift\templates\gift_shop.html:46
+msgid "Label"
+msgstr "Этикетка"
+
+#: .\gift\templates\gift_shop.html:77
+msgid "Categories"
+msgstr "Категории"
+
+#: .\gift\templates\gift_shop.html:78
+msgid "Find a group by browsing top categories."
+msgstr "Найдите группу, просматривая верхние категории."
+
+#: .\gift\templates\gift_shop.html:109
+msgid "New Collection"
+msgstr "Новая коллекция"
+
+#: .\news\templates\news\post\includes\comment_form.html:2
+msgid "Add a new comment"
+msgstr "Добавить новый комментарий"
+
+#: .\news\templates\news\post\list.html:4
+msgid "News"
+msgstr "Новости"
+
+#: .\news\templates\news\post\list.html:28
+msgid "Published:"
+msgstr "Опубликовано:"
+
+#: .\news\templates\news\post\list.html:56
+msgid "Tags"
+msgstr "Теги"
+
+#: .\news\templates\news\post\list.html:60
+msgid "Posts tagged with"
+msgstr "Сообщения с тегами"
+
+#: .\news\templates\pagination.html:5
+msgid "Previous"
+msgstr "Предыдущий"
+
+#: .\news\templates\pagination.html:8
+msgid "Page"
+msgstr "Страница"
+
+#: .\news\templates\pagination.html:8
+msgid "of"
+msgstr "из"
+
+#: .\news\templates\pagination.html:11
+msgid "Next"
+msgstr "Следующий"
+
+#~ msgid "for someone"
+#~ msgstr "для кого-то"
+
+#~ msgid "Price:"
+#~ msgstr "Цена:"
+
+#~ msgid "points"
+#~ msgstr "точки"

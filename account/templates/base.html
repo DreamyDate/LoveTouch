@@ -1,0 +1,1712 @@
+{% load static %}
+{% load i18n %}
+{% load thumbnail %}
+{% load custom_tags %}
+
+<!DOCTYPE html>
+<html lang="en" class="night-mode hydrated">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+    <!-- Favicon -->
+    <link href="{% static 'images/favicon.png' %}" rel="icon" type="image/png">
+
+    <!-- Basic Page Needs
+        ================================================== -->
+    <title>{% block title %}{% endblock %}</title>
+
+    <meta name="description" content="LoveTouch">
+
+    <!-- icons
+    ================================================== -->
+    <link rel="stylesheet" href="{% static 'css/icons.css' %}">
+
+    <!-- CSS 
+    ================================================== -->
+    <link rel="stylesheet" href="{% static 'css/uikit.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
+
+
+    <script src="{% static 'js/uikit.js' %}"></script>
+
+</head>
+
+<body data-new-gr-c-s-check-loaded="14.1121.0" data-gr-ext-installed="" class="" style>
+
+
+    <div id="wrapper" class>
+        {% include 'account/header.html' %}
+        {% include 'setings/menu.html' %}
+
+        {% block content %}
+        {% endblock %}
+        <audio id="notificationSound" src="{% static 'sound/notification.mp3' %}" preload="auto"></audio>
+        {% include 'account/birthdays_modal.html' %}
+        {% include 'account/status/status_read.html' %}
+        {% include 'setings/messages.html' %}
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- jQuery UI -->
+
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+    <script src="{% static 'js//tippy.all.min.js' %}"></script>
+
+    <script src="{% static 'js/simplebar.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+    <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+    <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+  
+
+    {% if request.user.profile.night_mode %}
+    <script>
+        document.documentElement.classList.add('dark');
+    </script>
+    {% endif %}
+    <script>
+        (function (window, document, undefined) {
+            'use strict';
+            if (!('localStorage' in window)) return;
+            var nightMode = localStorage.getItem('gmtNightMode');
+            var pastelMode = localStorage.getItem('gmtPastelMode');
+            if (pastelMode) {
+                document.documentElement.className += ' pastel-mode';
+            }
+            if (nightMode) {
+                document.documentElement.className += ' night-mode';
+            }
+        })(window, document);
+
+        (function (window, document, undefined) {
+
+            'use strict';
+
+            // Feature test
+            if (!('localStorage' in window)) return;
+
+            // Get our newly insert toggle
+            var pastelMode = document.querySelector('#pastel-mode');
+            if (!pastelMode) return;
+
+            // When clicked, toggle pastel mode on or off
+            pastelMode.addEventListener('click', function (event) {
+                event.preventDefault();
+                document.documentElement.classList.toggle('pastel');
+                var isPastelMode = document.documentElement.classList.contains('pastel');
+                if (isPastelMode) {
+                    localStorage.setItem('gmtPastelMode', true);
+                } else {
+                    localStorage.removeItem('gmtPastelMode');
+                }
+
+                // AJAX to update profile pastel_mode
+                $.post("/account/update_mode/", { night_mode: isPastelMode });
+            }, false);
+
+        })(window, document);
+
+        (function (window, document, undefined) {
+
+            'use strict';
+
+            // Feature test
+            if (!('localStorage' in window)) return;
+
+            // Get our newly insert toggle
+            var nightMode = document.querySelector('#night-mode');
+            if (!nightMode) return;
+
+            // When clicked, toggle night mode on or off
+            nightMode.addEventListener('click', function (event) {
+                event.preventDefault();
+                document.documentElement.classList.toggle('dark');
+                var isNightMode = document.documentElement.classList.contains('dark');
+                if (isNightMode) {
+                    localStorage.setItem('gmtNightMode', true);
+                } else {
+                    localStorage.removeItem('gmtNightMode');
+                }
+
+                // AJAX to update profile night_mode
+                $.post("/account/update_mode/", { night_mode: isNightMode });
+            }, false);
+
+
+        })(window, document);
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            $(".like-button").click(function (event) {
+                event.preventDefault();
+
+                let photo_id = $(this).data("photo-id");
+                const url = $(this).data("url");
+                let button = $(this);  // Создаем переменную для кнопки
+
+                $.ajax({
+                    url: url,
+                    data: {
+                        photo_id: photo_id,
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },
+                    type: 'post',
+                    success: function (response) {
+                        if (response.status == 'ok') {
+                            // Обновляем количество лайков
+                            let likesCountElement = button.closest(".photo").find(".likes-count"); // Используем переменную для кнопки
+                            likesCountElement.text(response.likes_count);
+
+                            // Обновляем текст кнопки в зависимости от действия
+                            if (response.action == 'liked') {
+                                button.text("Unlike"); // Используем переменную для кнопки
+                            } else if (response.action == 'unliked') {
+                                button.text("Like"); // Используем переменную для кнопки
+                            }
+                        }
+                    }
+                });
+            });
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Получаем токен CSRF
+            var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+            // Устанавливаем заголовок для всех AJAX-запросов
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+
+            // Обработчик клика по кнопке "Like"
+            $('.like-button').click(function () {
+                var statusId = $(this).data('status-id');
+
+                $.ajax({
+                    url: '/account/like_status/' + statusId + '/',
+                    method: 'GET',
+                    success: function (data) {
+                        var $icon = $('i[data-status-id="' + statusId + '"]');
+
+                        if (data.liked) {
+                            $icon.removeClass('icon-material-outline-favorite-border').addClass('icon-material-outline-favorite');
+                        } else {
+                            $icon.removeClass('icon-material-outline-favorite').addClass('icon-material-outline-favorite-border');
+                        }
+
+                        $('p[data-status-id="' + statusId + '"]').text(data.likes_count);
+                    },
+                    error: function () {
+                        alert('Ошибка при изменении лайка.');
+                    }
+                });
+            });
+
+
+            $(document).ready(function () {
+                // Функция для загрузки комментариев
+                function loadComments(statusId, commentsContainer, loadAll = false) {
+                    $.ajax({
+                        url: `/account/get_comments/${statusId}/?loadAll=${loadAll}`,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (response) {
+                            console.log(response);
+                            if (response.success) {
+                                commentsContainer.empty();  // Очищаем текущий контент контейнера комментариев
+                                response.comments.forEach(comment => {
+                                   let photoURL = comment.photo_url || 'images/affect.jpg';
+
+                                    
+                                    let commentHTML = `
+                        <div class="flex">
+                            <div class="w-10 h-10 rounded-full relative flex-shrink-0">
+                                <img src="${photoURL}" alt="" class="absolute h-full rounded-full w-full">
+                            </div>
+                            <div>
+                                <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12 dark:bg-gray-800 dark:text-gray-100">
+                                    <p class="leading-6">${comment.text}</p>
+                                    <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800"></div>
+                                </div>
+                                <div class="text-sm flex items-center space-x-3 mt-2 ml-5">
+                                    
+                                    <span>${comment.created_date}</span>
+                                </div>
+                            </div>
+                        </div>`;
+
+                                    commentsContainer.append(commentHTML);
+                                });
+                            } else {
+                                // Обработка ошибок (если response.success == false)
+                                alert('Error loading comments.');
+                            }
+                        }
+                    });
+                }
+
+                $(document).on('click', '.view-more-comments', function (e) {
+                    e.preventDefault();
+
+                    const statusId = $(this).data('status-id');
+                    const commentsContainer = $(`.comments-section[data-status-id="${statusId}"]`);
+                    const isCurrentlyLoadedAll = $(this).attr('data-load-all') === 'true';
+
+                    if (isCurrentlyLoadedAll) {
+                        $(this).attr('data-load-all', 'false');
+                        $(this).text('View more Comments');
+                        loadComments(statusId, commentsContainer, false);
+                    } else {
+                        $(this).attr('data-load-all', 'true');
+                        $(this).text('Hide Comments');
+                        loadComments(statusId, commentsContainer, true);
+                    }
+                })
+
+            });
+
+            // Обработчик отправки формы комментария
+
+            $('#submitLink').on('click', function (e) {
+                e.preventDefault();
+                $(this).closest('form').submit();
+                $('input[name="text"]').val('');
+            });
+            $('.comments-form-container form').on('submit', function (e) {
+                e.preventDefault();
+
+                var form = $(this);
+                var statusId = form.data('status-id');
+
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'POST',
+                    data: form.serialize(),
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.success) {
+                            let userPhotoUrl = data.comment.user.photo ? data.comment.user.photo.url : "images/affect.jpg";
+                            let newCommentHtml = `
+                    <div class="flex">
+                        <div class="w-10 h-10 rounded-full relative flex-shrink-0">
+                            <img src="${userPhotoUrl}" alt="" class="absolute h-full rounded-full w-full">
+                        </div>
+                        <div>
+                            <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12  dark:bg-gray-800 dark:text-gray-100">
+                                <p class="leading-6">${data.comment.text}</p>
+                            </div>
+                            <div class="text-sm flex items-center space-x-3 mt-2 ml-5">
+                               
+                                <span>${data.comment.created_date}</span>
+                            </div>
+                        </div>
+                    </div>`;
+                            $(`.comments-section[data-status-id="${statusId}"]`).append(newCommentHtml);
+
+                            $('.comment-counter[data-status-id="' + data.status_id + '"]').text(data.comments_count);
+                        } else {
+                            alert("Произошла ошибка при добавлении комментария.");
+                        }
+                    },
+                    error: function () {
+                        alert("Произошла ошибка на сервере.");
+                    }
+                });
+            });
+        });
+
+
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let fileUpload = document.createElement('input');
+            fileUpload.type = 'file';
+            fileUpload.style.display = 'none';  // чтобы элемент выбора файла был скрытым
+            document.body.appendChild(fileUpload);
+
+            let imgElements = document.querySelectorAll('img.is_avatar, .profile_avatar_holder img');  // обновленный селектор
+
+            fileUpload.addEventListener('change', function () {
+                let formData = new FormData();
+                formData.append('file', this.files[0]);
+
+                fetch('{% url "upload_avatar" %}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Ошибка при загрузке файла');
+                    }
+                }).then(data => {
+                    imgElements.forEach(img => {
+                        img.src = data.image_url;  // обновление src всех нужных изображений
+                    });
+                }).catch(error => {
+                    console.error(error);
+                });
+            });
+
+            let changePhotoIcon = document.querySelector('.icon_change_photo');
+            if (changePhotoIcon) {
+                changePhotoIcon.addEventListener('click', function () {
+                    fileUpload.click();  // вызовет диалоговое окно выбора файла
+                });
+            }
+        });
+
+
+    </script>
+
+
+    <script>
+        function updateFileLabel(input) {
+            const fileLabel = document.getElementById('fileLabel');
+            if (input.files.length > 0) {
+                fileLabel.textContent = input.files[0].name; // Отображение имени файла
+            } else {
+                fileLabel.textContent = 'Add to your post'; // Восстановление стандартного текста
+            }
+        }
+    </script>
+    <script>
+        document.addEventListener('click', function (event) {
+            if (event.target.closest('.edit-status-link')) {
+                var statusContainer = event.target.closest('.status-container');
+                if (statusContainer) {
+                    var statusContent = statusContainer.querySelector('.status-text').innerText;
+                    var editContentElement = document.getElementById('status-edit-content');
+                    if (editContentElement) {
+                        editContentElement.value = statusContent;
+
+                        // Открываем модальное окно
+                        var modalElement = document.getElementById('edit-status-modal');
+                        if (modalElement) {
+                            UIkit.modal(modalElement).show();
+                        }
+                    }
+                }
+            }
+        });
+
+        var editStatusForm = document.getElementById('edit-status-form');
+        if (editStatusForm) {
+            editStatusForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+                var formData = new FormData(event.target);
+                // Здесь отправьте данные формы на сервер и обновите статус на странице
+            });
+        }
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Удаление фото
+            $(".delete-photo-btn").click(function (event) {
+                event.preventDefault();  // Это предотвратит стандартное поведение элемента
+                var photoId = $(this).data("photo-id");
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'delete_photo' %}",
+                    data: {
+                        'photo_id': photoId,
+                        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.success) {
+                            $("#" + photoId).remove();  // Это удалит ваш блок с id="{{ photo.id }}"
+
+                            // Обновите количество фотографий в элементе <li>
+                            $("li.uk-active span").text(" " + response.total_photos);
+                        } else {
+                            alert("Ошибка при удалении: " + response.error);
+                        }
+                    },
+                    error: function (error) {
+                        alert("Ошибка запроса: " + error.statusText);
+                    }
+                });
+            });
+
+        });
+
+    </script>
+
+    <script>
+
+        var albumToDelete;
+
+        $(".delete-album-btn").click(function (event) {
+            event.preventDefault();
+            albumToDelete = $(this).data("delete-id");
+            deleteUrl = $(this).data("delete-url"); // Получаем URL из данных
+            UIkit.modal("#delete-modal").show();
+        });
+
+        $("#confirm-delete").click(function () {
+            $.ajax({
+                type: "POST",
+                url: deleteUrl, // Используем сохраненный URL
+                data: {
+                    'album_id': albumToDelete,
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+                },
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        UIkit.modal("#delete-modal").hide();   // Скрываем модальное окно
+                        location.reload(); // Перезагружаем страницу
+                    } else {
+                        alert("Ошибка при удалении: " + response.error);
+                    }
+                },
+                error: function (error) {
+                    alert("Ошибка запроса: " + error.statusText);
+                }
+            });
+        });
+
+
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $(".edit-album-btn").click(function (event) {
+                event.preventDefault();
+
+                let title = $(this).data("title");
+                let description = $(this).data("description");
+                let coverPhotoId = $(this).data("cover-photo-id");  // Получаем ID обложки
+                let editUrl = $(this).data("edit-url");
+
+                $("#album-edit-form input[name='title']").val(title);
+                $("#album-edit-form textarea[name='description']").val(description);
+                $("#album-edit-form select[name='cover_photo']").val(coverPhotoId);  // Устанавливаем обложку как выбранное значение
+
+                $("#album-edit-form").attr("action", editUrl);
+                UIkit.offcanvas("#offcanvas-edit-album").show();
+            });
+
+            // Обработка отправки формы редактирования
+            $("#album-edit-form").submit(function (event) {
+                event.preventDefault();
+
+                let form = $(this);
+                let formData = new FormData(this);
+
+                $.ajax({
+                    url: form.attr("action"),
+                    method: "POST",
+                    data: formData,
+                    processData: false,  // указывает, что объект не следует преобразовывать в строку запроса
+                    contentType: false,  // указывает, что контент не должен быть установлен с заголовком Content-Type запроса
+                    success: function (response) {
+                        if (response.status === 'success') {
+                            UIkit.offcanvas("#offcanvas-edit-album").hide();  // Закрыть offcanvas окно
+                            UIkit.notification({ message: response.message, status: 'success' });
+                            location.reload();
+                            // Здесь вы можете также обновить любые поля на странице, которые изменились, без перезагрузки страницы
+                        } else {
+                            // Обработка ошибок, возвращенных с сервера
+                            let errors = response.errors;
+                            let errorMsg = "";
+                            $.each(errors, function (key, value) {
+                                errorMsg += key + ": " + value + "<br>";
+                            });
+                            UIkit.notification({ message: errorMsg, status: 'danger' });
+                        }
+                    },
+                    error: function (error) {
+                        // Обработка ошибок, которые могли возникнуть при отправке AJAX-запроса
+                        UIkit.notification({ message: "An error occurred while processing the request.", status: 'danger' });
+                    }
+                });
+            });
+        });
+
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $(".edit-photo-btn").click(function (event) {
+                event.preventDefault();
+
+                let title = $(this).data("title");
+                let description = $(this).data("description");
+                let imageId = $(this).data("image-id");  // Получаем ID изображения
+                let albumId = $(this).data("album-id");  // Получаем ID альбома
+                let editUrl = $(this).data("edit-url");
+
+                $("#photo-edit-form input[name='title']").val(title);
+                $("#photo-edit-form textarea[name='description']").val(description);
+                $("#photo-edit-form select[name='image']").val(imageId);  // Устанавливаем изображение как выбранное значение
+                $("#photo-edit-form select[name='album']").val(albumId);  // Устанавливаем альбом как выбранное значение
+
+                $("#photo-edit-form").attr("action", editUrl);
+                UIkit.offcanvas("#offcanvas-edit-photo").show();
+            });
+
+            // Обработка отправки формы редактирования фотографии
+            $("#photo-edit-form").submit(function (event) {
+                event.preventDefault();
+
+                let form = $(this);
+                let formData = new FormData(this);
+
+                $.ajax({
+                    url: form.attr("action"),
+                    method: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.status === 'success') {
+                            UIkit.offcanvas("#offcanvas-edit-photo").hide();  // Закрыть offcanvas окно
+                            UIkit.notification({ message: response.message, status: 'success' });
+                            location.reload();
+                            // Здесь вы можете также обновить любые поля на странице, которые изменились, без перезагрузки страницы
+                        } else {
+                            let errors = response.errors;
+                            let errorMsg = "";
+                            $.each(errors, function (key, value) {
+                                errorMsg += key + ": " + value + "<br>";
+                            });
+                            UIkit.notification({ message: errorMsg, status: 'danger' });
+                        }
+                    },
+                    error: function (error) {
+                        UIkit.notification({ message: "An error occurred while processing the request.", status: 'danger' });
+                    }
+                });
+            });
+
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Получаем CSRF-токен из скрытого input'а
+            var csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+
+            // Настраиваем AJAX, чтобы отправлять CSRF-токен в заголовке каждого запроса
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRFToken': csrfToken
+                }
+            });
+
+            let isLiked = $("#like-btn-photo").attr('data-liked') === 'True';
+            updateLikeButtonState(isLiked);
+
+            $("#like-btn-photo").click(function (e) {
+                e.preventDefault();
+                let photoId = $(this).data('photo-id');
+
+                $.post(`/albums/api/photo/${photoId}/like/`, { liked: isLiked }, function (data) {
+                    isLiked = data.is_liked;
+                    updateLikeButtonState(isLiked);
+                    updateLikesInfo(photoId, data); // Передаем данные прямо из ответа сервера
+                }).fail(function () {
+                    alert('Ошибка при попытке поставить лайк. Попробуйте позже.');
+                });
+            });
+
+            function updateLikeButtonState(isLiked) {
+                if (isLiked) {
+                    $("#like-text").text("Unlike");
+                    $("#like-btn-photo").attr('data-liked', 'True').addClass('liked');
+                } else {
+                    $("#like-text").text("Like");
+                    $("#like-btn-photo").attr('data-liked', 'False').removeClass('liked');
+                }
+            }
+
+            function updateLikesInfo(photoId, data) {
+                if (data.is_liked) {
+                    $('#likers-section').text(`Вы и еще ${data.likes_count - 1} человек(а) лайкнули это`);
+                } else {
+                    $('#likers-section').text(`Лайкнули ${data.likes_count} человек(а)`);
+                }
+            }
+
+        });
+
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#submitCommentLink").click(function (event) {
+                event.preventDefault(); // предотвращаем переход по ссылке
+                // Обновляем количество комментариев и текст "Comment" или "Comments"
+                let commentCountElement = $("#comment-count");
+                let commentTextElement = $("#comment-text");
+                let currentCommentCount = parseInt(commentCountElement.text());
+                // Здесь мы предполагаем, что ваша форма имеет ID "comment-form"
+                $.ajax({
+                    type: 'POST',
+                    url: $("#comment-form").attr('action'),  // URL из атрибута action формы
+                    data: $("#comment-form").serialize(),  // сериализуем данные формы
+                    dataType: 'json',  // тип данных, который мы ожидаем получить от сервера
+                    success: function (response) {
+                        // Если сервер вернул положительный ответ
+                        let commentData = response.comment_data;
+                        let userAvatar = commentData.user_profile_photo ? commentData.user_profile_photo : "images/affect.jpg";
+                        let newCommentHTML = `
+                    <div class="border-t py-4 space-y-4 dark:border-gray-600">
+                        <div class="flex">
+                            <div class="w-10 h-10 rounded-full relative flex-shrink-0">
+                                <img src="${userAvatar}" alt="${commentData.user_full_name}" class="absolute h-full rounded-full w-full">
+                                    
+                            </div>
+                            <div>
+                                <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12  dark:bg-gray-800 dark:text-gray-100">
+                                    <p class="leading-6">${commentData.text}</p>
+                                    <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800"></div>
+                                </div>
+                                <div class="text-sm flex items-center space-x-3 mt-2 ml-5">
+                                   
+                                    <span> Just now </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                        $("#commentsList").prepend(newCommentHTML);  // добавляем новый комментарий к списку комментариев
+                        $("input[name='text']").val('');
+                        // Обновляем количество комментариев
+                        let currentCommentCount = parseInt($("#comment-count").text());
+                        let newCommentCount = currentCommentCount + 1;
+                        $("#comment-count").text(newCommentCount);  // Обновляем количество комментариев
+
+                        // Обновляем текст "Comment" или "Comments"
+                        if (newCommentCount === 1) {
+                            $("#comment-text").text("Comment");
+                        } else {
+                            $("#comment-text").text("Comments");
+                        }
+                    },
+                    error: function (response) {
+                        // Если сервер вернул ошибку
+                        let errors = response.responseJSON.errors;
+                        let errorMessage = "";
+                        for (let field in errors) {
+                            errorMessage += errors[field] + "\n";
+                        }
+                        alert(errorMessage);
+                    }
+                });
+            });
+        });
+
+
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var deleteModal = document.getElementById('delete-photo-modal'); // Получить элемент модального окна
+            var deleteLinks = document.querySelectorAll('.delete-photo-link');
+            var csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+
+
+            deleteLinks.forEach(function (link) {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var photoId = link.getAttribute('data-photo-id');
+                    UIkit.modal(deleteModal).show();
+
+                    // Обработка клика на кнопке "Удалить" в модальном окне
+                    var confirmDeleteButton = document.getElementById('confirm-delete-button');
+                    confirmDeleteButton.addEventListener('click', function () {
+                        UIkit.modal(deleteModal).hide();
+
+                        // Отправка Ajax-запроса на удаление фотографии
+                        fetch('/albums/delete_photo/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'X-CSRFToken': csrfToken
+                            },
+                            body: 'photo_id=' + encodeURIComponent(photoId)
+                        })
+                            .then(function (response) {
+                                return response.json();
+                            })
+                            .then(function (data) {
+                                if (data.success) {
+                                    // Фотография успешно удалена, выполните необходимые действия
+                                    // например, обновление интерфейса или перенаправление пользователя
+                                    window.location.href = '/albums/'; // Замените '/albums_list/' на ваш URL-адрес успешного удаления
+                                } else {
+                                    alert("Ошибка удаления фотографии: " + data.error);
+                                }
+                            })
+                            .catch(function (error) {
+                                console.error("Ошибка при выполнении запроса: " + error);
+                            });
+                    });
+                });
+            });
+        });
+
+
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('.view-more-comments-photo').click(function (event) {
+                event.preventDefault();
+
+                var link = $(this);
+                var photoId = link.data('photo-id');
+                var commentsContainer = $('#commentsList');
+
+                if (link.text() === "Скрыть комментарии") {
+                    $.ajax({
+                        url: `/albums/photo/${photoId}/all_comments/`,
+                        data: { limit: 5 },  // Отправляем лимит
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (response) {
+                            commentsContainer.empty();
+                            appendComments(response);
+                            link.text("Показать комментарии");
+                        },
+                        error: function (error) {
+                            console.error("Ошибка при получении комментариев:", error);
+                        }
+                    });
+                    return;
+                }
+
+                $.ajax({
+                    url: `/albums/photo/${photoId}/all_comments/`,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
+                        commentsContainer.empty();
+                        appendComments(response);
+                        link.text("Скрыть комментарии");
+                    },
+                    error: function (error) {
+                        console.error("Ошибка при получении комментариев:", error);
+                    }
+                });
+            });
+
+            function appendComments(response) {
+                $.each(response.comments, function (index, comment) {
+                    var timeAgo = moment(comment.created_at, 'YYYY-MM-DD HH:mm:ss').fromNow();
+                    var commentHtml = `
+                <div class="border-t py-4 space-y-4 dark:border-gray-600">
+                    <div class="flex">
+                        <div class="w-10 h-10 rounded-full relative flex-shrink-0">
+                          <img src="${comment.user__photo}" alt="${comment.user__username}" class="absolute h-full rounded-full w-full">
+                        </div>
+                        <div>
+                            <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12  dark:bg-gray-800 dark:text-gray-100">
+                                <p class="leading-6">${comment.text}</p>
+                                <div class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800"></div>
+                            </div>
+                            <div class="text-sm flex items-center space-x-3 mt-2 ml-5">
+                                <span>${timeAgo}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+                    $('#commentsList').append(commentHtml);
+                });
+            }
+        });
+
+    </script>
+
+    <script>
+
+        $(document).on('click', '.reject-match-btn', function (e) {
+            // Получаем CSRF-токен из скрытого input'а
+            var csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+
+            // Настраиваем AJAX, чтобы отправлять CSRF-токен в заголовке каждого запроса
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRFToken': csrfToken
+                }
+            });
+            e.preventDefault();
+            const matchId = $(this).data('match-id');  // Убедитесь, что у кнопки есть атрибут data-match-id
+            $.ajax({
+                url: `/path-to-reject-match/${matchId}/`,  // Замените на ваш URL
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status === 'success') {
+                        $(`li[data-match-id="${matchId}"]`).remove();  // Удаляем элемент списка
+                    } else {
+                        alert('Произошла ошибка при отклонении запроса.');
+                    }
+                }
+            });
+        });
+
+    </script>
+
+
+    <script>
+        function markAsRead(notificationId) {
+            fetch(`/notification/mark-as-read/${notificationId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        // Уведомление было помечено как прочитанное
+                    }
+                });
+        }
+
+    </script>
+
+
+
+    <script>
+        let sendingFile = false;
+
+        function selectImage() {
+            sendingFile = true;
+            document.getElementById('file-chat').setAttribute('accept', '.jpg, .jpeg, .png');
+            document.getElementById('file-chat').click();
+        }
+
+
+
+        function selectDocument() {
+            document.getElementById('file-chat').setAttribute('accept', '.pdf, .doc, .docx');
+            document.getElementById('file-chat').click();
+        }
+
+        function selectGift() {
+            // Логика для выбора подарка (выбор изображения подарка, например)
+        }
+
+        function displayFileName(fileName) {
+            const messageInput = document.getElementById('message-input');
+            if (messageInput) {
+                messageInput.value = `${fileName}`;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+
+
+            let socket = null;  // Глобальная переменная для WebSocket
+
+            function connectWebSocket(room_id) {
+                var domain = window.location.host;
+                var scheme = window.location.protocol == "https:" ? "wss:" : "ws:";
+
+
+                socket = new WebSocket(scheme + "//" + domain + "/ws/chat/" + room_id + "/");
+
+                socket.onopen = function (event) {
+                    console.log("WebSocket соединение установлено.");
+                };
+
+                socket.onmessage = function (event) {
+                    var data = JSON.parse(event.data);
+
+                    appendMessageToChat(data);
+                    scrollToBottom();
+                    // Здесь вы можете добавить логику для отображения принятых сообщений в пользовательском интерфейсе.
+                };
+
+                socket.onerror = function (error) {
+                    console.error("WebSocket Error:", error);
+                };
+
+                socket.onclose = function (event) {
+                    if (event.wasClean) {
+                        console.log("Соединение закрыто чисто");
+                    } else {
+                        console.error("Соединение прервано");
+                    }
+                    console.log("Код: " + event.code + ", причина: " + event.reason);
+                };
+            }
+
+            function scrollToBottom() {
+                const chatContainer = document.querySelector('.message-content-scrolbar[data-simplebar]');
+
+                if (chatContainer && chatContainer.SimpleBar) {
+                    chatContainer.SimpleBar.getScrollElement().scrollTop = chatContainer.SimpleBar.getContentElement().scrollHeight;
+                }
+            }
+
+
+
+            function addMessageSendHandler() {
+                const messageForm = document.getElementById('message-form');
+                const messageInput = document.getElementById('message-input');
+                const userId = document.getElementById('currentUserId').value;
+                messageForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    if (!sendingFile && socket) {
+                        socket.send(JSON.stringify({
+                            'message': messageInput.value,
+                            'sender_id': userId
+                        }));
+                    }
+                    messageInput.value = '';  // Очищаем поле ввода
+                });
+            }
+            function addDeleteChatHandler() {
+                const deleteChatButtons = document.querySelectorAll('.deletechat');
+                var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
+                if (deleteChatButtons.length > 0) {
+                    deleteChatButtons.forEach(button => {
+                        button.addEventListener('click', function (event) {
+                            event.preventDefault();
+
+                            const chatId = this.getAttribute('data-chat-id');
+
+                            fetch(`/chat/delete_chat/${chatId}/`, {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRFToken': csrfToken
+                                }
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.status === "success") {
+                                        location.reload();
+                                    } else {
+                                        console.error("Ошибка при удалении чата");
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Ошибка:', error);
+                                });
+                        });
+                    });
+                } else {
+                    console.error("Элементы с классом .deletechat не найдены на странице.");
+                }
+            }
+
+            function addBlock() {
+                $(document).ready(function () {
+                    $('.block-user-btn').on('click', function () {
+                        var userId = $(this).data('user-id');
+                        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
+                        $.ajax({
+                            type: 'POST',
+                            url: `/chat/block-user/${userId}/`,  // Соответствующий URL пути для блокировки пользователя в разделе чата
+                            data: {
+                                user_id: userId,
+                                csrfmiddlewaretoken: csrfToken
+                            },
+                            headers: {
+                                'X-CSRFToken': csrfToken
+                            },
+                            success: function (response) {
+                                location.reload();
+                            },
+                            error: function (error) {
+                                location.reload();
+                            }
+                        });
+                    });
+                });
+            }
+
+            function unblockUser() {
+                $(document).ready(function () {
+                    $('.unblock-user-btn').on('click', function () {
+                        var userId = $(this).data('user-id');
+                        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
+                        $.ajax({
+                            type: 'POST',
+                            url: `/chat/unblock-user/${userId}/`,
+                            data: {
+                                user_id: userId,
+                                csrfmiddlewaretoken: csrfToken
+                            },
+                            headers: {
+                                'X-CSRFToken': csrfToken
+                            },
+                            success: function (response) {
+                                location.reload();  // Обновить страницу после разблокировки
+                            },
+                            error: function (error) {
+                                location.reload();  // Обновить страницу при ошибке
+                            }
+                        });
+                    });
+                });
+            }
+
+
+
+            // Находим все ссылки чатов
+            const chatLinks = document.querySelectorAll('.messages-inbox-inner a');
+
+            chatLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+
+                    const chatUrl = this.getAttribute('href');
+                    const chatId = chatUrl.split("/").slice(-2, -1)[0];  // Получаем ID чата из URL
+
+                    fetch(chatUrl)
+                        .then(response => response.text())
+                        .then(data => {
+                            const messageContent = document.querySelector('.message-content');
+                            messageContent.innerHTML = data;
+
+                            addDeleteChatHandler();
+                            addBlock();
+                            unblockUser();
+
+                            addMessageSendHandler();
+                            smile();
+                            filechat();
+
+
+                            // Устанавливаем WebSocket соединение для выбранного чата
+                            if (socket) {
+                                socket.close();  // Закрываем предыдущее соединение, если оно было установлено
+                            }
+                            connectWebSocket(chatId);
+                        })
+                        .catch(error => {
+                            console.error('Ошибка:', error);
+                        });
+                });
+            });
+
+            function smile() {
+                const smileyPanel = document.querySelector('.smiley-panel');
+
+                const messageInput = document.getElementById('message-input');
+
+                smileyPanel.addEventListener('click', function (event) {
+                    if (event.target.dataset.smiley) {
+                        // Получите смайлик-команду из data-атрибута смайлика
+                        const smileyCommand = event.target.dataset.smiley;
+
+                        // Вставьте смайлик-команду в поле ввода сообщения
+                        messageInput.value += smileyCommand;
+                    }
+                });
+
+
+            }
+
+            function filechat() {
+                document.getElementById('file-chat').addEventListener('change', function () {
+                    const file = this.files[0];
+                    if (file) {
+                        sendingFile = true; // Установка sendingFile в true при выборе файла
+
+
+                        displayFileName(file.name); // Отобразить название файла в <textarea>
+                        sendFile(file);
+                    }
+                    sendingFile = false; // Сброс sendingFile в false после выбора файла
+                });
+            }
+
+
+            function sendFile(file) {
+                const userId = document.getElementById('currentUserId').value;
+
+                if (socket) {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+
+                    reader.onload = function (event) {
+                        const fileData = event.target.result.split(',')[1];
+                        file_name = file.name
+                        socket.send(JSON.stringify({
+                            'file': fileData,
+                            'file_type': file.type,
+                            'sender_id': userId,
+                            'file_name': file_name,
+                        }));
+                    };
+
+                }
+            }
+
+
+
+            function appendMessageToChat(data) {
+                const messagesContainer = document.querySelector('.message-content-inner');
+                const userId = document.getElementById('currentUserId').value;
+                console.log(data)
+                console.log(data.file_type);
+                let messageClass = (data.sender_id == userId) ? "me" : "";
+
+                let messageElement = `
+        <div class="message-bubble ${messageClass}">
+            <div class="message-bubble-inner">
+                <div class="message-avatar">
+                    <img src="${data.avatar_url}" alt="User Avatar">
+                </div>
+                <div class="message-text">
+                    ${data.file_type === 'image/jpeg' ?
+                        `<img src="${data.message}" alt="File">` :
+                        ` <p>${data.message}</p>`
+                    }
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    `;
+
+                messagesContainer.innerHTML += messageElement;
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+
+
+
+            // Добавляем обработчики при загрузке страницы
+
+            addDeleteChatHandler();
+
+            addMessageSendHandler();
+
+        });
+
+
+    </script>
+
+
+    <script>
+        let coverImage = document.getElementById('cover');
+        let inputFile = document.getElementById('uploadImage');
+        let selectBtn = document.getElementById('selectBtn');
+
+        // Проверка наличия кнопки выбора изображения
+        if (selectBtn) {
+            selectBtn.addEventListener('click', function () {
+                if (inputFile) {
+                    inputFile.click();
+                } else {
+                    console.error("Input file element not found!");
+                }
+            });
+        }
+
+        // Проверка наличия input элемента для загрузки файлов
+        if (inputFile) {
+            inputFile.addEventListener('change', function () {
+                let file = inputFile.files[0];
+                if (file) {
+                    let reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        if (coverImage) {
+                            coverImage.src = e.target.result;
+                        } else {
+                            console.error("Cover image element not found!");
+                        }
+
+                        // Здесь вы можете добавить дополнительный код для отправки изображения на сервер.
+                        let formData = new FormData();
+                        formData.append('image', file);
+
+                        fetch('/account/path_to_crop_image_view/', {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}'  // Вставьте CSRF токен Django здесь.
+                            }
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success && coverImage) {
+                                    coverImage.src = data.image_url;
+                                }
+                            });
+                    }
+
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const favoriteLinks = document.querySelectorAll('.toggle-favorite');
+
+            favoriteLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+
+                    const photoId = this.getAttribute('data-photo-id');
+
+                    fetch(`/albums/toggle_favorite/${photoId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.action === "added") {
+                                link.innerHTML = '<i class="uil-favorite mr-1"></i> Remove from favorites';
+                            } else {
+                                link.innerHTML = '<i class="uil-favorite mr-1"></i> Add favorites';
+                            }
+                        });
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(function () {
+            function valueToLabel(value) {
+                switch (value) {
+                    case 0: return "По всему городу";
+                    case 1: return "25 км";
+                    case 2: return "50 км";
+                    case 3: return "100 км";
+                    case 4: return "150 км";
+                    case 5: return "200 км";
+                    case 6: return "По всей стране";
+                    default: return "";
+                }
+            }
+            $("#slider-range").slider({
+                min: 0,
+                max: 6,
+                step: 1,
+                slide: function (event, ui) {
+                    $("#slider-value").text(valueToLabel(ui.value));
+                },
+                create: function (event, ui) {
+                    $("#slider-value").text(valueToLabel($(this).slider("value")));
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#slider-age").slider({
+                range: true,
+                min: 0,
+                max: 100,
+                values: [0, 40], // начальные значения
+                slide: function (event, ui) {
+                    $("#age-range").text(ui.values[0] + " - " + ui.values[1]);
+                    // Обновление скрытых полей
+                    $("#search_age_from_input").val(ui.values[0]);
+                    $("#search_age_to_input").val(ui.values[1]);
+                }
+            });
+            $("#age-range").text($("#slider-age").slider("values", 0) + " - " + $("#slider-age").slider("values", 1));
+            // Устанавливаем начальные значения для скрытых полей
+            $("#search_age_from_input").val($("#slider-age").slider("values", 0));
+            $("#search_age_to_input").val($("#slider-age").slider("values", 1));
+        });
+
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let domain = window.location.host;
+            let protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+
+            const notificationSocket = new WebSocket(`${protocol}//${domain}/ws/notifications/`);
+            const inputField = document.getElementById('notificationInput');
+            const recipientID = document.getElementById('recipientId') ? document.getElementById('recipientId').value : null;
+
+            const soundToggle = document.getElementById('soundToggle');
+            const notificationToggle = document.getElementById('notificationToggle');
+            const notificationsList = document.getElementById('notificationsList');
+
+            // Загрузка настроек из localStorage
+            if (localStorage.getItem('soundEnabled') === "false") {
+                soundToggle.checked = false;
+            }
+
+            if (localStorage.getItem('notificationsEnabled') === "false") {
+                notificationToggle.checked = false;
+            }
+
+            // Слушатели для сохранения настроек в localStorage
+            soundToggle.addEventListener('change', function () {
+                localStorage.setItem('soundEnabled', soundToggle.checked);
+            });
+
+            notificationToggle.addEventListener('change', function () {
+                localStorage.setItem('notificationsEnabled', notificationToggle.checked);
+            });
+
+            if (inputField && recipientID) {
+                inputField.addEventListener('keydown', function (event) {
+                    if (event.key === 'Enter' && !event.shiftKey) {
+                        event.preventDefault();
+                        notificationSocket.send(JSON.stringify({
+                            'message': inputField.value,
+                            'recipient_id': recipientID,
+                            'notification_type': 'birthdays'  // Здесь вы указываете тип уведомления
+                        }));
+                        inputField.value = '';
+                    }
+                });
+            }
+            // Проверка состояния переключателя уведомлений при загрузке страницы
+            if (!notificationToggle.checked) {
+                notificationsList.style.display = 'none'; // скрыть уведомления
+            } else {
+                notificationsList.style.display = 'block'; // показать уведомления
+            }
+
+            function playNotificationSound() {
+                const sound = document.getElementById('notificationSound');
+                if (soundToggle && soundToggle.checked) {
+                    sound.play();
+                }
+            }
+
+            function formatCurrentTime(date) {
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                return `${hours}:${minutes}`;
+            }
+
+            notificationSocket.onmessage = function (e) {
+                const data = JSON.parse(e.data);
+                const message = data.message;
+                const senderName = data.sender_name;
+                const avatarUrl = data.sender_avatar_url;
+                const notificationType = data.notification_type;
+
+                const currentTime = new Date();
+                const formattedTime = formatCurrentTime(currentTime);
+
+                if (notificationType !== 'other_type') {
+
+                    const notificationItem = document.createElement('li');
+                    notificationItem.classList.add('not-read');
+                    notificationItem.innerHTML = `
+            <a href="#" class="notification_container">
+                <div class="drop_avatar ">
+                    <img src="${avatarUrl || '{% static "images/affect.jpg" %}'}" alt="">
+                </div>
+                <div class="drop_text">
+                    <p>
+                        <strong>${senderName}</strong> 
+                    </p>
+                    <p>
+                        ${message}
+                    </p>
+                    <time>${formattedTime}</time>
+                </div>
+            </a>
+        `;
+
+                    playNotificationSound();
+
+                    if (notificationsList) {
+                        notificationsList.prepend(notificationItem);
+
+
+
+                    } else {
+                        console.error("Element with id 'notificationsList' not found!");
+                    }
+
+                    const notificationCountElement = document.getElementById('notificationCount');
+                    if (notificationCountElement) {
+                        const currentCount = parseInt(notificationCountElement.textContent, 10);
+                        notificationCountElement.textContent = currentCount + 1;
+                    } else {
+                        console.error("Element with id 'notificationCount' not found!");
+                    }
+                } else if (notificationType === 'other_type') {
+                    // Обработка уведомления другого типа
+                }
+
+
+            };
+        });
+
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const notifications = document.querySelectorAll("#notificationsList .not-read a");
+            notifications.forEach(notification => {
+                notification.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const notificationId = this.getAttribute('data-notification-id');
+                    if (notificationId) {
+                        fetch(`http://${window.location.host}/notifications/read_notification/${notificationId}/`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}'  // CSRF token для безопасности
+                            }
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    // Уменьшаем счетчик уведомлений
+                                    const notificationCountElem = document.getElementById('notificationCount');
+                                    const currentCount = parseInt(notificationCountElem.textContent, 10);
+                                    notificationCountElem.textContent = currentCount - 1;
+
+                                    // Удаляем блок уведомления
+                                    this.parentNode.remove();
+                                }
+                            });
+                    }
+                });
+            });
+            // Обработчик для "Mark as read all"
+            const markAllReadLink = document.querySelector("#markAllReadLink");
+            if (markAllReadLink) {
+                markAllReadLink.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    fetch(`http://${window.location.host}/notifications/read_all/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'  // CSRF token для безопасности
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                // Обновляем счетчик уведомлений и удаляем все уведомления
+                                const notificationCountElem = document.getElementById('notificationCount');
+                                notificationCountElem.textContent = '0';
+                                const notificationsList = document.getElementById('notificationsList');
+                                notificationsList.innerHTML = ''; // Очищаем список уведомлений
+                            }
+                        });
+                });
+            }
+        });
+
+    </script>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function () {
+            let citySelect = document.getElementById('city');
+            citySelect.setAttribute('data-selected', citySelect.value);
+        });
+
+        document.getElementById('country').addEventListener('change', function () {
+            let countryId = this.value;
+
+            fetch(`/account/edit/get_cities/?country_id=${countryId}`)
+                .then(response => response.json())
+                .then(data => {
+                    let citySelect = document.getElementById('city');
+                    citySelect.innerHTML = '';
+
+                    data.forEach(city => {
+                        let option = new Option(city.name, city.name);
+                        citySelect.appendChild(option);
+                    });
+
+                    let previouslySelectedCityName = citySelect.getAttribute('data-selected');
+                    if (previouslySelectedCityName) {
+                        citySelect.value = previouslySelectedCityName;
+                    }
+
+                    $('.selectpicker').selectpicker('refresh');
+                });
+        });
+
+        window.onload = function () {
+            if (document.getElementById('country').value) {
+                document.getElementById('country').dispatchEvent(new Event('change'));
+            }
+        };
+
+
+    </script>
+
+    <script>
+        // Находим ссылку для отображения настроек уведомлений
+        const showSettingsLink = document.getElementById('showSettings');
+
+        // Находим блок настроек уведомлений
+        const notificationSettings = document.getElementById('notificationSettings');
+
+        // Добавляем обработчик события для клика по ссылке
+        showSettingsLink.addEventListener('click', function (e) {
+            e.preventDefault(); // Предотвращаем переход по ссылке
+
+            // Переключаем видимость блока настроек уведомлений
+            if (notificationSettings.style.display === 'none' || notificationSettings.style.display === '') {
+                notificationSettings.style.display = 'block';
+            } else {
+                notificationSettings.style.display = 'none';
+            }
+        });
+
+    </script>
+
+
+<script>
+    $(document).ready(function () {
+        $('.favorite-button, .remove-favorite-button').click(function (event) {
+            event.preventDefault();
+
+            const button = $(this);
+            const statusId = button.data('status-id');
+            const username = button.data('username');
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
+            const isFavoriteButton = button.hasClass('favorite-button');
+
+            const url = isFavoriteButton
+                ? `/account/users/${username}/add_to_favorites/${statusId}/`
+                : `/account/users/${username}/remove_from_favorites/${statusId}/`;
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                success: function (data) {
+                    console.log('Operation successful:', data);
+
+                    // Изменяем иконку в зависимости от типа кнопки
+                    const newIconClass = isFavoriteButton ? 'mdi-star' : 'mdi-star-outline';
+
+                    button.find('i').removeClass().addClass(`mdi ${newIconClass} mr-1`);
+
+                    // Изменяем текст кнопки
+                    const newText = isFavoriteButton ? gettext('Remove from favorites') : gettext('Add to favorites');
+                    button.find('.button-text').text(newText);
+
+                    // Меняем класс кнопки для будущих обработок
+                    button.toggleClass('favorite-button remove-favorite-button');
+
+                    // Дополнительные действия, если необходимо
+                },
+                error: function (error) {
+                    console.error('Error during operation:', error);
+                },
+            });
+        });
+    });
+
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        var searchInput = $('#search-input');
+        var searchResultsList = $('#search-results-list');
+        var searchResultsDropdown = $('#search-results-dropdown');
+
+        searchInput.on('input', function () {
+            var searchQuery = searchInput.val();
+
+            // Получаем CSRF-токен из мета-тега
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
+            $.ajax({
+                url: '/account/search/',  // Замените на ваш путь к представлению
+                data: { 'search_query': searchQuery },
+                dataType: 'json',
+                type: 'GET',  // Используйте метод GET для получения параметров через URL
+                success: function (data) {
+                    updateSearchResults(data.results);
+                    searchResultsDropdown.show();
+                }
+            });
+
+        });
+
+        function updateSearchResults(results) {
+            searchResultsList.html('');
+
+            results.forEach(function (profile) {
+                var listItem = $('<li>');
+                var link = $('<a>');
+                var img = $('<img>');
+                var divName = $('<div>');
+
+                link.attr('href', profile.user_url);  // Обновление ссылки
+                img.attr('src', profile.avatar_url);
+                img.attr('alt', '');
+                img.addClass('list-avatar');
+                divName.addClass('list-name');
+                divName.text(profile.name);
+
+                link.append(img);
+                link.append(divName);
+                listItem.append(link);
+
+                searchResultsList.append(listItem);
+            });
+        }
+
+
+        // Скрыть результаты поиска при клике в другом месте страницы
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#search-results-dropdown').length) {
+                searchResultsDropdown.hide();
+            }
+        });
+    });
+</script>
+
+
+
+</body>
+
+</html>

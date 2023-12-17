@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+
+<!-- Main Contents -->
+<div class="main_content">
+
+    <span uk-toggle="target: .message-content;"
+        class="fixed left-0 top-36 bg-red-600 z-10 py-1 px-4 rounded-r-3xl text-white">{% trans 'Messages' %}</span>
+
+    <div class="messages-container">
+        <div class="messages-container-inner">
+
+            <div class="messages-inbox">
+                <div class="messages-headline">
+              
+                    <div>
+                    <h2 class="text-2xl font-semibold">{% trans 'Messages' %}</h2>
+                    
+                    <!-- <a href="#" class="a_chat absolute mr-4 text-xl uk-position-center-right cursor-pointer" data-tippy-placement="left" >
+                        <ion-icon name="settings-outline" uk-tooltip="title: Settings Chat ; pos: bottom-left"></ion-icon>
+                    </a> -->
+                </div>
+                    <div uk-drop="mode: click" class="header_dropdown_chat">
+                         <div  class="dropdown_scrollbar" data-simplebar>
+                            <ul>
+                            <li><a href="#" class="a_chat"> <ion-icon class="text-2xl shrink-0 -ml-1" name="checkmark-outline"></ion-icon> {% trans 'Mark all as read' %} </a> </li> 
+                                <!-- <li> <a href="#" class="a_chat"> <ion-icon class="text-2xl shrink-0 -ml-1" name="notifications-outline"></ion-icon> notifications setting </a> </li>
+                                    <li> <a href="#" class="a_chat"> <ion-icon class="text-xl shrink-0 -ml-1" name="volume-mute-outline"></ion-icon> Mute notifications </a> </li> -->
+                            <ul>
+                            
+                         </div>
+                    </div> 
+                    
+                    
+                   
+                </div>
+                
+                <div class="messages-inbox-inner" data-simplebar>
+                    <!-- <div class="input-with-icon" >
+                        <i class="icon-material-outline-search"></i>
+                        <input id="autocomplete-input" type="text" placeholder="Search">
+                    
+                </div>
+                     -->
+                    <ul>
+                        {% for room in rooms %}
+                        <li>
+                            <a href="{% url 'chat:chat_detail' room.id %}">
+                                <div class="message-avatar">
+
+                                    {% if room.other_participant_avatar %}
+                                    <img src="{{ room.other_participant_avatar }}" alt="{{ room.other_participant.get_full_name }}">
+                                    {% else %}
+                                    
+                                    <img src="{% static 'images/affect.jpg' %}" alt="Default Avatar">
+                                    {% endif %}
+                                    {% if friends_online %}
+                                    <div class="w-4 h-4 absolute bottom-0 right-0  bg-green-500 rounded-full border border-white dark:border-slate-800">
+                                    </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="message-by">
+                                    <div class="message-by-headline">
+                                        <h5>{{ room.other_participant.get_full_name }}</h5>
+
+                                        <span>
+                                            {% if room.last_message_timestamp %}
+                                                {{ room.last_message_timestamp }} {% trans 'ago' %}
+                                            {% else %}
+                                                <!-- Display something else if the timestamp is not set -->
+                                            {% endif %}
+                                        </span>
+                                        <div class="w-2.5 h-2.5 bg-blue-600 rounded-full dark:bg-slate-700" style="display: inline-block;"></div>
+                                        
+                                    </div>
+                                    <p> {{ room.last_message_content|safe }} </p>
+                                </div>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="message-content">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+    {% endblock %}

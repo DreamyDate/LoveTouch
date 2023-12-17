@@ -1,0 +1,18 @@
+{% load i18n %}
+{% if messages %}
+    <!-- UIkit Modal -->
+    <div id="message-modal" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <h2 class="uk-modal-title">{% trans 'Message' %}</h2>
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <script>
+        // Показать модальное окно при загрузке страницы
+        UIkit.modal(document.getElementById('message-modal')).show();
+    </script>
+{% endif %}

@@ -1,0 +1,45 @@
+{% load custom_tags %}
+{% load static %}
+{% load i18n %}
+<div class="comments-section" data-status-id="{{ status.id }}">
+    {% with comments=comments_dict|get_item:status.id %}
+        {% for comment in comments %}
+    <div class="flex">
+       
+        <div class="w-10 h-10 rounded-full relative flex-shrink-0">
+            {% if comment.user.profile.photo %}
+    <img src="{{ comment.user.profile.photo.url }}" alt="" class="absolute h-full rounded-full w-full">
+{% else %}
+<img src="{% static 'images/affect.jpg' %}" alt="" class="absolute h-full rounded-full w-full">
+{% endif %}
+
+        </div>
+        <div>
+            <div
+                class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12  dark:bg-gray-800 dark:text-gray-100">
+                <p class="leading-6">{{ comment.text }}  </p>
+                <div
+                    class="absolute w-3 h-3 top-3 -left-1 bg-gray-100 transform rotate-45 dark:bg-gray-800">
+                </div>
+            </div>
+            <div class="text-sm flex items-center space-x-3 mt-2 ml-5">
+                <!-- <a href="#" class="text-red-600"> <i class="uil-heart"></i> Love </a>
+                <a href="#"> Replay </a> -->
+                <span>{{ comment.created_date }}</span>
+            </div>
+        </div>
+       
+
+        
+
+    </div>
+    {% endfor %}
+    {% endwith %}
+</div>
+
+{% if status.has_more_than_five_comments %}
+<a href="#" class="view-more-comments hover:text-blue-600 hover:underline" data-status-id="{{ status.id }}" data-load-all="false">{% trans 'View more Comments' %} </a>
+
+{% endif %}
+
+

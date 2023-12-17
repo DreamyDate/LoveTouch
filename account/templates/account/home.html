@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+{% load custom_tags %}
+{% load i18n %}
+{% block title %}{% trans 'Home' %}{% endblock %}
+
+{% block content %}
+
+
+<div class="main_content">
+    <div class="mcontainer">
+
+        <!--  Feeds  -->
+        <div class="lg:flex lg:space-x-10">
+            <div class="lg:w-3/4 lg:px-20 space-y-7">
+
+               
+                    {% include 'account/status/recent_statuses.html' %}
+
+
+                {% include 'account/status/add_story_button.html' %}
+                {% for status in statuses %}
+                <div class="card lg:mx-0 uk-animation-slide-bottom-small">
+                    
+                    <!-- post header-->
+                    <div class="flex justify-between items-center lg:p-4 p-2.5">
+
+                        <div class="flex flex-1 items-center space-x-4">
+                            <a href="{{ status.user.get_absolute_url }}">
+                                {% if status.user.profile.photo %}
+    <img src="{% thumbnail status.user.profile.photo 180x180 %}" class="bg-gray-200 border border-white rounded-full w-10 h-10">
+{% else %}
+<img src="{% static 'images/affect.jpg' %}" class="bg-gray-200 border border-white rounded-full w-10 h-10">
+{% endif %}
+
+                            </a>
+                            <div class="flex-1 font-semibold capitalize">
+                                <a href="{{ status.user.get_absolute_url }}" class="text-gray-700 dark:text-gray-100"> <span>{{ status.user.get_full_name }}</span></a>
+                                <div class="text-gray-700 flex items-center space-x-2">{{ status.creation_date }}</div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <a href="#" aria-expanded="false"> <i
+                                    class="icon-feather-more-horizontal text-2xl hover:bg-gray-200 rounded-full p-2 transition -mr-1 dark:hover:bg-gray-700"></i>
+                            </a>
+                            <div class="bg-white w-56 shadow-md mx-auto p-2 mt-12 rounded-md text-gray-500 hidden text-base border border-gray-100 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700 uk-drop"
+                                uk-drop="mode: click;pos: bottom-right;animation: uk-animation-slide-bottom-small">
+
+                                <ul class="space-y-1">
+                                    
+                                    <!-- <li>
+                                        <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800 edit-status-link" uk-toggle="target: #edit-status-modal">
+                                            <i class="uil-edit-alt mr-1"></i> Edit Post
+                                        </a>
+                                        
+
+                                    </li> -->
+                                    <li>
+                                        <a href="{% url 'toggle_comments' status.id %}"
+                                            class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
+                                            <i class="{% if status.comments_enabled %}uil-comment-slash{% else %}uil-comment{% endif %}"></i>
+                                            
+                                            {% if status.comments_enabled %}{% trans 'Disable comments' %}{% else %}{% trans 'Enable comments' %}{% endif %}
+                                        </a>
+
+                                    </li>
+<li>
+    <a href="#" data-status-id="{{ status.id }}" data-username="{{ status.user.username }}"
+        class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800 favorite-button">
+        <i class="mdi mdi-star-outline mr-1"></i>
+        <span class="button-text">{% trans 'Add to favorites' %}</span>
+    </a>
+</li>
+
+
+                                    <li>
+                                        <hr class="-mx-2 my-2 dark:border-gray-800">
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'delete_status' status.id %}"
+                                            class="flex items-center px-3 py-2 text-red-500 hover:bg-red-100 hover:text-red-500 rounded-md dark:hover:bg-red-600"
+                                            onclick="return confirm("{% trans 'Are you sure you want to delete this status?' %}");">
+                                            <i class="uil-trash-alt mr-1"></i> {% trans 'Delete' %}
+                                        </a>
+
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    {% if status.photo %}
+                    <div uk-lightbox="">
+                        <a href="{{ status.photo.url }}">
+                            <img src="{{ status.photo.url }}" alt="" class="max-h-96 w-full object-cover">
+                        </a>
+                    </div>
+                    {% endif %}
+                    <div class="p-5 pt-0 border-b dark:border-gray-700">
+
+                        {% if status.content %}{{ status.content }} {% endif %}
+
+                    </div>
+
+                    <div class="p-4 space-y-3">
+
+                        {% include 'account/status/post_icons.html' %}
+                        <div class="flex items-center space-x-3 pt-2">
+                            <div class="flex items-center">
+                                {% for like in status.likes.all|slice:"0:3" %}
+                                {% if like.user.profile.photo %}
+    <img src="{{ like.user.profile.photo.url }}" alt="" class="w-6 h-6 rounded-full border-2 border-white dark:border-gray-900">
+{% else %}
+<img src="{% static 'images/affect.jpg' %}" alt="" class="w-6 h-6 rounded-full border-2 border-white dark:border-gray-900">
+{% endif %}
+
+                                {% endfor %}
+                            </div>
+                            <div class="dark:text-gray-100">
+                                {% if request.user.is_authenticated %}
+                                {% if status.liked_by_current_user %}
+{% trans 'You and another' %} {{ status.likes.count|subtract:1 }} {% trans 'person(s) liked this' %}
+{% else %}
+{% trans 'People liked' %} {{ status.likes.count }}
+{% endif %}
+{% else %}
+{% trans 'People liked' %} {{ status.likes.count }}
+{% endif %}
+                            </div>
+                        </div>
+
+
+                        {% if status.comments_enabled %}
+                        <div class="border-t py-4 space-y-4 dark:border-gray-600">
+                            {% include 'account/status/comments_section.html' with comments=status.comments.all %}
+                        </div>
+                        {% include 'account/status/comment_form.html' with status=status %}
+                        {% endif %}
+
+
+                    </div>
+                    
+                </div>
+                {% endfor %}
+
+
+                <!-- <div class="flex justify-center mt-6">
+                    <a href="#"
+                        class="bg-white dark:bg-gray-900 font-semibold my-3 px-6 py-2 rounded-full shadow-md dark:bg-gray-800 dark:text-white">
+                        {% trans 'Load more ..</a>
+                </div> -->
+
+            </div>
+            <div class="lg:w-72 w-full">
+
+                <a href="#birthdays" uk-toggle="">
+                    <div class="bg-white mb-5 px-4 py-3 rounded-md shadow">
+                        <h3 class="text-line-through font-semibold mb-1"> {% trans 'Birthdays' %} </h3>
+                        <div class="-mx-2 duration-300 flex hover:bg-gray-50 px-2 py-2 rounded-md">
+                            <img src="{% static 'images/gift-icon.png' %}" class="w-9 h-9 mr-3" alt="">
+                            <p class="line-clamp-2 leading-6">
+                                {% if todays_birthdays.count > 2 %}
+                                    <strong>{{ todays_birthdays.0.user.get_full_name }}</strong> {% trans 'and' %} <strong>{{ todays_birthdays.count|subtract:1 }} {% trans 'others' %}</strong> {% trans 'have birthdays today.' %}
+                                {% elif todays_birthdays.count == 2 %}
+                                    <strong>{{ todays_birthdays.0.user.get_full_name }}</strong> {% trans 'and' %} <strong>{{ todays_birthdays.1.user.get_full_name }}</strong> {% trans 'have birthdays today.' %}
+                                {% elif todays_birthdays.count == 1 %}
+                                    <strong>{{ todays_birthdays.0.user.get_full_name }}</strong> {% trans 'has a birthday today.' %}
+                                {% else %}
+                                    {% trans 'No birthdays today.' %}
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+                
+
+                <h3 class="text-xl font-semibold"> {% trans 'Contacts' %} </h3>
+
+                <div class="uk-sticky" uk-sticky="offset:80" style>
+
+                    <nav class="responsive-nav border-b extanded mb-2 -mt-2">
+                        <ul uk-switcher="connect: #group-details; animation: uk-animation-fade">
+                            <li class="uk-active"><a class="active" href="#"> {% trans 'Friends Online' %}<span> {{ online_users_count }}</span> </a></li>
+                            <!-- <li><a href="#0">Groups</a></li> -->
+                        </ul>
+                    </nav>
+
+                    <div class="contact-list">
+
+                        {% for friend in friends_online %}
+                        
+                        <a href="{% url 'user_detail' username=friend.user.username %}" aria-expanded="false" class="">
+                            <div class="contact-avatar">
+                                {% if friend.photo %}
+    <img src="{{ friend.photo.url }}" alt="">
+{% else %}
+<img src="{% static 'images/affect.jpg' %}" alt="">
+{% endif %}
+
+                                <span class="user_status status_online"></span>
+                            </div>
+                            
+                            <div class="contact-username"> {{ friend.user.get_full_name }}</div>
+                           
+                        </a>
+                        <div uk-drop="pos: left-center ;animation: uk-animation-slide-left-small"
+                            class="uk-drop uk-drop-left-center" style="left: 762.2px; top: 229.75px;">
+                            <div class="contact-list-box">
+                                <div class="contact-avatar">
+                                    {% if friend.photo %}
+                                    <img src="{{ friend.photo.url }}" alt="">
+                                {% else %}
+                                <img src="{% static 'images/affect.jpg' %}" alt="">
+                                {% endif %}
+                                    <span class="user_status status_online"></span>
+                                </div>
+                                <a href="{% url 'user_detail' username=friend.user.username %}">
+                                    <div class="contact-username"> {{ friend.user.get_full_name }}</div></a>
+                                
+                                <!-- <p>
+                                    <ion-icon name="people" class="text-lg mr-1 md hydrated" role="img"
+                                        aria-label="people"><template shadowrootmode="open">
+                                            <div class="icon-inner"><svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="ionicon s-ion-icon" viewBox="0 0 512 512">
+                                                    <title>{% trans 'People' %}</title>
+                                                    <path
+                                                        d="M336 256c-20.56 0-40.44-9.18-56-25.84-15.13-16.25-24.37-37.92-26-61-1.74-24.62 5.77-47.26 21.14-63.76S312 80 336 80c23.83 0 45.38 9.06 60.7 25.52 15.47 16.62 23 39.22 21.26 63.63-1.67 23.11-10.9 44.77-26 61C376.44 246.82 356.57 256 336 256zm66-88zM467.83 432H204.18a27.71 27.71 0 01-22-10.67 30.22 30.22 0 01-5.26-25.79c8.42-33.81 29.28-61.85 60.32-81.08C264.79 297.4 299.86 288 336 288c36.85 0 71 9 98.71 26.05 31.11 19.13 52 47.33 60.38 81.55a30.27 30.27 0 01-5.32 25.78A27.68 27.68 0 01467.83 432zM147 260c-35.19 0-66.13-32.72-69-72.93-1.42-20.6 5-39.65 18-53.62 12.86-13.83 31-21.45 51-21.45s38 7.66 50.93 21.57c13.1 14.08 19.5 33.09 18 53.52-2.87 40.2-33.8 72.91-68.93 72.91zM212.66 291.45c-17.59-8.6-40.42-12.9-65.65-12.9-29.46 0-58.07 7.68-80.57 21.62-25.51 15.83-42.67 38.88-49.6 66.71a27.39 27.39 0 004.79 23.36A25.32 25.32 0 0041.72 400h111a8 8 0 007.87-6.57c.11-.63.25-1.26.41-1.88 8.48-34.06 28.35-62.84 57.71-83.82a8 8 0 00-.63-13.39c-1.57-.92-3.37-1.89-5.42-2.89z">
+                                                    </path>
+                                                </svg></div>
+                                        </template></ion-icon> {% trans 'Become friends with' %}
+                                        
+                                            <strong>{{ potential_friends.0.user.get_full_name }}</strong>
+                                        {% if potential_friends|length > 1 %}
+                                        {% trans 'and' %} <strong>{{ potential_friends|length|add:"-1" }} {% trans 'Others' %}</strong>
+                                        {% endif %}
+                                </p> -->
+                                <div class="contact-list-box-btns">
+                                   
+                                    <form method="post" action="{% url 'chat:create_chat' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="friend_id" value="{{ friend.user.id }}">
+                                        <button type="submit" class="button bg-primary text-white  mr-2">
+                                            <i class="uil-envelope mr-1"></i> {% trans 'Send message' %}
+                                        </button>
+                                    </form>
+
+                                    
+                                    <button type="button" href="#" class="button bg-primary text-white w-full mr-2">
+                                        <i class="uil-list-ul"> </i> </button>
+                                    <!-- <button type="button" a="" href="#" class="button bg-primary text-white w-full">
+                                        <i class="uil-ellipsis-h"> </i>
+                                    </button> -->
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                       
+
+                    </div>
+
+
+                </div>
+                <div class="uk-sticky-placeholder" style="height: 484px; margin: 0px;" hidden=""></div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+{% include 'account/status/status_form.html' %}
+{% include 'account/status/edit_status.html' %}
+
+{% endblock %}

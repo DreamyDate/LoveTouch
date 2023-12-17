@@ -1,0 +1,74 @@
+{% load static %}
+{% load i18n %}
+    <!-- birthdays modal -->
+    <div id="birthdays" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body rounded-xl shadow-lg">
+            <!-- close button -->
+            <button class="uk-modal-close-default p-2.5 bg-gray-100 rounded-full m-3" type="button" uk-close></button>
+
+            <div class="flex items-center space-x-3 mb-10">
+                <ion-icon name="gift" class="text-yellow-500 text-xl bg-yellow-50 p-1 rounded-md"></ion-icon>
+                <div class="text-xl font-semibold">{% trans "Today's birthdays" %} </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="sm:space-y-8 space-y-6 pb-2">
+    
+                    {% for friend in todays_birthdays %}
+                    <div class="flex items-center sm:space-x-6 space-x-3">
+                       
+                        <img src="{% if friend.photo %}{{ friend.photo.url }}{% else %}{% static 'images/affect.jpg' %}{% endif %}" class="sm:w-16 sm:h-16 w-14 h-14 rounded-full">
+
+                                                <div class="flex-1">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="text-base font-semibold"> 
+                                    <!-- Ссылка на профиль друга, замените `friend_url` на URL профиля друга -->
+                                    <a href="{% url 'user_detail' username=friend.user.username %}">{{ friend.user.get_full_name }}</a> 
+                                </div>
+                                <!-- Вычисляем возраст друга -->
+                                <div class="font-medium text-sm text-gray-400">{{ friend.age }} {% trans 'years old' %}</div>
+                            </div>
+                            <div class="relative">
+                                   <!-- Поле ввода для сообщения -->
+<input type="text" name="" id="notificationInput" class="with-border" placeholder="Write her on Timeline">
+<!-- Скрытое поле с идентификатором получателя -->
+<input type="hidden" id="recipientId" value="{{ friend.user.id }}">
+<!-- Ваш элемент аудио для уведомления -->
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>{% trans "Your friends don't have a birthday today." %}</p>
+                {% endfor %}
+                    
+    
+                </div>
+                <div class="relative cursor-pointer" uk-toggle="target: #upcoming-birthdays; animation: uk-animation-fade">
+                    <div class="bg-gray-50 rounded-lg px-5 py-4 font-semibold text-base"> {% trans 'Upcoming birthdays' %} </div>
+                    <i class="-translate-y-1/2 absolute icon-feather-chevron-up right-4 text-xl top-1/2 transform text-gray-400" hidden></i>
+                    <i class="-translate-y-1/2 absolute icon-feather-chevron-down right-4 text-xl top-1/2 transform text-gray-400"></i>
+                </div>
+                
+                <div class="mt-5 sm:space-y-8 space-y-6" id="upcoming-birthdays" hidden>
+    
+                    {% for friend in upcoming_birthdays %}
+                    <div class="flex items-center sm:space-x-6 space-x-3">
+                        <img src="{% if friend.user.profile.photo.url %}{{ friend.user.profile.photo.url }}{% else %}{% static 'images/affect.jpg' %}{% endif %}" alt="" class="sm:w-16 sm:h-16 w-14 h-14 rounded-full">
+
+
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="text-base font-semibold"> <a href="{% url 'user_detail' username=friend.user.username %}"> {{ friend.user.get_full_name }} </a> </div>
+                                <div class="font-medium text-sm text-gray-400"> {{ friend.age }} {% trans 'years old' %}</div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    {% endfor %}
+                  
+    
+                </div>
+            </div>
+
+        </div>
+    </div>

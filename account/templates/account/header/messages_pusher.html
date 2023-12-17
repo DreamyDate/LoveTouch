@@ -1,0 +1,55 @@
+{% load static %}
+{% load i18n %}
+<!-- Message -->
+<a href="#" class="is_icon" uk-tooltip="title: {% trans 'Message' %}">
+    <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd"
+            d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z"
+            clip-rule="evenodd"></path>
+    </svg>
+    {% if  total_unread_count%}
+    <span id="messageCounter">{{ total_unread_count }}</span>
+    {% endif %}
+</a>
+<div uk-drop="mode: click" class="header_dropdown is_message">
+    <div class="dropdown_scrollbar" data-simplebar>
+        <div class="drop_headline">
+            <h4>{% trans 'Messages' %} </h4>
+            <!-- <div class="btn_action">
+                <a href="#" >
+                    <ion-icon name="settings-outline" uk-tooltip="title: Message settings ; pos: bottom-left"></ion-icon>
+                </a>
+                <a href="#" uk-tooltip="title: Mark as read all; pos: bottom-left">
+                    <ion-icon name="checkbox-outline"></ion-icon>
+                </a>
+            </div> -->
+        </div>
+        
+        <ul id="latestChats"> <!-- Здесь будет отображаться список последних чатов -->
+            {% for room in latest_messages %}
+            {% for message in room.messages.all %}
+            {% if message.sender != request.user %}
+            <li class="un-read">
+                <a href="#">
+                    <div class="drop_avatar"> 
+                        
+                        {% if message.sender.profile.photo%}
+                            <img src="{{ message.sender.profile.photo.url }}" alt="">
+                        {% else %}
+                        <img src="{% static 'images/affect.jpg' %}" alt="">
+                        {% endif %}
+                    </div>
+                    <div class="drop_text">
+                        <strong>{{ message.sender.get_full_name }}</strong> 
+                        <strong><time>{{ message.timestamp }}</time></strong>
+                        <p>{{ message.content|safe }}</p>
+                    </div>
+                </a>
+            </li>
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+    <a href="{% url 'chat:chat_page' %}" class="see-all">{% trans 'See all in Messages' %}</a>
+</div>

@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% block content %}
+<!-- Main Contents -->
+<div class="main_content">
+    <div class="mcontainer">
+        <div class=" lg:space-x-10">
+            <div class="relative">
+                <!-- main contents -->
+                <div class="flex justify-between items-center relative md:mb-4 mb-3">
+                    <div class="flex-1">
+                        <nav class="responsive-nav pl-3">
+                            <ul uk-switcher="connect: #page-tabs; animation: uk-animation-fade">
+                                <li><a href="#">{% trans 'Acquaintance' %} </a></li>
+                                <li><a href="#">{% trans 'Requests' %}</a></li>
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="uk-switcher lg:mt-8 mt-4" id="page-tabs">
+                    <div class="grid sm:grid-cols-2 gap-3"
+                        uk-scrollspy="target: > div; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+                        {% for profile in matches %}
+                        <div class="card flex space-x-5 p-5">
+                            <a href="{% url 'user_detail' username=profile.user.username %}">
+                                <div class="card-media w-16 h-16 shrink-0 rounded-full">
+                                    {% if profile.user.profile.photo %}
+                                    <img src="{{ profile.user.profile.photo.url }}">
+                                    {% else %}
+                                    <img src="{% static 'images/affect.jpg' %}">
+                                    {% endif %}
+                                    <div class="card-overly"></div>
+                                </div>
+                            </a>
+                            <div class="card-body flex-1 p-0">
+                                <a href="{% url 'user_detail' username=profile.user.username %}">
+                                    <h4 class="card-title"> {{ profile.user.get_full_name }} </h4>
+                                </a>
+                                <!-- <p class="card-text"> 162k Following </p> -->
+                                <ul class="text-gray-600 space-y-3 mt-3">
+                                    <li class="flex items-center space-x-2">
+                                        <ion-icon name="happy-outline"
+                                            class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
+                                        <p class="card-text">{{ profile.age }} {% trans 'years' %}</p>
+                                    </li>
+                                    <li class="flex items-center space-x-2">
+                                        </ion-icon><ion-icon name="home-sharp"
+                                            class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
+                                        <p class="card-text"> {{ profile.city }} </p>
+                                    </li>
+                                    
+                                </ul>
+                                <div class="flex gap-1 mt-1">
+                                    <!-- Кнопка для отправки запроса на матч -->
+                                    <form method="post" action="{% url 'send_match_request' profile.user.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit"
+                                            uk-tooltip="title: {% trans 'Send a request for an acquaintance' %} ; pos: bottom-left"
+                                            class="button bg-primary text-white w-full p-5">
+                                            <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1"
+                                                viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                                <path
+                                                    d="M17.5.917a6.4,6.4,0,0,0-5.5,3.3A6.4,6.4,0,0,0,6.5.917,6.8,6.8,0,0,0,0,7.967c0,6.775,10.956,14.6,11.422,14.932l.578.409.578-.409C13.044,22.569,24,14.742,24,7.967A6.8,6.8,0,0,0,17.5.917Z" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                    <form method="post" action="{% url 'add_like' user_id=profile.user.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="button bg-primary text-white w-full p-5"
+                                            uk-tooltip="title: {% trans 'Like' %} ; pos: bottom-left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                fill="currentColor" class="w-6 h-6">
+                                                <path
+                                                    d="M7.493 18.75c-.425 0-.82-.236-.975-.632A7.48 7.48 0 016 15.375c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23h-.777zM2.331 10.977a11.969 11.969 0 00-.831 4.398 12 12 0 00.52 3.507c.26.85 1.084 1.368 1.973 1.368H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 01-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227z" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                    <form method="post" action="{% url 'chat:create_chat' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="friend_id" value="{{ profile.user.id }}">
+                                        <button type="submit" class="button bg-primary text-white w-full p-5"
+                                            uk-tooltip="title: {% trans 'Start a chat with a user' %} ; pos: bottom-left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                fill="currentColor" class="w-6 h-6">
+                                                <path fill-rule="evenodd"
+                                                    d="M4.848 2.771A49.144 49.144 0 0112 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97a48.901 48.901 0 01-3.476.383.39.39 0 00-.297.17l-2.755 4.133a.75.75 0 01-1.248 0l-2.755-4.133a.39.39 0 00-.297-.17 48.9 48.9 0 01-3.476-.384c-1.978-.29-3.348-2.024-3.348-3.97V6.741c0-1.946 1.37-3.68 3.348-3.97zM6.75 8.25a.75.75 0 01.75-.75h9a.75.75 0 010 1.5h-9a.75.75 0 01-.75-.75zm.75 2.25a.75.75 0 000 1.5H12a.75.75 0 000-1.5H7.5z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="grid sm:grid-cols-2 gap-3"
+                        uk-scrollspy="target: > div; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
+                        {% for match in pending_matches %}
+                        {% if match.user1 == request.user.profile %}
+                        <div class="card flex space-x-5 p-5">
+                            <a href="{% url 'user_detail' username=request.user.profile.user.username %}">
+                                <div class="card-media w-16 h-16 shrink-0 rounded-full">
+                                    {% if match.user2.photo %}
+                                    <img src="{{ match.user2.photo.url }}">
+                                    {% else %}
+                                    <img src="{% static 'images/affect.jpg' %}">
+                                    {% endif %}
+                                    <div class="card-overly"></div>
+                                </div>
+                            </a>
+                            <div class="card-body flex-1 p-0">
+                                <a href="{% url 'user_detail' username=request.user.profile.user.username %}">
+                                    <h4 class="card-title"> {{match.user2.user.get_full_name }} </h4>
+                                </a>
+                                <!-- <p class="card-text"> 162k Following </p> -->
+                                <ul class="text-gray-600 space-y-3 mt-3">
+                                    <li class="flex items-center space-x-2">
+                                        <ion-icon name="happy-outline"
+                                            class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
+                                        <p class="card-text">{{ match.user2.age }} {% trans 'years' %}</p>
+                                    </li>
+                                    <li class="flex items-center space-x-2">
+                                        </ion-icon><ion-icon name="home-sharp"
+                                            class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
+                                        <p class="card-text"> {{ match.user2.city }} </p>
+                                    </li>
+                                    
+                                </ul>
+                                <div class="flex gap-1 mt-1">
+                                    <form method="POST" action="{% url 'reject_match' match.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="button bg-primary text-white w-full p-5"
+                                            uk-tooltip="title: {% trans 'Cancel dating request' %} ; pos: bottom-left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"
+                                                fill="currentColor" class="w-6 h-6">
+                                                <path
+                                                    d="M16,8a1,1,0,0,0-1.414,0L12,10.586,9.414,8A1,1,0,0,0,8,9.414L10.586,12,8,14.586A1,1,0,0,0,9.414,16L12,13.414,14.586,16A1,1,0,0,0,16,14.586L13.414,12,16,9.414A1,1,0,0,0,16,8Z" />
+                                                <path
+                                                    d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                    <form method="post" action="{% url 'add_like' user_id=match.user2.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="button bg-primary text-white w-full p-5"
+                                            uk-tooltip="title: {% trans 'Like' %} ; pos: bottom-left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                fill="currentColor" class="w-6 h-6">
+                                                <path
+                                                    d="M7.493 18.75c-.425 0-.82-.236-.975-.632A7.48 7.48 0 016 15.375c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23h-.777zM2.331 10.977a11.969 11.969 0 00-.831 4.398 12 12 0 00.52 3.507c.26.85 1.084 1.368 1.973 1.368H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 01-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227z" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                    <form method="post" action="{% url 'chat:create_chat' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="friend_id" value="{{ match.user2.id }}">
+                                        <button type="submit" class="button bg-primary text-white w-full p-5"
+                                            uk-tooltip="title: {% trans 'Start a chat with a user' %} ; pos: bottom-left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                fill="currentColor" class="w-6 h-6">
+                                                <path fill-rule="evenodd"
+                                                    d="M4.848 2.771A49.144 49.144 0 0112 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97a48.901 48.901 0 01-3.476.383.39.39 0 00-.297.17l-2.755 4.133a.75.75 0 01-1.248 0l-2.755-4.133a.39.39 0 00-.297-.17 48.9 48.9 0 01-3.476-.384c-1.978-.29-3.348-2.024-3.348-3.97V6.741c0-1.946 1.37-3.68 3.348-3.97zM6.75 8.25a.75.75 0 01.75-.75h9a.75.75 0 010 1.5h-9a.75.75 0 01-.75-.75zm.75 2.25a.75.75 0 000 1.5H12a.75.75 0 000-1.5H7.5z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="card flex space-x-5 p-5">
+                            <a href="{% url 'user_detail' username=match.user2.user.username %}">
+                                <div class="card-media w-16 h-16 shrink-0 rounded-full">
+                                    {% if match.user1.photo %}
+                                    <img src="{{ match.user1.photo.url }}">
+                                    {% else %}
+                                    <img src="{% static 'images/affect.jpg' %}">
+                                    {% endif %}
+                                    <div class="card-overly"></div>
+                                </div>
+                            </a>
+                            <div class="card-body flex-1 p-0">
+                                <a href="{% url 'user_detail' username=match.user2.user.username %}">
+                                    <h4 class="card-title"> {{ match.user1.user.get_full_name }} </h4>
+                                </a>
+                                <!-- <p class="card-text"> 162k Following </p> -->
+                                <ul class="text-gray-600 space-y-3 mt-3">
+                                    <li class="flex items-center space-x-2">
+                                        <ion-icon name="happy-outline"
+                                            class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
+                                        <p class="card-text">{{ match.user1.age }} {% trans 'years' %}</p>
+                                    </li>
+                                    <li class="flex items-center space-x-2">
+                                        </ion-icon><ion-icon name="home-sharp"
+                                            class="rounded-full bg-gray-200 text-xl p-1 mr-3"></ion-icon>
+                                        <p class="card-text"> {{ match.user1.city }} </p>
+                                    </li>
+                                    
+                                </ul>
+                                <div class="flex gap-1 mt-1">
+                                    <form method="POST" action="{% url 'confirm_match' match.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="button bg-primary text-white w-full p-5">
+                                            <svg xmlns="http://www.w3.org/2000/svg" id="Isolation_Mode"
+                                                data-name="Isolation Mode" viewBox="0 0 24 24" fill="currentColor"
+                                                class="w-6 h-6">
+                                                <path
+                                                    d="M7.8,21.425A2.542,2.542,0,0,1,6,20.679L.439,15.121,2.561,13,7.8,18.239,21.439,4.6l2.122,2.121L9.6,20.679A2.542,2.542,0,0,1,7.8,21.425Z" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                    <form method="POST" action="{% url 'reject_match' match.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="button bg-primary text-white w-full p-5">
+                                            <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24"
+                                                fill="currentColor" class="w-6 h-6">
+                                                <path
+                                                    d="M16,8a1,1,0,0,0-1.414,0L12,10.586,9.414,8A1,1,0,0,0,8,9.414L10.586,12,8,14.586A1,1,0,0,0,9.414,16L12,13.414,14.586,16A1,1,0,0,0,16,14.586L13.414,12,16,9.414A1,1,0,0,0,16,8Z" />
+                                                <path
+                                                    d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                    <form method="post" action="{% url 'add_like' user_id=match.user1.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="button bg-primary text-white w-full p-5" uk-tooltip="title: Like ; pos: bottom-left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                                <path
+                                                    d="M7.493 18.75c-.425 0-.82-.236-.975-.632A7.48 7.48 0 016 15.375c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23h-.777zM2.331 10.977a11.969 11.969 0 00-.831 4.398 12 12 0 00.52 3.507c.26.85 1.084 1.368 1.973 1.368H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 01-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227z" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                    <form method="post" action="{% url 'chat:create_chat' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="friend_id" value="{{ match.user1.id }}">
+                                        <button type="submit" class="button bg-primary text-white w-full p-5"
+                                            uk-tooltip="title: {% trans 'Start a chat with a user' %} ; pos: bottom-left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                fill="currentColor" class="w-6 h-6">
+                                                <path fill-rule="evenodd"
+                                                    d="M4.848 2.771A49.144 49.144 0 0112 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97a48.901 48.901 0 01-3.476.383.39.39 0 00-.297.17l-2.755 4.133a.75.75 0 01-1.248 0l-2.755-4.133a.39.39 0 00-.297-.17 48.9 48.9 0 01-3.476-.384c-1.978-.29-3.348-2.024-3.348-3.97V6.741c0-1.946 1.37-3.68 3.348-3.97zM6.75 8.25a.75.75 0 01.75-.75h9a.75.75 0 010 1.5h-9a.75.75 0 01-.75-.75zm.75 2.25a.75.75 0 000 1.5H12a.75.75 0 000-1.5H7.5z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

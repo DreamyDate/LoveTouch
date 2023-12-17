@@ -1,0 +1,36 @@
+{% load i18n %}
+<div class="comments-form-container">
+<form method="post" action="{% url 'home' %}" data-status-id="{{ status.id }}">
+
+    {% csrf_token %}
+    <input type="hidden" name="post_comment" value="1">
+    <input type="hidden" name="status_id" value="{{ status.id }}">
+
+    <div class="bg-gray-100 rounded-full relative dark:bg-gray-800 ">
+        <input name="text" placeholder="{% trans 'Add your Comment..' %}" class="bg-transparent max-h-10 shadow-none px-5">
+        
+        <div class="-m-0.5 absolute bottom-0 flex items-center right-3 text-xl">
+            <!-- <a href="#">
+                <ion-icon name="happy-outline"
+                    class="hover:bg-gray-200 p-1.5 rounded-full md hydrated" role="img"
+                    aria-label="happy outline"></ion-icon>
+            </a>
+            <a href="#">
+                <ion-icon name="image-outline"
+                    class="hover:bg-gray-200 p-1.5 rounded-full md hydrated" role="img"
+                    aria-label="image outline"></ion-icon>
+            </a>
+            <a href="#">
+                <ion-icon name="link-outline"
+                    class="hover:bg-gray-200 p-1.5 rounded-full md hydrated" role="img"
+                    aria-label="link outline"></ion-icon>
+            </a> -->
+            <a href="#" id="submitLink">
+                <ion-icon name="send-sharp" class="hover:bg-gray-200 p-1.5 rounded-full"></ion-icon>
+            </a>
+        </div>
+    </div>
+
+   
+</form>
+</div>

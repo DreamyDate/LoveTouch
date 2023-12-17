@@ -1,0 +1,21 @@
+{% load i18n %}
+<!-- Это ваше модальное окно UIkit для редактирования статуса -->
+<div id="edit-status-modal" uk-modal>
+    <div class="uk-modal-dialog">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">{% trans 'Edit status' %}</h2>
+        </div>
+        <form method="post" id="edit-status-form">
+            {% csrf_token %}
+            <!-- Поле для редактирования текста статуса -->
+            <div class="uk-modal-body">
+                <textarea class="uk-textarea" name="status_content" id="status-edit-content" rows="5"></textarea>
+            </div>
+            <div class="uk-modal-footer">
+                <button type="button" class="uk-button uk-button-default uk-modal-close">{% trans 'Close' %}</button>
+                <button type="submit" class="uk-button uk-button-primary">{% trans 'Save' %}</button>
+            </div>
+        </form>
+    </div>
+</div>

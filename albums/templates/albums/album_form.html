@@ -1,0 +1,53 @@
+{% load i18n %}
+{% block content %}
+<!-- Create new album -->
+<div id="offcanvas-create-albums" uk-offcanvas="flip: true; overlay: true" class="uk-offcanvas" style>
+    <div class="uk-offcanvas-bar lg:w-4/12 w-full dark:bg-gray-700 dark:text-gray-300 p-0 bg-white flex flex-col justify-center shadow-2xl">
+    
+        <button class="uk-offcanvas-close absolute uk-icon uk-close" type="button" uk-close=""></button>
+        
+        <!-- Notification header -->
+        <div class="-mb-1 border-b font-semibold px-5 py-5 text-lg">
+            <h4> {% trans 'Create album' %} </h4>
+        </div>
+
+        <form id="album-create-form" method="POST" enctype="multipart/form-data" action="{% url 'album_list' %}">
+            {% csrf_token %}
+
+            <div class="p-6 space-y-3 flex-1">
+                <div>
+                    <label> {% trans 'Album Name' %} </label>
+                    {{ album_form.title }}
+                </div>
+                <div>
+                    <label> {% trans 'Album Description' %} </label>
+                    {{ album_form.description }}
+                </div>
+                <!-- Uncomment this section if you decide to add 'visibility' later
+                <div>
+                    <label> Visibility </label>
+                    ...
+                </div>
+                -->
+                <div>
+                    <label> {% trans 'Cover photo' %} </label> 
+                    {{ album_form.cover_photo }}
+                </div>
+                <!-- <div uk-form-custom="" class="w-full py-3 uk-form-custom">
+                    <div class="bg-gray-100 border-2 border-dashed flex flex-col h-32 items-center justify-center relative w-full rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                         Your SVG icon code here 
+                    </div>
+                    {{ form.cover_photo }}
+                </div> -->
+            </div>
+
+            <div class="p-5">
+                <button type="submit" name="create_album" class="button bg-primary text-white w-full">
+                    {% trans 'Create Now' %}
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+
+<!-- main contents -->
+<div class="main_content">
+    <div class="mcontainer">
+
+    <div class="main__inner">
+
+        <div class="mt-10">
+
+            <!-- sticky tabs -->
+
+
+
+            <div id="story_tab">
+
+
+                <!-- Post list -->
+                <div>
+                    <div uk-filter="target: .js-filter">
+                    <div class="flex justify-between items-center relative md:mb-4 mb-3">
+                        <div class="flex-1">
+                            <h2 class="text-2xl font-semibold"> {% trans 'Photos' %} </h2>
+                            <nav class="responsive-nav border-b md:m-0 -mx-4" >
+                                <ul uk-tab>
+                                    
+                                    <li class="uk-active" uk-filter-control><a href="#" class="lg:px-2"> {% trans 'Photos of you' %}  <span> {{ photo_count }}</span> </a></li>
+                                    {% for album in albums %}
+                                    <li uk-filter-control="[data-filter='{{ album.id }}']">
+                                        <a href="#" class="lg:px-2"> {{ album.title }}</a>
+                                        <div class="uk-dropbar uk-dropbar-top uk-dropbar-large" uk-drop="stretch: x">
+                                            <ul class="uk-nav uk-navbar-dropdown-nav">
+                                                <li>
+                                                    
+                                                    <a href="#offcanvas-edit-album" class="edit-album-btn" data-album-id="{{ album.id }}" data-title="{{ album.title }}" data-description="{{ album.description }}" data-cover-photo-id="{{ album.cover_photo.id }}" data-edit-url="{% url 'album_edit' pk=album.id %}">{% trans 'Edit' %}</a>
+                                                
+                                                
+                                                </li>
+
+
+                                                <li><a href="#" class="delete-album-btn" data-delete-id="{{ album.id }}" data-delete-url="{% url 'album_delete' pk=album.id %}">{% trans 'Delete' %}</a></li>
+
+                                            </ul>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                                
+                                </ul>
+                            </nav>
+                        </div>
+                        <a href="#offcanvas-create-albums" uk-toggle="" class="flex items-center justify-center z-10 h-10 w-10 rounded-full bg-pink-600 text-white absolute right-0" data-tippy-placement="left" data-tippy="" data-original-title="{% trans 'Create New Album' %}">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                        </a>
+                    </div>
+                    <!-- hightlets slider post -->
+
+
+                    <!-- post list  -->
+
+                    <div class="mt-8">
+
+                        <!-- post heading -->
+                        <div class="flex items-center justify-between py-3">
+                            <h1 class="text-xl font-bold text-black dark:text-white">{% trans 'Photo' %}</h1>
+
+                            <a href="#offcanvas-create-photo" uk-toggle="" class="text-sm font-semibold flex items-center gap-2">
+                                
+                            {% trans 'Add Photo' %} <ion-icon name="add-outline"></ion-icon>
+                            </a>
+                        </div>
+
+                        <!-- Post list -->
+                        
+                        <div class="js-filter grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-3 mt-6"
+                            uk-scrollspy="target: > div; cls: uk-animation-scale-up; delay: 100">
+
+                            {% include 'albums/list_photos.html' %}
+                            <!-- placeholders -->
+                            <div
+                                class="w-full lg:h-60 h-full aspect-[3/3] bg-slate-200/60 rounded-lg dark:bg-dark2 animate-pulse">
+                            </div>
+                            <div
+                                class="w-full lg:h-60 h-full aspect-[3/3] bg-slate-200/60 rounded-lg dark:bg-dark2 animate-pulse">
+                            </div>
+                            <div
+                                class="w-full lg:h-60 h-full aspect-[3/3] bg-slate-200/60 rounded-lg dark:bg-dark2 animate-pulse">
+                            </div>
+                            <div
+                                class="w-full lg:h-60 h-full aspect-[3/3] bg-slate-200/60 rounded-lg dark:bg-dark2 animate-pulse">
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    <!-- load more -->
+                    <!-- <div class="flex justify-center my-6">
+                        <button type="button"
+                            class="bg-white py-2 px-5 rounded-full shadow-md font-semibold text-sm dark:bg-dark2">Load
+                            more...</button>
+                    </div> -->
+                </div>
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+</div>
+
+<div id="delete-modal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">{% trans 'Confirmation' %}</h2>
+        <p>{% trans 'Are you sure you want to delete this album?' %}</p>
+        <button class="uk-button uk-button-default uk-modal-close" type="button">{% trans 'Cancel' %}</button>
+        <button class="uk-button uk-button-primary" id="confirm-delete">{% trans 'Delete' %}</button>
+    </div>
+</div>
+
+<!-- Edit album -->
+<div id="offcanvas-edit-album" uk-offcanvas="flip: true; overlay: true" class="uk-offcanvas" style>
+    <div class="uk-offcanvas-bar lg:w-4/12 w-full dark:bg-gray-700 dark:text-gray-300 p-0 bg-white flex flex-col justify-center shadow-2xl">
+        
+        <button class="uk-offcanvas-close absolute uk-icon uk-close" type="button" uk-close=""></button>
+        
+        <!-- Notification header -->
+        <div class="-mb-1 border-b font-semibold px-5 py-5 text-lg">
+            <h4> {% trans 'Edit album' %} </h4>
+        </div>
+
+        <form id="album-edit-form" method="POST" enctype="multipart/form-data" >
+            {% csrf_token %}
+
+            <div class="p-6 space-y-3 flex-1">
+                <div>
+                    <label> {% trans 'Album Name' %} </label>
+                    {{ album_form.title }}
+                </div>
+                <div>
+                    <label> {% trans 'Album Description' %} </label>
+                    {{ album_form.description }}
+                </div>
+                <div>
+                    <label> {% trans 'Cover photo' %} </label> 
+                    {{ album_form.cover_photo }}
+                </div>
+            </div>
+
+            <div class="p-5">
+                <button type="submit" name="edit_album" class="button bg-primary text-white w-full">
+                    {% trans 'Save Changes' %}
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+{% include 'albums/album_form.html' %}
+{% include 'albums/photo_form.html' %}
+{% endblock %}

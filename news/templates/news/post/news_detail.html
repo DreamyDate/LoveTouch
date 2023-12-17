@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load news_tags %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+
+ <!-- Main Contents -->
+    <div class="main_content">
+        {% if post.show_header %}
+            <div class="w-full lg:h-80 h-52 pb-10 bg-cover flex justify-center items-center relative" 
+                 style="{% if not post.header_image %}background-color: {{ post.header_color }};{% endif %}" 
+                 {% if page.header_image %}data-src="{{ post.header_image.url }}"{% endif %} uk-img>
+
+                <div class="text-center max-w-xl mx-auto z-10 relative">
+                    <div class="lg:text-4xl text-2xl text text-white font-semibold mb-3">{{ post.title }}</div>
+                                        
+                </div>
+
+                <div class="absolute w-full h-full inset-0 bg-gray-600 bg-opacity-20"> </div>
+
+            </div>
+        {% endif %}
+        <div class="mcontainer">
+
+            <div class="-mt-16 bg-white max-w-3xl mx-auto p-10 relative rounded-md shadow">
+
+                <div class="md:space-y-6 space-y-5 text-gray-400 md:text-base">
+                    
+                    {{ post.body|safe }}                    
+                </div>
+                
+            </div>
+    
+        </div>
+    </div>
+{% endblock %}
+
+

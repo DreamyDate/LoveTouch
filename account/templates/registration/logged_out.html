@@ -1,0 +1,25 @@
+{% extends "base_login_logout.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans 'Logged out' %}{% endblock %}
+
+{% block content %}
+<div class="h-screen flex flex-col justify-center items-center">
+  <div class="lg:p-12 max-w-xl lg:my-0 my-12 mx-auto p-6 space-y-">
+    <!-- logo -->
+    <div uk-scrollspy="target: &gt; *; cls: uk-animation-scale-up; delay: 100 ;repeat: true" class="uk-flex uk-flex-center uk-flex-middle">
+      <img src="{% static 'images/logo_name.png' %}" alt="">
+    </div>
+
+    <p>
+      {% trans 'You have been successfully logged out.' %}
+    </p>
+    <br>
+    <div class="flex justify-center items-center">
+      <span> {% trans 'You can ' %}</span>
+      <span>—</span>
+      <a href="{% url 'login' %}" class="text-gray-600 hover:text-gray-500">{% trans 'log-in again' %}</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% load static %}
+{% load thumbnail %}
+{% load i18n %}
+
+        <!-- Header -->
+        <header>
+            <div class="header_wrap">
+                <div class="header_inner mcontainer">
+                    <div class="left_side">
+                        
+                        <span class="slide_menu" uk-toggle="target: #wrapper ; cls: is-collapse is-active">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M3 4h18v2H3V4zm0 7h12v2H3v-2zm0 7h18v2H3v-2z" fill="currentColor"></path></svg>
+                        </span>
+
+                        <div id="logo">
+                            <a href="{% url 'home' %}"> 
+                                <img src="{% static 'images/logo_name.png' %}" alt="">
+                                <img src="{% static 'images/logo_name.png' %}" class="logo_mobile" alt="">
+                            </a>
+                        </div>
+                    </div>
+                     
+                    {% include 'account/header/search.html' %}
+         
+
+    
+                    <div class="right_side">
+    
+                        <div class="header_widgets">
+                            {% if is_premium %}
+                            <button class="is_link">{% trans 'Premium' %}</button>
+                        {% else %}
+                            <a href="{% url 'list_premium_packages' %}" class="is_link">{% trans 'Upgrade' %}</a>
+                        {% endif %}
+                         
+                            <a href="{% url 'purchase_credits' %}" class="is_link">  
+                                &#36;{{ user.profile.credits }}
+                            </a>
+                            
+                            <!-- <a href="#" class="is_icon" uk-tooltip="title: Cart">
+                                <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path></svg>
+                            </a>
+                            <div uk-drop="mode: click" class="header_dropdown dropdown_cart">
+                             
+                                <div class="drop_headline">
+                                    <h4>  My Cart </h4>
+                                    <a href="#" class="btn_action hover:bg-gray-100 mr-2 px-2 py-1 rounded-md underline"> Checkout </a>
+                                </div>
+
+                                <ul class="dropdown_cart_scrollbar" data-simplebar>
+                                    <li>
+                                        <div class="cart_avatar">
+                                            <img src="assets/images/product/2.jpg" alt="">
+                                        </div>
+                                        <div class="cart_text">
+                                            <div class=" font-semibold leading-4 mb-1.5 text-base line-clamp-1"> Wireless headphones </div>
+                                            <p class="text-sm">Type Accessories  </p>
+                                        </div>
+                                        <div class="cart_price">
+                                            <span> $14.99 </span>
+                                            <button class="type"> Remove</button>
+                                        </div>
+                                    </li>
+                                    
+                                </ul>
+        
+                                <div class="cart_footer">
+                                    <p> Subtotal : $ 320 </p>
+                                    <h1> Total :  <strong> $ 320</strong> </h1>
+                                </div>
+                            </div> -->
+                <form action="{% url 'set_language' %}" method="post">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.path }}">
+                    {% load i18n %} <!-- Добавленный тег -->
+                    <select name="language" id="language-selector" onchange="this.form.submit()">
+                        {% get_current_language as current_language %}
+                        {% get_available_languages as available_languages %}
+                        {% for lang_code, lang_name in available_languages %}
+                        <option value="{{ lang_code }}" {% if lang_code == current_language %}selected{% endif %}>
+                            {{ lang_name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </form>
+
+
+                            {% include 'account/header/notifications_pusher.html' %}
+                            {% include 'account/header/messages_pusher.html' %}
+                            {% include 'account/header/profile_menu.html' %}
+        
+                            
+
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </header>
